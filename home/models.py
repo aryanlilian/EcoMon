@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import User
 
 class Newsletter(models.Model):
     email = models.EmailField()

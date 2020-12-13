@@ -1,0 +1,61 @@
+{% extends 'users/base.html' %}
+{% block content %}
+  <!-- Content row -->
+<div class="row">
+
+    <!-- Incomes Area Chart -->
+    <div class="col-xl-4 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+            </div>
+        </div>
+    </div>
+
+    <!-- Incomes Area Chart -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Account Details</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <form id="form-center" action="{% url 'add-income' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <input type="text" class="form-control" name="income_name" placeholder="username">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" name="income_name" placeholder="first Name">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" name="income_name" placeholder="last Name">
+                        </div>
+                        <div class="form-group col-md-12">
+                          <input type="text" class="form-control" name="income_name" placeholder="email">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" name="income_name" placeholder="organization">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" name="income_name" placeholder="location">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <input type="text" class="form-control" name="income_name" placeholder="phone">
+                        </div>
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

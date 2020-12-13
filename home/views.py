@@ -13,3 +13,6 @@ class IndexFormView(CreateView):
 
 class AboutTemplateView(TemplateView):
     template_name = 'home/about.html'
+
+class ContactTemplateView(TemplateView):
+	template_name = 'home/contact.html'

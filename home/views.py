@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 from .forms import NewsletterForm
 
 
@@ -9,3 +9,7 @@ class IndexFormView(CreateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+
+class AboutTemplateView(TemplateView):
+    template_name = 'home/about.html'

@@ -44,27 +44,27 @@
 						<li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% elif request.get_full_path == '/about/' %}
 						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
 						<li class="nav-item active"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% elif request.get_full_path == '/blog/' %}
 						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
 						<li class="nav-item active"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% elif request.get_full_path == '/contact/' %}
 						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-						<li class="nav-item active"><a class="nav-link" href="">Contact</a></li>
+						<li class="nav-item active"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% else %}
 						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
 						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
 						<li class="nav-item active"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% endif %}
 				</ul>
 

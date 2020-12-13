@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'home/base.html' %}
 {% load static %}
 {% block content %}
   <!--================ Client Logo Section Start =================-->
@@ -87,84 +87,17 @@
         <h2 class="mb-4">Subscribe To Get Our Newsletter</h2>
         <p>We post very often on the blog and bring updates on the platform, if you will subscribe you will hear from us everything as soon we made the changes</p>
       </div>
-      <form class="form-subscribe" action="{% url 'newsletter-subscribe' %}" method="POST">
+      <form class="form-subscribe" action="" method="POST">
         {% csrf_token %}
         <div class="input-group align-items-center">
-            <input type="text" class="form-control" name="newsletter_email" placeholder="Enter Your email" required>
+            {{ form }}
           <div class="input-group-append">
-              <button class="button button-shadow2" type="submit" data-toggle="modal" data-target="#logoutModal">Subscribe</button>
+              <button class="button button-shadow2" type="submit">Subscribe</button>
           </div>
         </div>
       </form>
     </div>
   </section>
-
-<!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                {% if messages %}
-                  {% for message in messages %}
-                    {% if message.tag == 'success' %}
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Success</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">{{ message }}</div>
-                    <div class="modal-footer">
-                    <a class="btn btn-success" href="{% url 'index' %}">Cool</a>
-                </div>
-                    {% elif message.tag == 'warning' %}
-                      <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
-                          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">×</span>
-                          </button>
-                      </div>
-                      <div class="modal-body">{{ message }}</div>
-                      <div class="modal-footer">
-                    <a class="btn btn-warning" href="{% url 'index' %}">Oh.. Ok</a>
-                </div>
-                    {% endif %}
-                  {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-    </div> -->
-
-  <!-- <div class="container">
-    <div class="row">
-      <div class="col-lg-6 mb-3 mb-lg-0">
-        <article class="blog_item">
-          <div class="blog_details">
-            <a class="d-inline-block" href="single-blog.html">
-                <h2>Succes</h2>
-            </a>
-            <p>Some text here !!</p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </div> -->
-<!-- 
-  <div class="container" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="col-lg-6 mb-3 mb-lg-0" role="document">
-              <article class="blog_item">
-                <div class="blog_details">
-                    <a class="d-inline-block" href="single-blog.html">
-                        <h2>Succes</h2>
-                    </a>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                  <p>Some text here !!</p>
-                </div>
-              </article>
-        </div>
-    </div> -->
   <!--================ Subscribe Section End =================-->
 
 
@@ -187,7 +120,7 @@
   <!--================  Privacy Section End =================-->
 
 
-  <!--================ Testimonial Section Start =================-->
+<!--================ Testimonial Section Start =================-->
   <section class="bg-gray section-padding">
     <div class="container">
       <div class="section-intro pb-85px text-center">

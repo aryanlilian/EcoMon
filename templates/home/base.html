@@ -97,7 +97,7 @@
 				<p class="text-uppercase">Start Yout Own Company</p>
 				<h1>Save More Money</h1>
 				<p class="hero-subtitle">You don't have enough money? Manage them better then. It's easier with our platform. Sign up and you'll see.</p>
-				<a class="button button-outline" href="{% url 'register' %}">Get Started</a>
+				<a class="button button-outline" href="">Get Started</a>
 			</div>
 		</section>
 		<!--================ Index Section Area End =================-->
@@ -143,17 +143,13 @@
 				        <form action="" method="POST">
 				        	{% csrf_token %}
 				            <div class="input-group">
-				            	<input type="email" class="form-control" name="newsletter_email" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '">
+				            	{{ form }}
 					            <div class="input-group-append">
 						            <button class="btn click-btn" type="submit">
 						            	<i class="ti-arrow-right"></i>
 						            </button>
 					            </div>
 				            </div>
-					        <!-- <div style="position: absolute; left: -5000px;">
-								<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
-							</div>
-							<div class="info"></div> -->
 				        </form>
 			        </div>
 				</div>

@@ -129,85 +129,21 @@
       </div>
 
       <div class="owl-carousel owl-theme testimonial">
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial1.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Forden miliard</h4>
-              <p class="testi-intro">CEO & Founder</p>
+        {% for testimonial in testimonials %}
+          <div class="testimonial-item">
+            <div class="media">
+              <img class="testimonial-img" src="" alt="">
+              <div class="media-body">
+                <p>{{ testimonial.description }}</p>
+                <h4>{{ testimonial.name }}</h4>
+                <p class="testi-intro">{{ testimonial.person_type }}</p>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial2.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Manel Djuice</h4>
-              <p class="testi-intro">CEO & Founder</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial3.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Manel Djuice</h4>
-              <p class="testi-intro">CEO & Founder</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial2.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Manel Djuice</h4>
-              <p class="testi-intro">CEO & Founder</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial3.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Manel Djuice</h4>
-              <p class="testi-intro">CEO & Founder</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial2.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Manel Djuice</h4>
-              <p class="testi-intro">CEO & Founder</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-item">
-          <div class="media">
-            <img class="testimonial-img" src="{% static 'img/testimonial/testimonial3.png' %}" alt="">
-            <div class="media-body">
-              <p>Give dry stars form. Us called an won't winged had land cru abundantly land Midst</p>
-              <h4>Manel Djuice</h4>
-              <p class="testi-intro">CEO & Founder</p>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
 
     </div>
   </section>
-  <!--================ Testimonial Section End =================-->
+<!--================ Testimonial Section End =================-->
 {% endblock content %}

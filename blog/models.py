@@ -15,13 +15,10 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(_('Post\'s Title'), max_length=200, unique=True)
     content = models.TextField(_('Posts\'s Content'))
-    category = models.CharField(_('Post\'s Category'), max_length=9,
-                                choices=PostCategory.choices, default=PostCategory.BUSSINESS)
-    slug = models.SlugField(_('Slug'), max_length=200,
-                            blank=True, null=False, unique=True)
+    category = models.CharField(_('Post\'s Category'), max_length=9, choices=PostCategory.choices, default=PostCategory.BUSSINESS)
+    slug = models.SlugField(_('Slug'), max_length=200, blank=True, null=False, unique=True)
     tags = TaggableManager(_('Tags'))
-    published_date = models.DateTimeField(
-        _('Published Date/Time'), auto_now_add=True)
+    published_date = models.DateTimeField(_('Published Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):

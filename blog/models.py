@@ -31,11 +31,3 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
-
-class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    posted_date = models.DateTimeField(
-        _('Posted Date/Time'), auto_now_add=True)
-    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)

@@ -1,5 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.views.generic import ListView
+from .models import Post
 
-def blog(request):
-    return HttpResponse('Blog page')
+
+class BlogListView(ListView):
+    model = Post
+    template_name = 'blog/blog.html'
+    context_object_name = 'posts'
+    ordering = ['-published_date']
+    paginate_by = 2

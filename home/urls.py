@@ -1,6 +1,12 @@
 from django.urls import path
-from .views import index
+from .views import (
+    IndexFormView,
+    AboutTemplateView,
+    ContactTemplateView,
+)
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', IndexFormView.as_view(), name='index'),
+    path('about/', AboutTemplateView.as_view(), name='about'),
+    path('contact/', ContactTemplateView.as_view(), name='contact'),
 ]

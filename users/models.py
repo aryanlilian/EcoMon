@@ -34,7 +34,7 @@ class Income(models.Model):
     amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
     category = models.CharField(_('Category'), max_length=4,
                                 choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
-    recurrent = models.BooleanField(_('Recurrent'), default=False)
+    recurrent = models.BooleanField(_('Recurrent Income'), default=False)
     created_date = models.DateTimeField(
         _('Created Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
@@ -61,7 +61,7 @@ class Spending(models.Model):
         _('Amount'), max_digits=10, decimal_places=3)
     category = models.CharField(_('Category'), max_length=4,
                                 choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
-    recurrent = models.BooleanField(_('Recurrent'), default=False)
+    recurrent = models.BooleanField(_('Recurrent Spending'), default=False)
     created_date = models.DateTimeField(
         _('Created Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
@@ -111,7 +111,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(
-        _('User\'s Avatar'), default='default.jpg', upload_to='profile_pics')
+        _('Avatar'), default='default.jpg', upload_to='profile_pics')
     currency = models.CharField(_('Currency'),
                                 max_length=3, choices=Currency.choices, default=Currency.USD)
     created_date = models.DateTimeField(

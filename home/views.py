@@ -1,5 +1,26 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.views.generic import CreateView, TemplateView
+from .forms import NewsletterForm
+from .models import Testimonial
 
-def index(request):
-    return HttpResponse('Index page')
+
+class IndexFormView(CreateView):
+    template_name = 'home/index.html'
+    form_class = NewsletterForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['testimonials'] = Testimonial.objects.order_by(
+            '-created_date')[:9]
+        return context
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+
+class AboutTemplateView(TemplateView):
+    template_name = 'home/about.html'
+
+
+class ContactTemplateView(TemplateView):
+    template_name = 'home/contact.html'

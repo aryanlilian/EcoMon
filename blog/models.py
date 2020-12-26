@@ -13,12 +13,15 @@ class Post(models.Model):
         SPENDINGS = 'SPENDINGS', _('Spendings')
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(_('Post\'s Title'), max_length=200, unique=True)
-    content = models.TextField(_('Posts\'s Content'))
-    category = models.CharField(_('Post\'s Category'), max_length=9, choices=PostCategory.choices, default=PostCategory.BUSSINESS)
-    slug = models.SlugField(_('Slug'), max_length=200, blank=True, null=False, unique=True)
+    title = models.CharField(_('Title'), max_length=200, unique=True)
+    content = models.TextField(_('Content'))
+    category = models.CharField(_('Category'), max_length=9,
+                                choices=PostCategory.choices, default=PostCategory.BUSSINESS)
+    slug = models.SlugField(_('Slug'), max_length=200,
+                            blank=True, null=False, unique=True)
     tags = TaggableManager(_('Tags'))
-    published_date = models.DateTimeField(_('Published Date/Time'), auto_now_add=True)
+    published_date = models.DateTimeField(
+        _('Published Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
@@ -28,3 +31,11 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    posted_date = models.DateTimeField(
+        _('Posted Date/Time'), auto_now_add=True)
+    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)

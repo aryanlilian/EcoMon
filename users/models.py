@@ -5,10 +5,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class User(AbstractUser):
 
-    birth_date = models.DateField(_('Birth Date'), auto_now_add=False, null=True, blank=True)
-    phone_number = PhoneNumberField(_('Phone Number'), null=True, blank=True, unique=True)
+    birth_date = models.DateField(
+        _('Birth Date'), auto_now_add=False, null=True, blank=True)
+    phone_number = PhoneNumberField(
+        _('Phone Number'), null=True, blank=True, unique=True)
     email_verified = models.BooleanField(_('Email Verified'), default=False)
-    do_not_marketing_email = models.BooleanField(_('Do not marketing email'), default=False)
+    do_not_marketing_email = models.BooleanField(
+        _('Do not marketing email'), default=False)
 
     def __str__(self):
         return f'{self.username} - {self.first_name} {self.last_name}'
@@ -27,12 +30,14 @@ class Income(models.Model):
         OTHERS = 'OTRS', _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(_('Income\'s Name'), max_length=50)
-    amount = models.DecimalField(_('Income\'s Amount'), max_digits=10, decimal_places=3)
-    category = models.CharField(_('Income\'s Category'), max_length=4, choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
-    recurrent = models.BooleanField(_('Recurrent Income'), default=False)
-    created_date = models.DateTimeField(_('Created Date'), auto_now_add=True)
-    updated_date = models.DateTimeField(_('Updated Date'), auto_now=True)
+    name = models.CharField(_('Name'), max_length=50)
+    amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
+    category = models.CharField(_('Category'), max_length=4,
+                                choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
+    recurrent = models.BooleanField(_('Recurrent'), default=False)
+    created_date = models.DateTimeField(
+        _('Created Date/Time'), auto_now_add=True)
+    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
         return f'{self.name} - {self.user.username}'
@@ -51,12 +56,15 @@ class Spending(models.Model):
         OTHERS = 'OTRS', _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(_('Spending\'s Name'), max_length=50)
-    amount = models.DecimalField(_('Spending\'s Amount'), max_digits=10, decimal_places=3)
-    category = models.CharField(_('Spending\'s Category'), max_length=4, choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
-    recurrent = models.BooleanField(_('Recurrent Spending'), default=False)
-    created_date = models.DateTimeField(_('Created Date'), auto_now_add=True)
-    updated_date = models.DateTimeField(_('Updated Date'), auto_now=True)
+    name = models.CharField(_('Name'), max_length=50)
+    amount = models.DecimalField(
+        _('Amount'), max_digits=10, decimal_places=3)
+    category = models.CharField(_('Category'), max_length=4,
+                                choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
+    recurrent = models.BooleanField(_('Recurrent'), default=False)
+    created_date = models.DateTimeField(
+        _('Created Date/Time'), auto_now_add=True)
+    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
         return f'{self.name} - {self.user.username}'
@@ -102,10 +110,13 @@ class Profile(models.Model):
         ZAR = 'ZAR', _('ZAR')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(_('User\'s Avatar'), default='default.jpg', upload_to='profile_pics')
-    currency = models.CharField(_('User\'s Profile Currency'), max_length=3, choices=Currency.choices, default=Currency.USD)
-    created_date = models.DateTimeField(_('Created Date'), auto_now_add=True)
-    updated_date = models.DateTimeField(_('Updated Date'), auto_now=True)
+    image = models.ImageField(
+        _('User\'s Avatar'), default='default.jpg', upload_to='profile_pics')
+    currency = models.CharField(_('Currency'),
+                                max_length=3, choices=Currency.choices, default=Currency.USD)
+    created_date = models.DateTimeField(
+        _('Created Date/Time'), auto_now_add=True)
+    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
         return f'{self.user.username}\'s Profile'

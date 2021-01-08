@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -16,18 +17,19 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.username} - {self.first_name} {self.last_name}'
 
+
 class Income(models.Model):
 
     class IncomeCategory(models.TextChoices):
         SALARY = 'SLRY', _('Salary')
         PROFIT = 'PRFT', _('Profit')
-        INTEREST = 'ITRT', _('Interest')
+        INTEREST = 'INTR', _('Interest')
         DIVIDENT = 'DVDT', _('Divident')
         RENTAL = 'RNTL', _('Rental')
         CAPITAL = 'CPTL', _('Capital')
         ROYALTY = 'RYLT', _('Royalty')
         GIFT = 'GIFT', _('Gift')
-        OTHERS = 'OTRS', _('Others')
+        OTHERS = 'OTHR', _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=50)
@@ -41,6 +43,9 @@ class Income(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.user.username}'
+
+    def get_absolute_url(self):
+        return reverse('income')
 
 class Spending(models.Model):
 
@@ -68,6 +73,9 @@ class Spending(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.user.username}'
+
+    def get_absolute_url(self):
+        return reverse('spending')
 
 class Profile(models.Model):
 

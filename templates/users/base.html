@@ -7,8 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>EcoMon - {{ title }}</title>
+    {% if title %}
+        <title>EcoMon - {{ title }}</title>
+    {% else %}
+        <title>EcoMon</title>
+    {% endif %}
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -30,7 +33,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -42,7 +45,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'dashboard' %}">
+                <a class="nav-link" href="">
                     <i class="fas fa-fw fa-columns-gap"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -69,10 +72,10 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">All Pages:</h6>
-                        <a class="collapse-item" href="{% url 'incomes' %}">Incomes</a>
-                        <a class="collapse-item" href="{% url 'spendings' %}">Spendings</a>
-                        <a class="collapse-item" href="{% url 'archive' %}">Archive</a>
-                        <a class="collapse-item" href="{% url 'blog' %}">Blog</a>
+                        <a class="collapse-item" href="">Incomes</a>
+                        <a class="collapse-item" href="">Spendings</a>
+                        <a class="collapse-item" href="">Archive</a>
+                        <a class="collapse-item" href="">Blog</a>
                     </div>
                 </div>
             </li>
@@ -218,7 +221,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                <a class="dropdown-item" href="}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -231,7 +234,7 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -294,7 +297,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                    <a class="btn btn-primary" href="">Logout</a>
                 </div>
             </div>
         </div>

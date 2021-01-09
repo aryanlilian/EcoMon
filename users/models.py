@@ -3,6 +3,8 @@ from django import forms
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
+from django.urls import reverse
+from django.utils import timezone
 
 class User(AbstractUser):
 
@@ -38,7 +40,7 @@ class Income(models.Model):
                                 choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
     recurrent = models.BooleanField(_('Recurrent Income'), default=False)
     created_date = models.DateTimeField(
-        _('Created Date/Time'), auto_now_add=True)
+        _('Created Date/Time'), default=timezone.now)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
@@ -68,7 +70,7 @@ class Spending(models.Model):
                                 choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
     recurrent = models.BooleanField(_('Recurrent Spending'), default=False)
     created_date = models.DateTimeField(
-        _('Created Date/Time'), auto_now_add=True)
+        _('Created Date/Time'), default=timezone.now)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):

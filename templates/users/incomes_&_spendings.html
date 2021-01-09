@@ -7,16 +7,20 @@
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					{% render_field form.name class="form-control" placeholder=form.name.label %}
+					<small class="text-xs font-weight text-primary">{{ form.name.help_text }}</small>
 			    </div>
 			    <div class="form-group col-md-4">
 					{% render_field form.amount class="form-control" placeholder=form.amount.label %}
+					<small class="text-xs font-weight text-primary">{{ form.amount.help_text }}</small>
 			    </div>
 			    <div class="form-group col-md-2">
 					{% render_field form.category class="form-control" %}
+					<small class="text-xs font-weight text-primary">{{ form.category.help_text }}</small>
 			    </div>
 			    <div class="form-group col-md-2">
-					{{ form.recurrent }}
+					{% render_field form.recurrent value="True" %}
 					{{ form.recurrent.label }}
+					<small class="text-xs font-weight text-primary">{{ form.recurrent.help_text }}</small>
 			    </div>
 			    <div class="form-group col-md-12">
 			    	<input type="submit" class="btn btn-{{ primary_color }} btn-lg btn-block" value="Add Income">

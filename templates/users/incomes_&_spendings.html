@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% block content %}
 	<div class="container">
-		<form id="form-center" action="" method="POST">
+		<!-- <form id="form-center" action="" method="POST">
 			{% csrf_token %}
 			<div class="form-row">
 				<div class="form-group col-md-4">
@@ -18,7 +18,7 @@
 					<small class="text-xs font-weight text-primary">{{ form.category.help_text }}</small>
 			    </div>
 			    <div class="form-group col-md-2">
-					{% render_field form.recurrent value="True" %}
+					{{ form.recurrent }}
 					{{ form.recurrent.label }}
 					<small class="text-xs font-weight text-primary">{{ form.recurrent.help_text }}</small>
 			    </div>
@@ -26,7 +26,7 @@
 			    	<input type="submit" class="btn btn-{{ primary_color }} btn-lg btn-block" value="Add Income">
 			    </div>
 			</div>
-		</form>
+		</form> -->
 		<br>
 		<hr>
 
@@ -114,7 +114,7 @@
 		          				<td>No</td>
 		            		{% endif %}
 		          			<td>{{ object.created_date|date:"F-d-Y" }}</td>
-		          			<td><a href="" class="btn-circle bnt-sm btn-danger"><i class="fas fa-trash"></i></a></td>
+		          			<td><a href="{% url 'delete-income' object.id %}" class="btn-circle bnt-sm btn-danger"><i class="fas fa-trash"></i></a></td>
 		            	</tr>
 		          	</div>
 		          {% endfor %}

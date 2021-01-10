@@ -1,7 +1,8 @@
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DeleteView
 from .models import Income, Spending
 from .forms import IncomeCreateForm, SpendingCreateForm
 from .utils import assembly, recurrent_check
+from django.urls import reverse_lazy
 from datetime import datetime
 from . import constants
 
@@ -71,3 +72,15 @@ class SpendingCreateListView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+# !!!! Incomplete !!!!
+# class IncomeDeleteView(DeleteView):
+#     model = Income
+#     template_name = 'users/delete.html'
+#     success_url = reverse_lazy('income')
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['object_name'] = 'Income'
+#         return context

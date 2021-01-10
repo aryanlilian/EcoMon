@@ -253,6 +253,7 @@
                     <div class="d-sm-flex align-items-center justify-content-center mb-4">
                         <h1 class="h3 mb-0 text-gray-800">{{ title }}</h1>
                     </div>
+
                     {% block content %}
                     {% endblock %}
 
@@ -302,6 +303,8 @@
             </div>
         </div>
     </div>
+
+    {% include 'users/delete.html' %}
 
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>

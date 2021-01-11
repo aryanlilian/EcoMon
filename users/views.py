@@ -1,13 +1,13 @@
 from .models import Income, Spending
-from .forms import IncomeCreateForm, SpendingCreateForm
 from django.urls import reverse_lazy
 from datetime import datetime
 from . import constants
 from django.views import View
 from django.shortcuts import render
-from django.views.generic import (
-    CreateView,
-    DeleteView,
+from django.views.generic import CreateView  #, DeleteView
+from .forms import (
+    IncomeCreateForm,
+    SpendingCreateForm,
 )
 from .utils import (
     assembly,

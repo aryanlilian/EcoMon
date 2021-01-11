@@ -36,6 +36,14 @@ class CustomUserAdmin(UserAdmin):
                 )
             }
         ),
+        (
+            'Terms & Conditions',
+            {
+                'fields': (
+                    'accept_terms_and_conditions',
+                )
+            }
+        ),
     )
 
 @admin.register(Income)

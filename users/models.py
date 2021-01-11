@@ -6,8 +6,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.urls import reverse
 from django.utils import timezone
 
-class User(AbstractUser):
 
+class User(AbstractUser):
     birth_date = models.DateField(
         _('Birth Date'), auto_now_add=False, null=True, blank=True)
     phone_number = PhoneNumberField(
@@ -15,6 +15,8 @@ class User(AbstractUser):
     email_verified = models.BooleanField(_('Email Verified'), default=False)
     do_not_marketing_email = models.BooleanField(
         _('Do not marketing email'), default=False)
+    accept_terms_and_conditions = models.BooleanField(
+        _('Accept terms and contidions'), default=False)
 
     def __str__(self):
         return f'{self.username} - {self.first_name} {self.last_name}'

@@ -2,12 +2,22 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from .models import User, Income, Spending
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(widget=forms.EmailInput())
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = [
+            'email',
+            'username',
+            'first_name',
+            'last_name',
+            'password1',
+            'password2',
+        ]
 
 
 class IncomeCreateForm(forms.ModelForm):
@@ -19,7 +29,10 @@ class IncomeCreateForm(forms.ModelForm):
 
     class Meta:
         model = Income
-        exclude = ['user', 'created_date']
+        exclude = [
+            'user',
+            'created_date'
+        ]
 
 
 class SpendingCreateForm(forms.ModelForm):
@@ -31,4 +44,7 @@ class SpendingCreateForm(forms.ModelForm):
 
     class Meta:
         model = Spending
-        exclude = ['user', 'created_date']
+        exclude = [
+            'user',
+            'created_date'
+        ]

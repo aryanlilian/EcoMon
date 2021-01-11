@@ -23,20 +23,24 @@ class User(AbstractUser):
 class Income(models.Model):
 
     class IncomeCategory(models.TextChoices):
-        SALARY = 'SLRY', _('Salary')
-        PROFIT = 'PRFT', _('Profit')
-        INTEREST = 'INTR', _('Interest')
-        DIVIDENT = 'DVDT', _('Divident')
-        RENTAL = 'RNTL', _('Rental')
-        CAPITAL = 'CPTL', _('Capital')
-        ROYALTY = 'RYLT', _('Royalty')
-        GIFT = 'GIFT', _('Gift')
-        OTHERS = 'OTHR', _('Others')
+        SALARY = _('Salary')
+        AWARDS = _('Awards')
+        GRANTS = _('Grants')
+        SALE = _('Sale')
+        DIVIDENTS = _('Dividents')
+        RENTAL = _('Rental')
+        REFUNDS = _('Refunds')
+        COUPONS = _('Coupons')
+        LOTTERY = _('Lottery')
+        CAPITAL = _('Capital')
+        INVESTMENTS = _('Investments')
+        GIFT = _('Gift')
+        OTHERS = _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=50)
     amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
-    category = models.CharField(_('Category'), max_length=4,
+    category = models.CharField(_('Category'), max_length=11,
                                 choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
     recurrent = models.BooleanField(_('Recurrent Income'), default=False)
     created_date = models.DateTimeField(
@@ -52,21 +56,21 @@ class Income(models.Model):
 class Spending(models.Model):
 
     class SpendingCategory(models.TextChoices):
-        UTILITIES = 'UTLT', _('Utilities')
-        RENT = 'RENT', _('Rent')
-        INVOICES = 'INVC', _('Invoices')
-        SHOPPING = 'SHPG', _('Shopping')
-        FOOD = 'FOOD', _('Food')
-        EDUCATION = 'EDCN', _('Education')
-        FUN = 'FUN', _('Fun')
-        INSETMENT = 'INVT', _('Investment')
-        OTHERS = 'OTRS', _('Others')
+        UTILITIES = _('Utilities')
+        RENT = _('Rent')
+        INVOICES = _('Invoices')
+        SHOPPING = _('Shopping')
+        FOOD = _('Food')
+        EDUCATION = _('Education')
+        FUN = _('Fun')
+        INSETMENT = _('Investment')
+        OTHERS = _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=50)
     amount = models.DecimalField(
         _('Amount'), max_digits=10, decimal_places=3)
-    category = models.CharField(_('Category'), max_length=4,
+    category = models.CharField(_('Category'), max_length=10,
                                 choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
     recurrent = models.BooleanField(_('Recurrent Spending'), default=False)
     created_date = models.DateTimeField(

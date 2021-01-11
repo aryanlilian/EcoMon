@@ -16,7 +16,7 @@ def days_of_month(year, month):
 
 
 def daily_avg(total_sum, days):
-    return round(incomes / days, 2)
+    return round(total_sum / days, 2)
 
 
 def max_value(objects):

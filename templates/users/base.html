@@ -303,9 +303,7 @@
             </div>
         </div>
     </div>
-
-    {% include 'users/delete.html' %}
-
+    
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -324,11 +322,7 @@
     <script type="text/javascript">
         // Call the dataTables jQuery plugin
         $(document).ready(function() {
-          $('#IncomesdataTable').DataTable();
-        });
-
-        $(document).ready(function() {
-          $('#SpendingsdataTable').DataTable();
+          $('#incomes&SpendingsDataTable').DataTable();
         });
     </script>
 
@@ -363,35 +357,34 @@
         }
 
         // Area Chart Example
-        var state = {
+        var incomes_state = {
             'months': [],
             'values': [],
         }
+        var incomesCharAreaURL = '/users/dashboard/incomes-chart-area'
 
         $.ajax({
             method: 'GET',
-            url: '/incomes-chart-area/',
+            url: incomesCharAreaURL,
             success: function (response) {
                 for (var i in response) {
-
                     var key = Object.keys(response[i])[0]
                     var value = Object.values(response[i])[0]
-
-                    state.months.push(key)
-                    state.values.push(value)
+                    incomes_state.months.push(key)
+                    incomes_state.values.push(value)
                 }
-                buildChartArea()
+                buildIncomesChartArea()
             }
         })
 
-        function buildChartArea() {
-            var ctx = document.getElementById("myIncomesAreaChart");
+        function buildIncomesChartArea() {
+            var ctx = document.getElementById("incomesAreaChart");
             var myLineChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: state.months,
+                    labels: spendings_state.months,
                     datasets: [{
-                        label: "Earnings",
+                        label: "Spendings",
                         lineTension: 0.3,
                         backgroundColor: "rgba(78, 115, 223, 0.05)",
                         borderColor: "rgba(78, 115, 223, 1)",
@@ -403,7 +396,7 @@
                         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
                         pointHitRadius: 10,
                         pointBorderWidth: 2,
-                        data: state.values,
+                        data: spendings_state.values,
                     }],
                 },
                 options: {
@@ -476,6 +469,65 @@
         }
     </script>
 
+     <script type="text/javascript">
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        // Pie Chart Example
+        var incomes_pie = {
+            'names': [],
+            'values': [],
+        }
+        var incomesChartPieURL = '/users/dashboard/incomes-chart-pie'
+
+        $.ajax({
+            method: 'GET',
+            url: incomesChartPieURL,
+            success: function (response) {
+                for (var i in response) {
+                    var key = Object.keys(response[i])[0]
+                    var value = Object.values(response[i])[0]
+                    incomes_pie.names.push(key)
+                    incomes_pie.values.push(value)
+                }
+                buildIncomesChartPie()
+            }
+        })
+        function buildIncomesChartPie() {
+            var ctx = document.getElementById("incomesPieChart");
+            var myPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: incomes_pie.names,
+                    datasets: [{
+                        data: incomes_pie.values,
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: false
+                    },
+                    cutoutPercentage: 80,
+                },
+            });
+        }
+    </script>
+
     <script type="text/javascript">
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -511,16 +563,15 @@
             'months': [],
             'values': [],
         }
+        var spendingsCharAreaURL = '/users/dashboard/spendings-chart-area'
 
         $.ajax({
             method: 'GET',
-            url: '/spendings-chart-area/',
+            url: spendingsCharAreaURL,
             success: function (response) {
                 for (var i in response) {
-
                     var key = Object.keys(response[i])[0]
                     var value = Object.values(response[i])[0]
-
                     spendings_state.months.push(key)
                     spendings_state.values.push(value)
                 }
@@ -529,7 +580,7 @@
         })
 
         function buildSpendingsChartArea() {
-            var ctx = document.getElementById("mySpendingsAreaChart");
+            var ctx = document.getElementById("spendingsAreaChart");
             var myLineChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -626,88 +677,27 @@
         Chart.defaults.global.defaultFontColor = '#858796';
 
         // Pie Chart Example
-        var pie = {
-            'names': [],
-            'values': [],
-        }
-
-        $.ajax({
-            method: 'GET',
-            url: '/incomes-chart-pie/',
-            success: function (response) {
-                for (var i in response) {
-
-                    var key = Object.keys(response[i])[0]
-                    var value = Object.values(response[i])[0]
-
-                    pie.names.push(key)
-                    pie.values.push(value)
-                }
-                buildChart()
-            }
-        })
-        function buildChart() {
-            var ctx = document.getElementById("myIncomesPieChart");
-            var myPieChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: pie.names,
-                    datasets: [{
-                        data: pie.values,
-                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                        hoverBorderColor: "rgba(234, 236, 244, 1)",
-                    }],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    tooltips: {
-                        backgroundColor: "rgb(255,255,255)",
-                        bodyFontColor: "#858796",
-                        borderColor: '#dddfeb',
-                        borderWidth: 1,
-                        xPadding: 15,
-                        yPadding: 15,
-                        displayColors: false,
-                        caretPadding: 10,
-                    },
-                    legend: {
-                        display: false
-                    },
-                    cutoutPercentage: 80,
-                },
-            });
-        }
-    </script>
-
-    <script type="text/javascript">
-        // Set new default font family and font color to mimic Bootstrap's default styling
-        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-        Chart.defaults.global.defaultFontColor = '#858796';
-
-        // Pie Chart Example
         var spendings_pie = {
             'names': [],
             'values': [],
         }
+        var spendingsChartPieURL = '/users/dashboard/spendings-chart-pie'
 
         $.ajax({
             method: 'GET',
-            url: '/spendings-chart-pie/',
+            url: spendingsChartPieURL,
             success: function (response) {
                 for (var i in response) {
-
                     var key = Object.keys(response[i])[0]
                     var value = Object.values(response[i])[0]
-
                     spendings_pie.names.push(key)
                     spendings_pie.values.push(value)
                 }
-                buildSpendingsChart()
+                buildSpendingsChartPie()
             }
         })
-        function buildSpendingsChart() {
-            var ctx = document.getElementById("mySpendingsPieChart");
+        function buildSpendingsChartPie() {
+            var ctx = document.getElementById("spendingsPieChart");
             var myPieChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {

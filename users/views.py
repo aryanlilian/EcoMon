@@ -1,10 +1,63 @@
-from django.views.generic import CreateView, ListView, DeleteView
 from .models import Income, Spending
 from .forms import IncomeCreateForm, SpendingCreateForm
-from .utils import assembly, recurrent_check
 from django.urls import reverse_lazy
 from datetime import datetime
 from . import constants
+from django.views import View
+from django.shortcuts import render
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+)
+from .utils import (
+    assembly,
+    recurrent_check,
+    days_of_month,
+    max_value,
+    percentages_of_incomes,
+    daily_avg,
+)
+
+
+class DashboardListView(View):
+
+    def get(self, request):
+        number_of_days = days_of_month(
+            datetime.now().year, datetime.now().month)
+        # currency = Currency.objects.get(user=request.user)
+        incomes = Income.objects.filter(
+            user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        spendings = Spending.objects.filter(
+            user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        max_income = max_value(incomes)
+        max_spending = max_value(spendings)
+        total_incomes = round(assembly(incomes), 2)
+        total_spendings = round(assembly(spendings), 2)
+        total_savings = round(total_incomes - total_spendings, 2)
+        spendings_percent = percentages_of_incomes(
+            total_incomes, total_spendings)
+        savings_percent = percentages_of_incomes(
+            total_incomes, total_savings)
+        avg_incomes = daily_avg(total_incomes, number_of_days)
+        avg_spendings = daily_avg(total_spendings, number_of_days)
+        avg_savings = daily_avg(total_savings, number_of_days)
+        context = {
+            'title': 'Dashboard',
+            'spendings': spendings,
+            'incomes': incomes,
+            # 'currency': currency.currency,
+            'max_income': max_income,
+            'max_spending': max_spending,
+            'total_incomes': total_incomes,
+            'total_spendings': total_spendings,
+            'total_savings': total_savings,
+            'spendings_percent': spendings_percent,
+            'savings_percent': savings_percent,
+            'avg_incomes': avg_incomes,
+            'avg_spendings': avg_spendings,
+            'avg_savings': avg_savings,
+        }
+        return render(request, 'users/dashboard.html', context)
 
 
 class IncomeCreateListView(CreateView):

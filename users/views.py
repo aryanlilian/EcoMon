@@ -49,7 +49,7 @@ class DashboardListView(LoginRequiredMixin, View):
         return render(request, 'users/dashboard.html', context)
 
 
-class IncomeCreateListView(LoginRequiredMixin, CreateView):
+class IncomesCreateListView(LoginRequiredMixin, CreateView):
     template_name = 'users/incomes_&_spendings.html'
     form_class = IncomeCreateForm
 
@@ -84,7 +84,7 @@ class IncomeCreateListView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class SpendingCreateListView(LoginRequiredMixin, CreateView):
+class SpendingsCreateListView(LoginRequiredMixin, CreateView):
     template_name = 'users/incomes_&_spendings.html'
     form_class = SpendingCreateForm
 

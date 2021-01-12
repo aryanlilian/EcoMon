@@ -33,7 +33,7 @@
 	  <nav class="navbar navbar-expand-lg navbar-light">
 	    <div class="container box_1620">
 	    	{% if user.is_authenticated %}
-	    		<a class="navbar-brand logo_h" href=""><img src="static/img/logo.png" alt=""></a>
+	    		<a class="navbar-brand logo_h" href="{% url 'dashboard' %}"><img src="static/img/logo.png" alt=""></a>
 	    	{% else %}
 	    		<a class="navbar-brand logo_h" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
 	    	{% endif %}
@@ -69,7 +69,7 @@
 				</ul>
 
 				<div class="nav-right text-center text-lg-right py-4 py-lg-0">
-					<a class="button button-outline button-small" href="">Login</a>
+					<a class="button button-outline button-small" href="{% url 'login' %}">Login</a>
 				</div>
 			</div> 
 	    </div>
@@ -97,7 +97,7 @@
 				<p class="text-uppercase">Start Yout Own Company</p>
 				<h1>Save More Money</h1>
 				<p class="hero-subtitle">You don't have enough money? Manage them better then. It's easier with our platform. Sign up and you'll see.</p>
-				<a class="button button-outline" href="">Get Started</a>
+				<a class="button button-outline" href="{% url 'register' %}">Get Started</a>
 			</div>
 		</section>
 		<!--================ Index Section Area End =================-->

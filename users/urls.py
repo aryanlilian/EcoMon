@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import (
     DashboardListView,
-    IncomeCreateListView,
-    SpendingCreateListView,
+    IncomesCreateListView,
+    SpendingsCreateListView,
     # IncomeDeleteView,
 )
 from .chart_functions import (
@@ -22,8 +22,8 @@ urlpatterns = [
          name='spendings-chart-area'),
     path('dashboard/spendings-chart-pie/', spendings_chart_pie_data,
          name='spendings-chart-pie'),
-    path('income/', IncomeCreateListView.as_view(), name='income'),
-    path('spending/', SpendingCreateListView.as_view(), name='spending'),
+    path('incomes/', IncomesCreateListView.as_view(), name='incomes'),
+    path('spendings/', SpendingsCreateListView.as_view(), name='spendings'),
     # !!!! Incomplete !!!!
     # path('income/<int:pk>/delete/', IncomeDeleteView.as_view(), name='delete-income'),
 ]

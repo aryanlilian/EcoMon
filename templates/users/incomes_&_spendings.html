@@ -20,9 +20,8 @@
 			    <div class="form-group col-md-2">
 					<div class="custom-control custom-checkbox small">
 						{% render_field form.recurrent class="custom-control-input" id="customCheck" %}
-						<label class="custom-control-label" for="customCheck">Recurrent {{ title|slice:':-1' }}?</label>
+						<label class="custom-control-label ml-2 mt-1" for="customCheck">Recurrent {{ title|slice:':-1' }}?</label>
                     </div>
-					<small class="text-xs font-weight text-primary">{{ form.recurrent.help_text }}</small>
 			    </div>
 			    <div class="form-group col-md-12">
 			    	<input type="submit" class="btn btn-{{ primary_color }} btn-lg btn-block" value="Add Income">
@@ -47,7 +46,7 @@
 		                        {% endif %}
 		                    </div>
 		                    <div class="col-auto">
-		                        <i class="fas fa-credit-card fa-2x text-gray-300"></i>
+		                        <i class="fas {% if title == 'Incomes' %} fa-wallet {% elif title == 'Spendings' %} fa-credit-card {% endif %} fa-2x text-gray-300"></i>
 		                    </div>
 		                </div>
 		            </div>
@@ -67,7 +66,7 @@
 		                        {% endif %}
 		                    </div>
 		                    <div class="col-auto">
-		                        <i class="fas fa-credit-card fa-2x text-gray-300"></i>
+		                        <i class="fas {% if title == 'Incomes' %} fa-wallet {% elif title == 'Spendings' %} fa-credit-card {% endif %} fa-2x text-gray-300"></i>
 		                    </div>
 		                </div>
 		            </div>

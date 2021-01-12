@@ -383,9 +383,9 @@
             var myLineChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: spendings_state.months,
+                    labels: incomes_state.months,
                     datasets: [{
-                        label: "Spendings",
+                        label: "Incomes",
                         lineTension: 0.3,
                         backgroundColor: "rgba(78, 115, 223, 0.05)",
                         borderColor: "rgba(78, 115, 223, 1)",
@@ -397,7 +397,7 @@
                         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
                         pointHitRadius: 10,
                         pointBorderWidth: 2,
-                        data: spendings_state.values,
+                        data: incomes_state.values,
                     }],
                 },
                 options: {

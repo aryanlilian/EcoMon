@@ -3,7 +3,8 @@ from datetime import datetime
 from . import constants
 from django.views import View
 from django.shortcuts import render
-from django.views.generic import CreateView  #, DeleteView
+from django.views.generic import CreateView  # , DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import IncomeCreateForm, SpendingCreateForm
 from .models import (
     Income,
@@ -20,7 +21,7 @@ from .utils_functions import (
 )
 
 
-class DashboardListView(View):
+class DashboardListView(LoginRequiredMixin, View):
 
     def get(self, request):
         number_of_days = days_of_month(
@@ -33,8 +34,8 @@ class DashboardListView(View):
             'title': 'Dashboard',
             'spendings': spendings,
             'incomes': incomes,
-            'currency' : Profile.objects.get(user=self.request.user).currency,
-            'max_income' : max_amount(incomes),
+            'currency': Profile.objects.get(user=self.request.user).currency,
+            'max_income': max_amount(incomes),
             'max_spending': max_amount(spendings),
             'total_incomes': round(assembly(incomes), 2),
             'total_spendings': round(assembly(spendings), 2),
@@ -48,7 +49,7 @@ class DashboardListView(View):
         return render(request, 'users/dashboard.html', context)
 
 
-class IncomeCreateListView(CreateView):
+class IncomeCreateListView(LoginRequiredMixin, CreateView):
     template_name = 'users/incomes_&_spendings.html'
     form_class = IncomeCreateForm
 
@@ -72,7 +73,8 @@ class IncomeCreateListView(CreateView):
         context['primary_color'] = 'primary'
         context['objects'] = incomes
         context['total_sum'] = total_incomes
-        context['currency'] = Profile.objects.get(user=self.request.user).currency
+        context['currency'] = Profile.objects.get(
+            user=self.request.user).currency
         context['total_sum_last_month'] = total_incomes_last_month
         context['date'] = datetime.now()
         return context
@@ -82,7 +84,7 @@ class IncomeCreateListView(CreateView):
         return super().form_valid(form)
 
 
-class SpendingCreateListView(CreateView):
+class SpendingCreateListView(LoginRequiredMixin, CreateView):
     template_name = 'users/incomes_&_spendings.html'
     form_class = SpendingCreateForm
 
@@ -107,7 +109,8 @@ class SpendingCreateListView(CreateView):
         context['primary_color'] = 'danger'
         context['objects'] = spendings
         context['total_sum'] = total_spendings
-        context['currency'] = Profile.objects.get(user=self.request.user).currency
+        context['currency'] = Profile.objects.get(
+            user=self.request.user).currency
         context['total_sum_last_month'] = total_spendings_last_month
         context['date'] = datetime.now()
         return context

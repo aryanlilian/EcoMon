@@ -7,24 +7,20 @@ def assembly(obj):
     return sum(i.amount for i in obj)
 
 
-def percentages_of_incomes(incomes, total_sum):
-    return round((total_sum / incomes) * 100, 2) if incomes > 0 else 0
+def percentages_of_incomes(incomes, obj_sum):
+    return round((obj_sum / incomes) * 100, 2) if incomes > 0 else 0
 
 
 def days_of_month(year, month):
     return monthrange(year, month)[1]
 
 
-def daily_avg(total_sum, days):
-    return round(total_sum / days, 2)
+def daily_avg(obj_sum, days):
+    return round(obj_sum / days, 2)
 
 
-def max_value(objects):
-    max_amount = 0
-    for i in objects:
-        if i.amount > max_amount:
-            max_amount = i.amount
-    return max_amount
+def max_amount(objs):
+    return max(i.amount for i in objs)
 
 
 def recurrent_check(user, objs, obj):

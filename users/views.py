@@ -9,13 +9,13 @@ from .forms import (
     IncomeCreateForm,
     SpendingCreateForm,
 )
-from .utils import (
+from .utils_functions import (
     assembly,
-    recurrent_check,
-    days_of_month,
-    max_value,
     percentages_of_incomes,
+    days_of_month,
     daily_avg,
+    max_amount,
+    recurrent_check,
 )
 
 
@@ -29,8 +29,8 @@ class DashboardListView(View):
             user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
         spendings = Spending.objects.filter(
             user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
-        max_income = max_value(incomes)
-        max_spending = max_value(spendings)
+        max_income = max_amount(incomes)
+        max_spending = max_amount(spendings)
         total_incomes = round(assembly(incomes), 2)
         total_spendings = round(assembly(spendings), 2)
         total_savings = round(total_incomes - total_spendings, 2)

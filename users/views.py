@@ -5,7 +5,7 @@ from django.shortcuts import render
 from . import constants
 # from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .utils_classes import ObjectCreatListView
+from .utils_classes import ObjectCreateListViewMixin
 from .forms import IncomeCreateForm, SpendingCreateForm
 from .models import (
     Income,
@@ -44,7 +44,7 @@ class DashboardView(LoginRequiredMixin, View):
         return render(request, 'users/dashboard.html', context)
 
 
-class IncomesCreateListView(LoginRequiredMixin, ObjectCreatListView):
+class IncomesCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     template_name = 'users/incomes_&_spendings.html'
     form_class = IncomeCreateForm
     model_name = 'Incomes'
@@ -52,7 +52,7 @@ class IncomesCreateListView(LoginRequiredMixin, ObjectCreatListView):
     constant = constants.INCOME_OBJECT
 
 
-class SpendingsCreateListView(LoginRequiredMixin, ObjectCreatListView):
+class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     form_class = SpendingCreateForm
     model_name = 'Spendings'
     color = 'danger'

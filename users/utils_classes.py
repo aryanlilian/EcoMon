@@ -12,7 +12,7 @@ from .utils_functions import (
 )
 
 
-class ObjectCreatListView(CreateView):
+class ObjectCreateListViewMixin(CreateView):
     template_name = 'users/incomes_&_spendings.html'
     form_class = None
     model_name = None

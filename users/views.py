@@ -21,7 +21,7 @@ from .utils_functions import (
 )
 
 
-class DashboardListView(LoginRequiredMixin, View):
+class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
         number_of_days = days_of_month(
@@ -130,3 +130,43 @@ class SpendingsCreateListView(LoginRequiredMixin, CreateView):
 #         context = super().get_context_data(**kwargs)
 #         context['object_name'] = 'Income'
 #         return context
+
+
+class ArchiveView(View):
+    template_name = 'users/archive.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        incomes = Income.objects.filter(user=request.user)
+        spendings = Spending.objects.filter(user=request.user)
+        context['incomes'] = incomes
+        context['spendings'] = spendings
+        context['total_incomes'] = round(assembly(incomes), 2)
+        context['total_spendings'] = round(assembly(spendings), 2)
+        context['total_savings'] = round(
+            assembly(incomes) - assembly(spendings), 2)
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        year = datetime.strptime(request.POST.get('year'), '%Y')
+        month = datetime.strptime(request.POST.get('month'), '%m')
+        incomes = Income.objects.filter(
+            user=request.user, created_date__year=year.year, created_date__month=month.month)
+        spendings = Spending.objects.filter(
+            user=request.user, created_date__year=year.year, created_date__month=month.month)
+        context['incomes'] = incomes
+        context['spendings'] = spendings
+        context['total_incomes'] = round(assembly(incomes), 2)
+        context['total_spendings'] = round(assembly(spendings), 2)
+        context['total_savings'] = round(
+            assembly(incomes) - assembly(spendings), 2)
+        context['year'] = year
+        context['month'] = month
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'currency': Profile.objects.get(user=self.request.user).currency
+        }
+        return context

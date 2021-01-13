@@ -9,7 +9,16 @@
 			  </div>
 			  <select name="year" class="custom-select text-gray-800" id="inputGroupSelect01">
 			    <option value="2020">2020</option>
-			    <option value="2020">2020</option>
+			    <option value="2021">2021</option>
+			    <option value="2022">2022</option>
+			    <option value="2023">2023</option>
+			    <option value="2024">2024</option>
+			    <option value="2025">2025</option>
+			    <option value="2026">2026</option>
+			    <option value="2027">2027</option>
+			    <option value="2028">2028</option>
+			    <option value="2029">2029</option>
+			    <option value="2030">2030</option>
 			  </select>
 			</div>
 			<div class="input-group mb-3">
@@ -110,7 +119,7 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="IncomesdataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="incomesArchiveDataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Name</th>
@@ -141,7 +150,7 @@
 	                    		{% else %}
                     				<td>No</td>
 	                    		{% endif %}
-                    			<td>{{ income.date_created|date:"F-m-Y" }}</td>
+                    			<td>{{ income.created_date|date:"F-m-Y" }}</td>
 	                    	</tr>
                     	</div>
                     {% endfor %}
@@ -154,14 +163,14 @@
           <div class="card shadow mb-4">
             <div class="card-header py-3">
             	{% if year and month %}
-            		<h6 class="m-0 font-weight-bold text-primary">Spendings - {{ year.year }}/{{ month.month }}</h6>
+            		<h6 class="m-0 font-weight-bold text-danger">Spendings - {{ year.year }}/{{ month.month }}</h6>
             	{% else %}
-            		<h6 class="m-0 font-weight-bold text-primary">Spendings</h6>
+            		<h6 class="m-0 font-weight-bold text-danger">Spendings</h6>
             	{% endif %}
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="SpendingsdataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="spendingsArchiveDataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Name</th>
@@ -192,7 +201,7 @@
 	                    		{% else %}
                     				<td>No</td>
 	                    		{% endif %}
-                    			<td>{{ spending.date_created|date:"F-d-Y" }}</td>
+                    			<td>{{ spending.created_date|date:"F-d-Y" }}</td>
 	                    	</tr>
                     	</div>
                     {% endfor %}

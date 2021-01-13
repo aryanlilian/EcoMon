@@ -20,7 +20,7 @@ class IndexFormView(CreateView):
                 email=request.POST['email'])
             messages.success(request,
                              'Your email was subscribed in our system, you\'ll hear from us as soon as possible !')
-        return super().get(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

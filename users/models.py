@@ -8,12 +8,15 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
+    email = models.EmailField(_('Email'), null=False, blank=False, unique=True)
+    first_name = models.CharField(_('First Name'), max_length=100, null=False, blank=False)
+    last_name = models.CharField(_('Last Name'), max_length=100, null=False, blank=False)
     birth_date = models.DateField(
         _('Birth Date'), auto_now_add=False, null=True, blank=True)
     phone_number = PhoneNumberField(
         _('Phone Number'), null=True, blank=True, unique=True)
     email_verified = models.BooleanField(_('Email Verified'), default=False)
-    do_not_marketing_email = models.BooleanField(
+    marketing_email = models.BooleanField(
         _('Do not marketing email'), default=False)
     accept_terms_and_conditions = models.BooleanField(
         _('Accept terms and contidions'), default=False)

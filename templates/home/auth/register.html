@@ -15,18 +15,30 @@
                 {% csrf_token %}
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    {% render_field form.email class="form-control form-control-user" id="exampleFirstName" placeholder="Email"%}
+                    {% render_field form.email class="form-control form-control-user" id="exampleFirstName" placeholder="Email" %}
+                    {% for error in form.email.errors %}
+                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                    {% endfor %}
                   </div>
                   <div class="col-sm-6">
                     {% render_field form.username class="form-control form-control-user" id="exampleLastName" placeholder="Username"%}
+                    {% for error in form.username.errors %}
+                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                    {% endfor %}
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     {% render_field form.first_name class="form-control form-control-user" id="exampleFirstName" placeholder="First Name"%}
+                    {% for error in form.first_name.errors %}
+                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                    {% endfor %}
                   </div>
                   <div class="col-sm-6">
                     {% render_field form.last_name class="form-control form-control-user" id="exampleLastName" placeholder="Last Name"%}
+                    {% for error in form.last_name.errors %}
+                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                    {% endfor %}
                   </div>
                 </div>
                 <!-- <div class="form-group row">
@@ -40,19 +52,38 @@
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     {% render_field form.password1 class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" %}
+                    {% for error in form.password1.errors %}
+                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                    {% endfor %}
                   </div>
                   <div class="col-sm-6">
                     {% render_field form.password2 class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password" %}
+                    {% for error in form.password2.errors %}
+                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                    {% endfor %}
                   </div>
                 </div>
-               <!--  <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    {% render_field form.do_not_marketing_email class="form-control form-control-user" %}
-                  </div>
-                  <div class="col-sm-6">
-                    {% render_field form.accept_terms_and_conditions class="form-control form-control-user" %}
-                  </div>
-                </div> -->
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <div class="custom-control custom-checkbox">
+                            {% render_field form.marketing_email class="custom-control-input" id="marketingEmail" checked="True" %}
+                            <label class="custom-control-label ml-2 mt-1" for="marketingEmail">Send me marketing emails</label>
+                            {% for error in form.marketing_email.errors %}
+                                <small class="text-xs font-weight text-danger">{{ error }}</small>
+                            {% endfor %}
+                         </div>
+                         <div class="custom-control custom-checkbox">
+                            {% render_field form.accept_terms_and_conditions class="custom-control-input" id="acceptTermsAndConditions" %}
+                            <label class="custom-control-label ml-2 mt-1" for="acceptTermsAndConditions">Accept Terms & Conditions</label>
+                            {% for error in form.accept_terms_and_conditions.errors %}
+                                <small class="text-xs font-weight text-danger">{{ error }}</small>
+                            {% endfor %}
+                         </div>
+                     </div>
+                     <!-- <div class="col-sm-6">
+                         {% render_field form.birth_date class="form-control" %}
+                     </div> -->
+                </div>
                 <input type="submit" name="Register" class="btn btn-primary btn-user btn-block" value="Register Account">
                 <hr>
                 <a href="index.html" class="btn btn-google btn-user btn-block">

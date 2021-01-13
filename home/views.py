@@ -28,4 +28,4 @@ class ContactTemplateView(TemplateView):
 class UserResgistrationCreateView(CreateView):
     template_name = 'home/auth/register.html'
     form_class = UserRegistrationForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('login')

@@ -56,7 +56,7 @@ class Income(models.Model):
         return f'{self.name} - {self.user.username}'
 
     def get_absolute_url(self):
-        return reverse('income')
+        return reverse('incomes')
 
 class Spending(models.Model):
 
@@ -86,7 +86,7 @@ class Spending(models.Model):
         return f'{self.name} - {self.user.username}'
 
     def get_absolute_url(self):
-        return reverse('spending')
+        return reverse('spendings')
 
 class Profile(models.Model):
 

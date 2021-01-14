@@ -35,6 +35,12 @@ class IndexFormView(CreateView):
 class AboutTemplateView(TemplateView):
     template_name = 'home/about.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['banner_page_title'] = 'About Us'
+        context['page_location'] = 'home / about'
+        return context
+
 
 class ContactView(View):
     template_name = 'home/contact.html'
@@ -66,10 +72,11 @@ class ContactView(View):
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
-        context = {}
+        context = {
+            'banner_page_title': 'Contact',
+            'page_location': 'home / contact'
+        }
         return context
-
-
 
 
 class UserResgistrationCreateView(CreateView):

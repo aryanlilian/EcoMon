@@ -10,21 +10,25 @@
                     {% for post in posts %}
                       <article class="blog_item">
                         <div class="blog_item_img">
-                          <img class="card-img rounded-0" src="" alt="">
-                          <a href="#" class="blog_item_date">
+                          <img class="card-img rounded-0" src="{% static 'img/blog/m-blog-1.jpg' %}" alt="Post Image">
+                          <a href="{% url 'post' post.slug %}" class="blog_item_date">
                             <h3>{{ post.published_date|date:"d" }}</h3>
                             <p>{{ post.published_date|date:"M" }}</p>
                           </a>
                         </div>
                         
                         <div class="blog_details">
-                            <a class="d-inline-block" href="single-blog.html">
+                            <a class="d-inline-block" href="{% url 'post' post.slug %}">
                                 <h2>{{ post.title }}</h2>
                             </a>
                             <p>{{ post.content|truncatechars:200 }}</p>
                             <ul class="blog-info-link">
-                              <li><a href="#"><i class="ti-user"></i></a></li>
-                              <li><a href="#"><i class="ti-comments"></i>Comments</a></li>
+                              <li><i class="ti-user"></i></li>
+                              {% if post.comments_count %}
+                              <li><i class="ti-comments"></i>{{ post.comments_count }} - Comments</li>
+                              {% else %}
+                                <li><i class="ti-comments"></i>0 Comments</li>
+                              {% endif %}
                             </ul>
                         </div>
                       </article>

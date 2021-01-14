@@ -3,11 +3,13 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import UserRegistrationForm
 from .models import User, Income, Spending, Profile
 
+
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User
     add_form = UserRegistrationForm
-    list_display = ['__str__', 'is_superuser', 'is_staff', 'is_active', 'date_joined']
+    list_display = ['__str__', 'is_superuser',
+                    'is_staff', 'is_active', 'date_joined']
 
     fieldsets = (
         *UserAdmin.fieldsets,
@@ -23,7 +25,7 @@ class CustomUserAdmin(UserAdmin):
             'Email Status',
             {
                 'fields': (
-                    'do_not_marketing_email',
+                    'marketing_email',
                     'email_verified'
                 )
             }
@@ -46,13 +48,16 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
+
 @admin.register(Income)
 class IncomeAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'created_date', 'updated_date',)
 
+
 @admin.register(Spending)
 class SpendingAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'created_date', 'updated_date',)
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):

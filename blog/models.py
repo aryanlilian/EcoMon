@@ -34,12 +34,13 @@ class Post(models.Model):
 
     @property
     def comments_count(self):
-        return self.comment_set.count()
+        return self.comments.count()
 
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField(_('Content'))
     posted_date = models.DateTimeField(
         _('Posted Date/Time'), auto_now_add=True)

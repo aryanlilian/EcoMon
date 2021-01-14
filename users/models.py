@@ -9,8 +9,10 @@ from django.utils import timezone
 
 class User(AbstractUser):
     email = models.EmailField(_('Email'), null=False, blank=False, unique=True)
-    first_name = models.CharField(_('First Name'), max_length=100, null=False, blank=False)
-    last_name = models.CharField(_('Last Name'), max_length=100, null=False, blank=False)
+    first_name = models.CharField(
+        _('First Name'), max_length=100, null=False, blank=False)
+    last_name = models.CharField(
+        _('Last Name'), max_length=100, null=False, blank=False)
     birth_date = models.DateField(
         _('Birth Date'), auto_now_add=False, null=True, blank=True)
     phone_number = PhoneNumberField(
@@ -24,6 +26,59 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.username} - {self.first_name} {self.last_name}'
 
+
+class Profile(models.Model):
+
+    class Currency(models.TextChoices):
+        AED = 'AED', _('AED')
+        AUD = 'AUD', _('AUD')
+        BRL = 'BRL', _('BRL')
+        CAD = 'CAD', _('CAD')
+        CHF = 'CHF', _('CHF')
+        CLP = 'CLP', _('CLP')
+        CNY = 'CNY', _('CNY')
+        COP = 'COP', _('COP')
+        CZK = 'CZK', _('CZK')
+        DKK = 'DKK', _('DKK')
+        EUR = 'EUR', _('EUR')
+        GBP = 'GBP', _('GBP')
+        HKD = 'HKD', _('HKD')
+        HUF = 'HUF', _('HUF')
+        IDR = 'IDR', _('IDR')
+        ILS = 'ILS', _('ILS')
+        INR = 'INR', _('INR')
+        JPY = 'JPY', _('JPY')
+        KRW = 'KRW', _('KRW')
+        MDL = 'MDL', _('MDL')
+        MXN = 'MXN', _('MXN')
+        MYR = 'MYR', _('MYR')
+        NOK = 'NOK', _('NOK')
+        NZD = 'NZD', _('NZD')
+        PHP = 'PHP', _('PHP')
+        PLN = 'PLN', _('PLN')
+        RON = 'RON', _('RON')
+        RUB = 'RUB', _('RUB')
+        SAR = 'SAR', _('SAR')
+        SEK = 'SEK', _('SEK')
+        SGD = 'SGD', _('SGD')
+        THB = 'THB', _('THB')
+        TRY = 'TRY', _('TRY')
+        TWD = 'TWD', _('TWD')
+        USD = 'USD', _('USD')
+        ZAR = 'ZAR', _('ZAR')
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(
+        _('Avatar'), default='default.jpg', upload_to='profile_pics')
+    description = models.TextField(_('Description'), null=False, blank=True)
+    currency = models.CharField(_('Currency'),
+                                max_length=3, choices=Currency.choices, default=Currency.USD)
+    created_date = models.DateTimeField(
+        _('Created Date/Time'), auto_now_add=True)
+    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
+
+    def __str__(self):
+        return f'{self.user.username}\'s Profile'
 
 class Income(models.Model):
 
@@ -87,55 +142,3 @@ class Spending(models.Model):
 
     def get_absolute_url(self):
         return reverse('spendings')
-
-class Profile(models.Model):
-
-    class Currency(models.TextChoices):
-        AED = 'AED', _('AED')
-        AUD = 'AUD', _('AUD')
-        BRL = 'BRL', _('BRL')
-        CAD = 'CAD', _('CAD')
-        CHF = 'CHF', _('CHF')
-        CLP = 'CLP', _('CLP')
-        CNY = 'CNY', _('CNY')
-        COP = 'COP', _('COP')
-        CZK = 'CZK', _('CZK')
-        DKK = 'DKK', _('DKK')
-        EUR = 'EUR', _('EUR')
-        GBP = 'GBP', _('GBP')
-        HKD = 'HKD', _('HKD')
-        HUF = 'HUF', _('HUF')
-        IDR = 'IDR', _('IDR')
-        ILS = 'ILS', _('ILS')
-        INR = 'INR', _('INR')
-        JPY = 'JPY', _('JPY')
-        KRW = 'KRW', _('KRW')
-        MDL = 'MDL', _('MDL')
-        MXN = 'MXN', _('MXN')
-        MYR = 'MYR', _('MYR')
-        NOK = 'NOK', _('NOK')
-        NZD = 'NZD', _('NZD')
-        PHP = 'PHP', _('PHP')
-        PLN = 'PLN', _('PLN')
-        RON = 'RON', _('RON')
-        RUB = 'RUB', _('RUB')
-        SAR = 'SAR', _('SAR')
-        SEK = 'SEK', _('SEK')
-        SGD = 'SGD', _('SGD')
-        THB = 'THB', _('THB')
-        TRY = 'TRY', _('TRY')
-        TWD = 'TWD', _('TWD')
-        USD = 'USD', _('USD')
-        ZAR = 'ZAR', _('ZAR')
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(
-        _('Avatar'), default='default.jpg', upload_to='profile_pics')
-    currency = models.CharField(_('Currency'),
-                                max_length=3, choices=Currency.choices, default=Currency.USD)
-    created_date = models.DateTimeField(
-        _('Created Date/Time'), auto_now_add=True)
-    updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
-
-    def __str__(self):
-        return f'{self.user.username}\'s Profile'

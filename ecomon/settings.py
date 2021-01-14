@@ -139,3 +139,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = 'dashboard'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'ecomon.services@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'qaqsqdrfrgrh10bl'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

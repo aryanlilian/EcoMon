@@ -19,8 +19,7 @@ class Post(models.Model):
     category = models.CharField(_('Category'), max_length=9, choices=PostCategory.choices, default=PostCategory.BUSSINESS)
     slug = models.SlugField(_('Slug'), max_length=200, blank=True, null=False, unique=True)
     tags = TaggableManager(_('Tags'))
-    published_date = models.DateTimeField(
-        _('Published Date/Time'), auto_now_add=True)
+    published_date = models.DateTimeField(_('Published Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
@@ -41,8 +40,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='replies')
     content = models.TextField(_('Content'))
-    posted_date = models.DateTimeField(
-        _('Posted Date/Time'), auto_now_add=True)
+    posted_date = models.DateTimeField(_('Posted Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):

@@ -14,15 +14,13 @@ def incomes_chart_area_data(request):
         while checks:
             date = datetime(year, month, 1)
             if month == 12:
-                incomes = Income.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                incomes = Income.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 incomes_data.append(
                     {date.strftime('%b'): assembly(incomes)})
                 month = 1
                 year += 1
             else:
-                incomes = Income.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                incomes = Income.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 incomes_data.append(
                     {date.strftime('%b'): assembly(incomes)})
                 month += 1
@@ -33,15 +31,13 @@ def incomes_chart_area_data(request):
         while checks:
             date = datetime(year, month, 1)
             if month == 12:
-                incomes = Income.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                incomes = Income.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 incomes_data.append(
                     {date.strftime('%b'): assembly(incomes)})
                 month = 1
                 year += 1
             else:
-                incomes = Income.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                incomes = Income.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 incomes_data.append(
                     {date.strftime('%b'): assembly(incomes)})
                 month += 1
@@ -59,15 +55,13 @@ def spendings_chart_area_data(request):
         while checks:
             date = datetime(year, month, 1)
             if month == 12:
-                spendings = Spending.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                spendings = Spending.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 spendings_data.append(
                     {date.strftime('%b'): assembly(spendings)})
                 month = 1
                 year += 1
             else:
-                spendings = Spending.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                spendings = Spending.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 spendings_data.append(
                     {date.strftime('%b'): assembly(spendings)})
                 month += 1
@@ -78,15 +72,13 @@ def spendings_chart_area_data(request):
         while checks:
             date = datetime(year, month, 1)
             if month == 12:
-                spendings = Spending.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                spendings = Spending.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 spendings_data.append(
                     {date.strftime('%b'): assembly(spendings)})
                 month = 1
                 year += 1
             else:
-                spendings = Spending.objects.filter(
-                    user=request.user, created_date__year=year, created_date__month=month)
+                spendings = Spending.objects.filter(user=request.user, created_date__year=year, created_date__month=month)
                 spendings_data.append(
                     {date.strftime('%b'): assembly(spendings)})
                 month += 1
@@ -100,8 +92,7 @@ def incomes_chart_pie_data(request):
     incomes_data, categories = [], ['Salary', 'Awards', 'Grants', 'Sale', 'Dividents',
                                     'Rental', 'Refunds', 'Coupons', 'Lottery', 'Capital', 'Investments', 'Gift', 'Others']
     for category in categories:
-        category_incomes = Income.objects.filter(user=request.user, created_date__year=datetime.now(
-        ).year, created_date__month=datetime.now().month, category=category)
+        category_incomes = Income.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month, category=category)
         incomes_data.append(
             {category: round((round(assembly(category_incomes)) / round(assembly(incomes))) * 100, 2)})
     return JsonResponse(incomes_data, safe=False)
@@ -113,8 +104,7 @@ def spendings_chart_pie_data(request):
     spendings_data, categories = [], ['Utilities', 'Rent', 'Invoices',
                                       'Shopping', 'Food', 'Education', 'Fun', 'Investment', 'Others']
     for category in categories:
-        category_spendings = Spending.objects.filter(user=request.user, created_date__year=datetime.now(
-        ).year, created_date__month=datetime.now().month, category=category)
+        category_spendings = Spending.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month, category=category)
         spendings_data.append(
             {category: round((round(assembly(category_spendings)) / round(assembly(spendings))) * 100, 2)})
     return JsonResponse(spendings_data, safe=False)

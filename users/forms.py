@@ -29,10 +29,8 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class IncomeCreateForm(forms.ModelForm):
-    name = forms.CharField(max_length=50, label='Name',
-                           help_text='Enter letters, numbers and special characters')
-    amount = forms.DecimalField(
-        max_digits=10, decimal_places=3, label='Amount', help_text='Enter a number with maxim 10 digits and 3 decimals')
+    name = forms.CharField(max_length=50, label='Name', help_text='Enter letters, numbers or special characters')
+    amount = forms.DecimalField(max_digits=10, decimal_places=3, label='Amount', help_text='Enter a number with maxim 10 digits and 3 decimals')
     recurrent = forms.BooleanField(required=False, label='Recurrent?')
 
     class Meta:
@@ -44,8 +42,7 @@ class IncomeCreateForm(forms.ModelForm):
 
 
 class SpendingCreateForm(forms.ModelForm):
-    name = forms.CharField(max_length=50, label='Name',
-                           help_text='Enter letters, numbers and special characters')
+    name = forms.CharField(max_length=50, label='Name', help_text='Enter letters, numbers or special characters')
     amount = forms.DecimalField(
         max_digits=10, decimal_places=3, label='Amount', help_text='Enter a number with maxim 10 digits and 3 decimals')
     recurrent = forms.BooleanField(required=False, label='Recurrent?')

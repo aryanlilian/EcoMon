@@ -5,7 +5,7 @@ from django.shortcuts import render
 from . import constants
 # from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .utils_classes import ObjectCreateListViewMixin
+from .mixins import ObjectCreateListViewMixin
 from .forms import IncomeCreateForm, SpendingCreateForm
 from .models import (
     Income,
@@ -24,10 +24,8 @@ from .utils_functions import (
 class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
-        incomes = Income.objects.filter(
-            user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
-        spendings = Spending.objects.filter(
-            user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        incomes = Income.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        spendings = Spending.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
         context = {
             'title': 'Dashboard',
             'spendings': spendings,
@@ -45,7 +43,6 @@ class DashboardView(LoginRequiredMixin, View):
 
 
 class IncomesCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
-    template_name = 'users/incomes_&_spendings.html'
     form_class = IncomeCreateForm
     model_name = 'Incomes'
     color = 'primary'
@@ -70,7 +67,7 @@ class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
 #         return context
 
 
-class ArchiveView(View):
+class ArchiveView(LoginRequiredMixin, View):
     template_name = 'users/archive.html'
 
     def get(self, request, *args, **kwargs):
@@ -81,24 +78,20 @@ class ArchiveView(View):
         context['spendings'] = spendings
         context['total_incomes'] = round(assembly(incomes), 2)
         context['total_spendings'] = round(assembly(spendings), 2)
-        context['total_savings'] = round(
-            assembly(incomes) - assembly(spendings), 2)
+        context['total_savings'] = round(assembly(incomes) - assembly(spendings), 2)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         year = datetime.strptime(request.POST.get('year'), '%Y')
         month = datetime.strptime(request.POST.get('month'), '%m')
-        incomes = Income.objects.filter(
-            user=request.user, created_date__year=year.year, created_date__month=month.month)
-        spendings = Spending.objects.filter(
-            user=request.user, created_date__year=year.year, created_date__month=month.month)
+        incomes = Income.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
+        spendings = Spending.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
         context['incomes'] = incomes
         context['spendings'] = spendings
         context['total_incomes'] = round(assembly(incomes), 2)
         context['total_spendings'] = round(assembly(spendings), 2)
-        context['total_savings'] = round(
-            assembly(incomes) - assembly(spendings), 2)
+        context['total_savings'] = round(assembly(incomes) - assembly(spendings), 2)
         context['year'] = year
         context['month'] = month
         return render(request, self.template_name, context)

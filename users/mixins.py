@@ -21,16 +21,12 @@ class ObjectCreateListViewMixin(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        obj = self.constant.objects.filter(user=self.request.user, created_date__year=datetime.now(
-        ).year, created_date__month=datetime.now().month)
-        recurrent_obj = self.constant.objects.filter(user=self.request.user, recurrent=True,
-                                                     created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        obj = self.constant.objects.filter(user=self.request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        recurrent_obj = self.constant.objects.filter(user=self.request.user, recurrent=True, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
         if datetime.now().month == 1:
-            obj_last_month = self.constant.objects.filter(user=self.request.user, created_date__year=datetime.now(
-            ).year - 1, created_date__month=datetime.now().month + 11)
+            obj_last_month = self.constant.objects.filter(user=self.request.user, created_date__year=datetime.now().year - 1, created_date__month=datetime.now().month + 11)
         else:
-            obj_last_month = self.constant.objects.filter(user=self.request.user, created_date__year=datetime.now(
-            ).year, created_date__month=datetime.now().month - 1)
+            obj_last_month = self.constant.objects.filter(user=self.request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month - 1)
         total_obj = round(assembly(obj), 2)
         total_obj_last_month = round(assembly(obj_last_month), 2)
         recurrent_check(self.request.user, recurrent_obj, self.constant)
@@ -38,8 +34,7 @@ class ObjectCreateListViewMixin(CreateView):
         context['primary_color'] = self.color
         context['objects'] = obj
         context['total_sum'] = total_obj
-        context['currency'] = Profile.objects.get(
-            user=self.request.user).currency
+        context['currency'] = Profile.objects.get(user=self.request.user).currency
         context['total_sum_last_month'] = total_obj_last_month
         context['date'] = datetime.now()
         return context

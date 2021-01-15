@@ -9,19 +9,13 @@ from django.utils import timezone
 
 class User(AbstractUser):
     email = models.EmailField(_('Email'), null=False, blank=False, unique=True)
-    first_name = models.CharField(
-        _('First Name'), max_length=100, null=False, blank=False)
-    last_name = models.CharField(
-        _('Last Name'), max_length=100, null=False, blank=False)
-    birth_date = models.DateField(
-        _('Birth Date'), auto_now_add=False, null=True, blank=True)
-    phone_number = PhoneNumberField(
-        _('Phone Number'), null=True, blank=True, unique=True)
+    first_name = models.CharField(_('First Name'), max_length=100, null=False, blank=False)
+    last_name = models.CharField(_('Last Name'), max_length=100, null=False, blank=False)
+    birth_date = models.DateField(_('Birth Date'), auto_now_add=False, null=True, blank=True)
+    phone_number = PhoneNumberField(_('Phone Number'), null=True, blank=True, unique=True)
     email_verified = models.BooleanField(_('Email Verified'), default=False)
-    marketing_email = models.BooleanField(
-        _('Do not marketing email'), default=False)
-    accept_terms_and_conditions = models.BooleanField(
-        _('Accept terms and contidions'), default=False)
+    marketing_email = models.BooleanField(_('Do not marketing email'), default=False)
+    accept_terms_and_conditions = models.BooleanField(_('Accept terms and contidions'), default=False)
 
     def __str__(self):
         return f'{self.username} - {self.first_name} {self.last_name}'
@@ -68,13 +62,10 @@ class Profile(models.Model):
         ZAR = 'ZAR', _('ZAR')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(
-        _('Avatar'), default='default.jpg', upload_to='profile_pics')
+    image = models.ImageField(_('Avatar'), default='default.jpg', upload_to='profile_pics')
     description = models.TextField(_('Description'), null=False, blank=True)
-    currency = models.CharField(_('Currency'),
-                                max_length=3, choices=Currency.choices, default=Currency.USD)
-    created_date = models.DateTimeField(
-        _('Created Date/Time'), auto_now_add=True)
+    currency = models.CharField(_('Currency'), max_length=3, choices=Currency.choices, default=Currency.USD)
+    created_date = models.DateTimeField(_('Created Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
@@ -100,11 +91,9 @@ class Income(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=50)
     amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
-    category = models.CharField(_('Category'), max_length=11,
-                                choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
+    category = models.CharField(_('Category'), max_length=11, choices=IncomeCategory.choices, default=IncomeCategory.SALARY)
     recurrent = models.BooleanField(_('Recurrent Income'), default=False)
-    created_date = models.DateTimeField(
-        _('Created Date/Time'), default=timezone.now)
+    created_date = models.DateTimeField(_('Created Date/Time'), default=timezone.now)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):
@@ -128,13 +117,10 @@ class Spending(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(_('Name'), max_length=50)
-    amount = models.DecimalField(
-        _('Amount'), max_digits=10, decimal_places=3)
-    category = models.CharField(_('Category'), max_length=10,
-                                choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
+    amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
+    category = models.CharField(_('Category'), max_length=10, choices=SpendingCategory.choices, default=SpendingCategory.UTILITIES)
     recurrent = models.BooleanField(_('Recurrent Spending'), default=False)
-    created_date = models.DateTimeField(
-        _('Created Date/Time'), default=timezone.now)
+    created_date = models.DateTimeField(_('Created Date/Time'), default=timezone.now)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
 
     def __str__(self):

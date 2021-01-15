@@ -3,6 +3,7 @@ from users.models import User
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
+from django.urls import reverse
 
 class Post(models.Model):
 
@@ -48,3 +49,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.author.username} - {self.post.title}'
+
+    def get_absolute_url(self):
+        return reverse('post', self.post.slug)

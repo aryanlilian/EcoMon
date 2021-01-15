@@ -85,7 +85,7 @@
 
                 <div class="blog-author">
                     <div class="media align-items-center">
-                        <img src="{{ post.author.profile.image.url }}" alt="">
+                        <img src="{{ post.author.profile.image.url }}" alt="Post author profile image">
                         <div class="media-body">
                             <a href="#">
                                 <h4>{{ post.author.username }}</h4>
@@ -102,7 +102,7 @@
                             <div class="single-comment justify-content-between d-flex">
                                 <div class="user justify-content-between d-flex">
                                     <div class="thumb">
-                                        <img src="img/blog/c1.png" alt="">
+                                        <img src="{{ comment.author.profile.image.url }}" alt="Comment author profile image">
                                     </div>
                                     <div class="desc">
                                         <p class="comment">{{ comment.content }}</p>
@@ -126,39 +126,32 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="comment-form">
-                    <h4>Leave a Comment</h4>
-                    <form class="form-contact comment_form" action="#" id="commentForm">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                        placeholder="Write Comment"></textarea>
+                {% if user.is_authenticated %}
+                    <div class="comment-form">
+                        <h4>Leave a Comment</h4>
+                        <form class="form-contact comment_form" method="POST" id="commentForm">
+                            {% csrf_token %}
+                            {% if error_message %}
+                                <small class="form-group text font-weight text-danger">{{ error_message }}</small>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100" name="commentContent" id="commentContent" cols="30" rows="9"
+                                            placeholder="Write Comment"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-                                </div>
+                            <div class="form-group">
+                                <button type="submit" class="button button-contactForm">Post Comment</button>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control" name="email" id="email" type="email"
-                                        placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input class="form-control" name="website" id="website" type="text"
-                                        placeholder="Website">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="button button-contactForm">Send Message</button>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="comment-form">
+                        <h4>You want to post a comment? <<a href="{% url 'login' %}">Login here</a> then!</h4>
+                    </div>
+                {% endif %}
             </div>
             <div class="col-lg-4">
                 <div class="blog_right_sidebar">

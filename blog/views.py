@@ -26,12 +26,11 @@ class PostDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        content = request.POST['commentContent']
+        content, replied_comment = request.POST['commentContent'], None
         if content:
-            Comment.objects.create(author=request.user, post=Post.objects.get(slug=kwargs['slug']), content=content)
-        else:
-            context['error_message'] = 'The comment can\'t be empty'
-
+            if request.POST.get('commentId'):
+                replied_comment = Comment.objects.get(id=request.POST['commentId'])
+            Comment.objects.create(author=request.user, post=Post.objects.get(slug=kwargs['slug']), reply=replied_comment, content=content)
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
@@ -39,11 +38,7 @@ class PostDetailView(DetailView):
         'banner_page_title' : Post.objects.get(slug=kwargs['slug']),
         'page_location' : 'home / post',
         'post' : Post.objects.get(slug=kwargs['slug']),
+        'comments' : Comment.objects.filter(post=Post.objects.get(slug=kwargs['slug']), reply=None),
         'author_description' : Profile.objects.get(user=Post.objects.get(slug=kwargs['slug']).author).description
         }
         return context
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        forms.instance.post = Post.objects.get(slug=kwargs['slug'])
-        return super().form_valid(form)

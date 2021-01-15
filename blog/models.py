@@ -16,10 +16,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(_('Title'), max_length=200, unique=True)
     content = models.TextField(_('Content'))
-    category = models.CharField(_('Category'), max_length=9,
-                                choices=PostCategory.choices, default=PostCategory.BUSSINESS)
-    slug = models.SlugField(_('Slug'), max_length=200,
-                            blank=True, null=False, unique=True)
+    category = models.CharField(_('Category'), max_length=9, choices=PostCategory.choices, default=PostCategory.BUSSINESS)
+    slug = models.SlugField(_('Slug'), max_length=200, blank=True, null=False, unique=True)
     tags = TaggableManager(_('Tags'))
     published_date = models.DateTimeField(
         _('Published Date/Time'), auto_now_add=True)
@@ -40,8 +38,8 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='replies')
     content = models.TextField(_('Content'))
     posted_date = models.DateTimeField(
         _('Posted Date/Time'), auto_now_add=True)

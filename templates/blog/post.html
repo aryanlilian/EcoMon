@@ -97,7 +97,7 @@
 
                 <div class="comments-area">
                     <h4>{% if post.comments_count %}{{ post.comments_count }} - Comments {% else %} 0 - Comments {% endif %}</h4>
-                    {% for comment in post.comments.all %}
+                    {% for comment in comments %}
                         <div class="comment-list">
                             <div class="single-comment justify-content-between d-flex">
                                 <div class="user justify-content-between d-flex">
@@ -116,12 +116,56 @@
                                             </div>
 
                                             <div class="reply-btn">
-                                                <a href="#" class="btn-reply text-uppercase">reply</a>
+                                                <a class="btn-reply text-uppercase" data-toggle="collapse" href="#repliesList{{ comment.id }}" role="button" aria-expanded="false" aria-controls="repliesList{{ comment.id }}">see replies</a>
+                                            </div>
+                                            <div class="reply-btn">
+                                                <a class="btn-reply text-uppercase" data-toggle="collapse" href="#replyForm{{ comment.id }}" role="button" aria-expanded="false" aria-controls="replyForm{{ comment.id }}">reply</a>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
+                            </div>
+                            {% for reply in comment.replies.all %}
+                                <div class="comment-list mt-5 ml-4 collapse" id="repliesList{{ comment.id }}">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <img src="{{ reply.author.profile.image.url }}" alt="Comment author profile image">
+                                            </div>
+                                            <div class="desc">
+                                                <p class="comment">{{ reply.content }}</p>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex align-items-center">
+                                                        <h5>
+                                                            <a href="#">{{ reply.author.username }}</a>
+                                                        </h5>
+                                                        <p class="date">{{ reply.posted_date|date:'F d, Y' }}</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="comment-form collapse" id="replyForm{{ comment.id }}">
+                                <form class="form-contact comment_form" method="POST" id="commentForm">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <input type="hidden" name="commentId" value="{{ comment.id }}">
+                                            <div class="form-group">
+                                                <textarea class="form-control w-100" name="commentContent" id="commentContent" cols="5" rows="4"
+                                                    placeholder="Write Comment"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="button button-contactForm">Reply</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}
@@ -131,9 +175,6 @@
                         <h4>Leave a Comment</h4>
                         <form class="form-contact comment_form" method="POST" id="commentForm">
                             {% csrf_token %}
-                            {% if error_message %}
-                                <small class="form-group text font-weight text-danger">{{ error_message }}</small>
-                            {% endif %}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">

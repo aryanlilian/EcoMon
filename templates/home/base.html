@@ -45,28 +45,28 @@
 			<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 				<ul class="nav navbar-nav menu_nav justify-content-end">
 					{% if request.get_full_path == '/' %}
-						<li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
-						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
+						<li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% elif request.get_full_path == '/about/' %}
-						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
-						<li class="nav-item active"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
+						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+						<li class="nav-item active"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% elif request.get_full_path == '/blog/' %}
-						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
-						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
+						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
 						<li class="nav-item active"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% elif request.get_full_path == '/contact/' %}
-						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
-						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
+						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
 						<li class="nav-item active"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% else %}
-						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li> 
-						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li> 
+						<li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
 						<li class="nav-item active"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
 						<li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
 					{% endif %}
@@ -75,7 +75,7 @@
 				<div class="nav-right text-center text-lg-right py-4 py-lg-0">
 					<a class="button button-outline button-small" href="{% url 'login' %}">Login</a>
 				</div>
-			</div> 
+			</div>
 	    </div>
 	  </nav>
 	</div>
@@ -142,7 +142,7 @@
 				</div>
 				<div class="offset-xl-1 col-xl-4 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
 					<h4>Newsletter</h4>
-	      			<p>We post very often on the blog and bring updates on the platform, if you will subscribe you will hear from us everything as soon we made the changes</p> 
+	      			<p>We post very often on the blog and bring updates on the platform, if you will subscribe you will hear from us everything as soon we made the changes</p>
 			        <div class="form-wrap">
 				        <form action="" method="POST">
 				        	{% csrf_token %}

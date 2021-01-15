@@ -40,42 +40,28 @@
 
                     <div class="navigation-area">
                         <div class="row">
-                            <div
-                                class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-                                <div class="thumb">
-                                    <a href="#">
-                                        <img class="img-fluid" src="img/blog/prev.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="arrow">
-                                    <a href="#">
-                                        <span class="ti-arrow-left text-white"></span>
-                                    </a>
-                                </div>
+                            <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                                 <div class="detials">
-                                    <p>Prev Post</p>
-                                    <a href="#">
-                                        <h4>Space The Final Frontier</h4>
-                                    </a>
+                                    {% if previous_post %}
+                                        <p>Prev Post</p>
+                                        <a href="{% url 'post' previous_post.slug %}">
+                                            <h4>{{ previous_post.title }}</h4>
+                                        </a>
+                                    {% else %}
+                                        <p>{{ previous_post_none }}</p>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div
-                                class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                            <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                                 <div class="detials">
-                                    <p>Next Post</p>
-                                    <a href="#">
-                                        <h4>Telescopes 101</h4>
-                                    </a>
-                                </div>
-                                <div class="arrow">
-                                    <a href="#">
-                                        <span class="ti-arrow-right text-white"></span>
-                                    </a>
-                                </div>
-                                <div class="thumb">
-                                    <a href="#">
-                                        <img class="img-fluid" src="img/blog/next.jpg" alt="">
-                                    </a>
+                                    {% if next_post %}
+                                        <p>Next Post</p>
+                                        <a href="{% url 'post' next_post.slug %}">
+                                            <h4>{{ next_post.title }}</h4>
+                                        </a>
+                                    {% else %}
+                                        <p>{{ next_post_none }}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

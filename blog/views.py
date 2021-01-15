@@ -34,11 +34,18 @@ class PostDetailView(DetailView):
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
-        context = {
-        'banner_page_title' : Post.objects.get(slug=kwargs['slug']),
-        'page_location' : 'home / post',
-        'post' : Post.objects.get(slug=kwargs['slug']),
-        'comments' : Comment.objects.filter(post=Post.objects.get(slug=kwargs['slug']), reply=None),
-        'author_description' : Profile.objects.get(user=Post.objects.get(slug=kwargs['slug']).author).description
-        }
+        context = {}
+        try:
+            context['previous_post'] = Post.objects.get(id=Post.objects.get(slug=kwargs['slug']).id - 1)
+        except:
+            context['previous_post_none'] = 'No previous post'
+        try:
+            context['next_post'] = Post.objects.get(id=Post.objects.get(slug=kwargs['slug']).id + 1)
+        except:
+            context['next_post_none'] = 'No next post'
+        context['banner_page_title'] = Post.objects.get(slug=kwargs['slug'])
+        context['page_location'] = 'home / post'
+        context['post'] = Post.objects.get(slug=kwargs['slug'])
+        context['comments'] = Comment.objects.filter(post=Post.objects.get(slug=kwargs['slug']), reply=None)
+        context['author_description'] = Profile.objects.get(user=Post.objects.get(slug=kwargs['slug']).author).description
         return context

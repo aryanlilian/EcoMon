@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, TemplateView
+from django.contrib.auth.views import LoginView
 from django.views import View
 from .forms import NewsletterForm
 from .models import Newsletter, Testimonial
@@ -8,9 +9,10 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from .mixins import IsAuthenticatedMixin
 
-
-class IndexFormView(CreateView):
+class IndexFormView(IsAuthenticatedMixin, CreateView):
+    permission_required = 'view'
     template_name = 'home/index.html'
     form_class = NewsletterForm
 
@@ -32,7 +34,7 @@ class IndexFormView(CreateView):
         return context
 
 
-class AboutTemplateView(TemplateView):
+class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
     template_name = 'home/about.html'
 
     def get_context_data(self, **kwargs):
@@ -80,7 +82,11 @@ class ContactView(View):
         return context
 
 
-class UserResgistrationCreateView(CreateView):
+class UserResgistrationCreateView(IsAuthenticatedMixin, CreateView):
     template_name = 'home/auth/register.html'
     form_class = UserRegistrationForm
     success_url = reverse_lazy('login')
+
+
+class UserLoginView(IsAuthenticatedMixin, LoginView):
+    template_name = 'home/auth/login.html'

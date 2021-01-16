@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Post, Comment
 from users.models import Profile
+from taggit.models import Tag
 
 
 class BlogListView(ListView):
@@ -13,9 +14,30 @@ class BlogListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        tags = Post.tags.most_common()[:8]
         context['banner_page_title'] = 'Blog'
         context['page_location'] = 'home / blog'
+        context['tags'] = tags
         return context
+
+
+class TaggedPostListView(ListView):
+    model = Post
+    template_name = 'blog/blog.html'
+    context_object_name = 'posts'
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tags = Post.tags.most_common()[:8]
+        context['banner_page_title'] = 'Blog'
+        context['page_location'] = 'home / blog'
+        context['tags'] = tags
+        return context
+
+    def get_queryset(self):
+        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        return Post.objects.filter(tags=tag)
 
 
 class PostDetailView(DetailView):

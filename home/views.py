@@ -15,12 +15,13 @@ class IndexFormView(CreateView):
     form_class = NewsletterForm
 
     def post(self, request, *args, **kwargs):
-        if Newsletter.objects.filter(email=request.POST['email']).exists():
+        email = request.POST['email']
+        if Newsletter.objects.filter(email=email).exists():
             messages.warning(
                 request, 'This email is already subscribed in our system')
         else:
             Newsletter.objects.create(
-                email=request.POST['email'])
+                email=email)
             messages.success(request,
                              'Your email was subscribed in our system, you\'ll hear from us as soon as possible !')
         return super().post(request, *args, **kwargs)
@@ -53,14 +54,15 @@ class ContactView(View):
         subject = request.POST['subject']
         message = request.POST['message']
         from_email = request.POST['email']
-        success_message, error_message = False, False
-        print("Email", from_email)
+        email_host = settings.EMAIL_HOST_USER
+        to_email = ['ecomon.services@gmail.com']
+        success_message, error_message = None, None
         try:
             send_mail(
                 subject,
                 message + '\nsender: ' + from_email,
-                settings.EMAIL_HOST_USER,
-                ['ecomon.services@gmail.com'],
+                email_host,
+                to_email,
                 fail_silently=False
             )
             success_message = 'We\'ve received your email, you\'ll hear from us very soon!'

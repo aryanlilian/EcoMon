@@ -6,7 +6,7 @@ from .views import (
     # IncomeDeleteView,
     ArchiveView,
 )
-from .chart_functions import (
+from .helpers import (
     incomes_chart_area_data,
     incomes_chart_pie_data,
     spendings_chart_area_data,

@@ -12,7 +12,7 @@ from .models import (
     Spending,
     Profile,
 )
-from .utils_functions import (
+from .utils import (
     assembly,
     percentages_of_incomes,
     daily_avg,
@@ -24,20 +24,27 @@ from .utils_functions import (
 class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
-        incomes = Income.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
-        spendings = Spending.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
+        date = datetime.now()
+        incomes = Income.objects.filter(user=request.user, created_date__year=date.year, created_date__month=date.month)
+        spendings = Spending.objects.filter(user=request.user, created_date__year=date.year, created_date__month=date.month)
+        currency = Profile.objects.get(user=self.request.user).currency
+        total_incomes, total_spendings = assembly(incomes), assembly(spendings)
+        total_savings = total_incomes - total_spendings
+        spendings_percent = percentages_of_incomes(total_incomes, total_spendings)
+        savings_percent = percentages_of_incomes(total_incomes, total_savings)
+        max_income, max_spending = max_amount(incomes), max_amount(spendings)
         context = {
             'title': 'Dashboard',
-            'spendings': spendings,
             'incomes': incomes,
-            'currency': Profile.objects.get(user=self.request.user).currency,
-            'max_income': max_amount(incomes),
-            'max_spending': max_amount(spendings),
-            'total_incomes': round(assembly(incomes), 2),
-            'total_spendings': round(assembly(spendings), 2),
-            'total_savings': round(assembly(incomes) - assembly(spendings), 2),
-            'spendings_percent': percentages_of_incomes(assembly(incomes), assembly(spendings)),
-            'savings_percent': percentages_of_incomes(assembly(incomes), round(assembly(incomes) - assembly(spendings), 2)),
+            'spendings': spendings,
+            'currency': currency,
+            'total_incomes': total_incomes,
+            'total_spendings': total_spendings,
+            'total_savings': total_savings,
+            'spendings_percent': spendings_percent ,
+            'savings_percent': savings_percent,
+            'max_income': max_income,
+            'max_spending': max_spending,
         }
         return render(request, 'users/dashboard.html', context)
 
@@ -74,11 +81,12 @@ class ArchiveView(LoginRequiredMixin, View):
         context = self.get_context_data(**kwargs)
         incomes = Income.objects.filter(user=request.user)
         spendings = Spending.objects.filter(user=request.user)
+        total_incomes, total_savings = assembly(incomes), assembly(spendings)
         context['incomes'] = incomes
         context['spendings'] = spendings
-        context['total_incomes'] = round(assembly(incomes), 2)
-        context['total_spendings'] = round(assembly(spendings), 2)
-        context['total_savings'] = round(assembly(incomes) - assembly(spendings), 2)
+        context['total_incomes'] = total_incomes
+        context['total_spendings'] = total_spendings
+        context['total_savings'] = total_incomes - total_spendings
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -87,11 +95,12 @@ class ArchiveView(LoginRequiredMixin, View):
         month = datetime.strptime(request.POST.get('month'), '%m')
         incomes = Income.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
         spendings = Spending.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
+        total_incomes, total_savings = assembly(incomes), assembly(spendings)
         context['incomes'] = incomes
         context['spendings'] = spendings
-        context['total_incomes'] = round(assembly(incomes), 2)
-        context['total_spendings'] = round(assembly(spendings), 2)
-        context['total_savings'] = round(assembly(incomes) - assembly(spendings), 2)
+        context['total_incomes'] = total_incomes
+        context['total_spendings'] = total_spendings
+        context['total_savings'] = total_incomes - total_spendings
         context['year'] = year
         context['month'] = month
         return render(request, self.template_name, context)

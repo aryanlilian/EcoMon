@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 def assembly(obj):
-    return sum(i.amount for i in obj)
+    return round(sum(i.amount for i in obj), 2)
 
 
 def percentages_of_incomes(incomes, obj_sum):

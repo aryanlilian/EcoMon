@@ -29,28 +29,30 @@ class PostDetailView(DetailView):
         context = self.get_context_data(**kwargs)
         content, replied_comment = request.POST['commentContent'], None
         if content:
-            if request.POST.get('commentId'):
+            comment_id = request.POST.get('commentId')
+            post = Post.objects.get(slug=kwargs['slug'])
+            if comment_id:
                 replied_comment = Comment.objects.get(
-                    id=request.POST['commentId'])
-            Comment.objects.create(author=request.user, post=Post.objects.get(
-                slug=kwargs['slug']), reply=replied_comment, content=content)
+                    id=comment_id)
+            Comment.objects.create(author=request.user, post=post, reply=replied_comment, content=content)
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         context = {}
+        post = Post.objects.get(slug=kwargs['slug'])
         try:
             context['previous_post'] = Post.objects.get(
-                id=Post.objects.get(slug=kwargs['slug']).id - 1)
+                id=post.id - 1)
         except:
             context['previous_post_none'] = 'No previous post'
         try:
             context['next_post'] = Post.objects.get(
-                id=Post.objects.get(slug=kwargs['slug']).id + 1)
+                id=post.id + 1)
         except:
             context['next_post_none'] = 'No next post'
-        context['banner_page_title'] = Post.objects.get(slug=kwargs['slug'])
+        context['banner_page_title'] = post
         context['page_location'] = 'home / post'
-        context['post'] = Post.objects.get(slug=kwargs['slug'])
-        context['comments'] = Comment.objects.filter(post=Post.objects.get(slug=kwargs['slug']), reply=None)
-        context['author_description'] = Profile.objects.get(user=Post.objects.get(slug=kwargs['slug']).author).description
+        context['post'] = post
+        context['comments'] = Comment.objects.filter(post=post, reply=None)
+        context['author_description'] = Profile.objects.get(user=post.author).description
         return context

@@ -1,5 +1,5 @@
 from .models import Income, Spending
-from .utils_functions import assembly
+from .utils import assembly
 from datetime import datetime
 from django.http import JsonResponse
 

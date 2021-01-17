@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     DashboardView,
+    ProfileView,
     IncomesCreateListView,
     SpendingsCreateListView,
     # IncomeDeleteView,
@@ -15,6 +16,7 @@ from .helpers import (
 
 urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('profile/', ProfileView.as_view(), name='profile'),
     path('dashboard/incomes-chart-area/', incomes_chart_area_data, name='incomes-chart-area'),
     path('dashboard/incomes-chart-pie/', incomes_chart_pie_data, name='incomes-chart-pie'),
     path('dashboard/spendings-chart-area/', spendings_chart_area_data, name='spendings-chart-area'),

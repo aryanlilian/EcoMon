@@ -1,61 +1,102 @@
 {% extends 'users/base.html' %}
+{% load widget_tweaks %}
 {% block content %}
-  <!-- Content row -->
-<div class="row">
-
-    <!-- Incomes Area Chart -->
-    <div class="col-xl-4 col-lg-7">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-xl-4 col-lg-3">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <img class="img-profile rounded-circle" src="{{ user.profile.image.url }}">
+                </div>
             </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        </div>
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Account Details</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="container">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="username">Username (how your name will appear to other users on the site)</label>
+                                    {% render_field user_update_form.username class="form-control" placeholder="username" id="username" %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="email">Email adress</label>
+                                    {% render_field user_update_form.email class="form-control" placeholder="name@example.com" id="email" %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="firstName">First name</label>
+                                    {% render_field user_update_form.first_name class="form-control" placeholder="John" id="firstName" %}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="lastName">Last name</label>
+                                    {% render_field user_update_form.last_name class="form-control" placeholder="Hanks" id="lastName" %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="phoneNumber">Phone number</label>
+                                    {% render_field user_update_form.phone_number class="form-control" placeholder="123-345-678" id="phoneNumber" %}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="birthday">Birthday</label>
+                                    {% render_field user_update_form.birth_date class="form-control" placeholder="06/01/2002" id="birthday" %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label for="validatedCustomFile">Profile picture</label>
+                                    <div class="custom-file">
+                                        {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" %}
+                                        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="currency">Currency</label>
+                                    {% render_field profile_update_form.currency id="currency" class="form-control" %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="description">Description</label>
+                                    {% render_field profile_update_form.description class="form-control" id="description" placeholder="Profile description..." %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <button type="submit" name="button" class="btn btn-md btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Incomes Area Chart -->
-    <div class="col-xl-8 col-lg-7">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Account Details</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                <form id="form-center" action="{% url 'add-income' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                          <input type="text" class="form-control" name="income_name" placeholder="username">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" class="form-control" name="income_name" placeholder="first Name">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" class="form-control" name="income_name" placeholder="last Name">
-                        </div>
-                        <div class="form-group col-md-12">
-                          <input type="text" class="form-control" name="income_name" placeholder="email">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" class="form-control" name="income_name" placeholder="organization">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" class="form-control" name="income_name" placeholder="location">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <input type="text" class="form-control" name="income_name" placeholder="phone">
-                        </div>
-                      </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-</div>
 {% endblock %}

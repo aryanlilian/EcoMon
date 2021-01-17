@@ -1,16 +1,22 @@
 from django.urls import reverse_lazy
 from datetime import datetime
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from . import constants
 # from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import ObjectCreateListViewMixin
-from .forms import IncomeCreateForm, SpendingCreateForm
 from .models import (
     Income,
     Spending,
     Profile,
+)
+from .forms import (
+    UserUpdateForm,
+    ProfileUpdateForm,
+    IncomeCreateForm,
+    SpendingCreateForm
 )
 from .utils import (
     assembly,
@@ -22,6 +28,7 @@ from .utils import (
 
 
 class DashboardView(LoginRequiredMixin, View):
+    template_name ='users/dashboard.html'
 
     def get(self, request):
         date = datetime.now()
@@ -46,7 +53,38 @@ class DashboardView(LoginRequiredMixin, View):
             'max_income': max_income,
             'max_spending': max_spending,
         }
-        return render(request, 'users/dashboard.html', context)
+        return render(request, self.template_name, context)
+
+
+class ProfileView(LoginRequiredMixin, View):
+    template_name = 'users/profile.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_update_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_update_form.is_valid() and profile_update_form.is_valid():
+            user_update_form.save()
+            profile_update_form.save()
+            messages.success(request, 'Your profile was updated successful!')
+            return redirect('profile')
+        context['user_update_form'] = user_update_form
+        context['profile_update_form'] = profile_update_form
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        user_update_form = UserUpdateForm(instance=self.request.user)
+        profile_update_form = ProfileUpdateForm(instance=self.request.user.profile)
+        context = {
+            'title' : 'Profile',
+            'user_update_form' : user_update_form,
+            'profile_update_form' : profile_update_form,
+        }
+        return context
 
 
 class IncomesCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):

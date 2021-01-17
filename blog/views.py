@@ -5,6 +5,8 @@ from .models import Post, Comment
 from users.models import Profile
 from taggit.models import Tag
 from .forms import PostCreateForm
+from users.mixins import IsSuperuserOrStaffMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class BlogListView(ListView):
@@ -77,9 +79,9 @@ class PostDetailView(DetailView):
         context['comments'] = Comment.objects.filter(post=post, reply=None)
         context['author_description'] = Profile.objects.get(user=post.author).description
         return context
-        
 
-class PostCreateView(CreateView):
+
+class PostCreateView(LoginRequiredMixin, IsSuperuserOrStaffMixin, CreateView):
     template_name = 'blog/add_post.html'
     form_class = PostCreateForm
 

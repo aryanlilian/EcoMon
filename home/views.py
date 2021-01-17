@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .mixins import IsAuthenticatedMixin
+from users.mixins import IsAuthenticatedMixin
 
 class IndexFormView(IsAuthenticatedMixin, View):
     template_name = 'home/index.html'

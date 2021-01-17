@@ -1,4 +1,6 @@
 from datetime import datetime
+from django.shortcuts import redirect
+from django.contrib.auth.mixins import AccessMixin
 from django.views.generic import CreateView
 from .models import Profile
 from .utils import (
@@ -43,3 +45,17 @@ class ObjectCreateListViewMixin(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class IsAuthenticatedMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class IsSuperuserOrStaffMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser or not request.user.is_staff:
+            return redirect('blog')
+        return super().dispatch(request, *args, **kwargs)

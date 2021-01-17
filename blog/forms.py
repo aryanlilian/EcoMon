@@ -1,9 +1,10 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Post
 
-class CommentCreateForm(forms.ModelForm):
-    content = forms.CharField(widget=forms.Textarea())
+class PostCreateForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput(), max_length=200)
+    content = forms.CharField(widget=forms.Textarea(attrs={'rows': 25, 'cols': 50}))
 
     class Meta:
-        model = Comment
-        fields = ['content']
+        model = Post
+        exclude = ['author', 'slug', 'published_date', 'updated_date']

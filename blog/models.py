@@ -34,6 +34,9 @@ class Post(models.Model):
     def comments_count(self):
         return self.comments.count()
 
+    def get_absolute_url(self):
+        return reverse('blog')
+
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)

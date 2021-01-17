@@ -144,10 +144,10 @@
 					<h4>Newsletter</h4>
 	      			<p>We post very often on the blog and bring updates on the platform, if you will subscribe you will hear from us everything as soon we made the changes</p>
 			        <div class="form-wrap">
-				        <form action="" method="POST">
+				        <form method="POST">
 				        	{% csrf_token %}
 				            <div class="input-group">
-				            	{{ form }}
+				            	<input type="email" class="form-control" name="email" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '">
 					            <div class="input-group-append">
 						            <button class="btn click-btn" type="submit">
 						            	<i class="ti-arrow-right"></i>

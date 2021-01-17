@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView
+from django.views import View
 from .models import Post, Comment
 from users.models import Profile
 from taggit.models import Tag
+from .forms import PostCreateForm
 
 
 class BlogListView(ListView):
@@ -54,8 +56,7 @@ class PostDetailView(DetailView):
             comment_id = request.POST.get('commentId')
             post = Post.objects.get(slug=kwargs['slug'])
             if comment_id:
-                replied_comment = Comment.objects.get(
-                    id=comment_id)
+                replied_comment = Comment.objects.get(id=comment_id)
             Comment.objects.create(author=request.user, post=post, reply=replied_comment, content=content)
         return render(request, self.template_name, context)
 
@@ -63,13 +64,11 @@ class PostDetailView(DetailView):
         context = {}
         post = Post.objects.get(slug=kwargs['slug'])
         try:
-            context['previous_post'] = Post.objects.get(
-                id=post.id - 1)
+            context['previous_post'] = Post.objects.get(id=post.id - 1)
         except:
             context['previous_post_none'] = 'No previous post'
         try:
-            context['next_post'] = Post.objects.get(
-                id=post.id + 1)
+            context['next_post'] = Post.objects.get(id=post.id + 1)
         except:
             context['next_post_none'] = 'No next post'
         context['banner_page_title'] = post
@@ -78,3 +77,12 @@ class PostDetailView(DetailView):
         context['comments'] = Comment.objects.filter(post=post, reply=None)
         context['author_description'] = Profile.objects.get(user=post.author).description
         return context
+        
+
+class PostCreateView(CreateView):
+    template_name = 'blog/add_post.html'
+    form_class = PostCreateForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)

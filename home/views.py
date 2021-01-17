@@ -11,27 +11,20 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .mixins import IsAuthenticatedMixin
 
-class IndexFormView(IsAuthenticatedMixin, CreateView):
-    permission_required = 'view'
+class IndexFormView(IsAuthenticatedMixin, View):
     template_name = 'home/index.html'
-    form_class = NewsletterForm
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
         email = request.POST['email']
         if Newsletter.objects.filter(email=email).exists():
-            messages.warning(
-                request, 'This email is already subscribed in our system')
+            messages.warning(request, 'This email is already subscribed in our system')
         else:
-            Newsletter.objects.create(
-                email=email)
-            messages.success(request,
-                             'Your email was subscribed in our system, you\'ll hear from us as soon as possible !')
-        return super().post(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['testimonials'] = Testimonial.objects.order_by('-created_date')[:9]
-        return context
+            Newsletter.objects.create(email=email)
+            messages.success(request, 'Your email was subscribed in our system, you\'ll hear from us as soon as possible !')
+        return render(request, self.template_name)
 
 
 class AboutTemplateView(IsAuthenticatedMixin, TemplateView):

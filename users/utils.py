@@ -19,8 +19,9 @@ def daily_avg(obj_sum, days):
     return round(obj_sum / days, 2)
 
 
-def max_amount(objs):
-    return max(i.amount for i in objs)
+def max_amount(objs=None):
+    if objs:
+        return max(i.amount for i in objs)
 
 
 def recurrent_check(user, objs, obj):

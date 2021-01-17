@@ -1,0 +1,29 @@
+{% extends 'home/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container">
+    <div class="comment-form">
+        <h4>Add a new Post</h4>
+        <form class="form-contact comment_form" method="POST" id="commentForm">
+            {% csrf_token %}
+            <div class="col-12">
+                <div class="form-group">
+                    {% render_field form.title  class="form-control" id="website" placeholder="Post Title" %}
+                </div>
+                <div class="form-group">
+                    {% render_field form.content class="form-control w-100" id="commentContent" placeholder="Post Content" %}
+                </div>
+                <div class="form-group">
+                    {% render_field form.category class="form-control" id="website" %}
+                </div>
+                <div class="form-group">
+                    {% render_field form.tags class="form-control" id="website" placeholder="Post Tags" %}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="button button-contactForm">Post Comment</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

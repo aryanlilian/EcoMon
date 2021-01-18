@@ -78,7 +78,6 @@ class ContactView(View):
 class UserResgistrationCreateView(IsAuthenticatedMixin, CreateView):
     template_name = 'home/auth/register.html'
     form_class = UserRegistrationForm
-    success_url = reverse_lazy('login')
 
 
 class UserLoginView(IsAuthenticatedMixin, LoginView):

@@ -26,9 +26,9 @@ _I've built this website because I want to help a lot of people to manage their 
 #### Website Pages:
     - The Index-Page: consists of a website presentation, explanation of all the features and has a warm welcome for the users.
 
-    - The Profile-Page is the page where users can set or update personal information and the currency of the wallet.
+    - The Profile-Page: a page where users can set or update personal information and the currency of the wallet.
 
-    - The Blog-Page is a page where you can read a lot of posts about money or how to manage them better and make savings, investments, etc. Also on this page for every post, you can write a comment and discuss it with other users on the website.
+    - The Blog-Page: a page where you can read a lot of posts about money or how to manage them better and make savings, investments, etc. Also on this page for every post, you can write a comment and discuss it with other users on the website.
 
     - About-Page: consists of information about the platform, how was founded, and for what purpose
 
@@ -94,7 +94,7 @@ Dashboard-Page:
 ![](README-images/dashboard-1.png)
 
 Incomes-Page:
-![](README-images/income.png)
+![](README-images/incomes.png)
 
 Spendings-Page:
 ![](README-images/spendings.png)

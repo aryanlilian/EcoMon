@@ -1,6 +1,5 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .decorators import is_authenticated
 from .views import (
     IndexFormView,
     AboutTemplateView,

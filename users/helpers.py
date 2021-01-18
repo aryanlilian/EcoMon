@@ -102,5 +102,5 @@ def spendings_chart_pie_data(request):
         category_spendings = Spending.objects.filter(user=request.user, created_date__year=datetime.now().year, created_date__month=datetime.now().month, category=category)
         total_category_spendings = assembly(category_spendings)
         if total_spendings and total_category_spendings:
-            spendings_data.append({category: round((total_category_spendings / total_savings) * 100, 2)})
+            spendings_data.append({category: round((total_category_spendings / total_spendings) * 100, 2)})
     return JsonResponse(spendings_data, safe=False)

@@ -119,7 +119,7 @@ class ArchiveView(LoginRequiredMixin, View):
         context = self.get_context_data(**kwargs)
         incomes = Income.objects.filter(user=request.user)
         spendings = Spending.objects.filter(user=request.user)
-        total_incomes, total_savings = assembly(incomes), assembly(spendings)
+        total_incomes, total_spendings = assembly(incomes), assembly(spendings)
         context['incomes'] = incomes
         context['spendings'] = spendings
         context['total_incomes'] = total_incomes
@@ -133,7 +133,7 @@ class ArchiveView(LoginRequiredMixin, View):
         month = datetime.strptime(request.POST.get('month'), '%m')
         incomes = Income.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
         spendings = Spending.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
-        total_incomes, total_savings = assembly(incomes), assembly(spendings)
+        total_incomes, total_spendings = assembly(incomes), assembly(spendings)
         context['incomes'] = incomes
         context['spendings'] = spendings
         context['total_incomes'] = total_incomes

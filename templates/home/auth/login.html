@@ -18,6 +18,11 @@
                   </div>
                   <form class="user" method="POST">
                     {% csrf_token %}
+                    {% for error in form.non_field.errors %}
+                        <div class="invalid-feedback">
+                          {{ error }}
+                        </div>
+                    {% endfor %}
                     <div class="form-group">
                       {% render_field form.username class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Username..." %}
                     </div>

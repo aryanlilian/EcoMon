@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 from .models import User, Income, Spending, Profile
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 
 class UserRegistrationForm(UserCreationForm):

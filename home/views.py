@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, TemplateView
 from django.contrib.auth.views import LoginView
 from django.views import View
@@ -24,6 +24,7 @@ class IndexFormView(IsAuthenticatedMixin, View):
         else:
             Newsletter.objects.create(email=email)
             messages.success(request, 'Your email was subscribed in our system, you\'ll hear from us as soon as possible !')
+            return redirect('index')
         return render(request, self.template_name)
 
 

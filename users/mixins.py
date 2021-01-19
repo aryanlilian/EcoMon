@@ -1,7 +1,8 @@
 from datetime import datetime
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import AccessMixin
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Profile
 from .utils import (
     assembly,
@@ -46,6 +47,14 @@ class ObjectCreateListViewMixin(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+
+class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):
+    model = None
+    template_name = 'users/incomes_&_spendings.html'
+    success_url = None
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
 
 class IsAuthenticatedMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):

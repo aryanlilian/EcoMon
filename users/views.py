@@ -4,9 +4,8 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from . import constants
-from django.views.generic import DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .mixins import ObjectCreateListViewMixin
+from .mixins import ObjectCreateListViewMixin, ObjectDeleteViewMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import (
     Income,
     Spending,
@@ -100,17 +99,15 @@ class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     color = 'danger'
     constant = constants.SPENDING_OBJECT
 
-# !!!! Incomplete !!!!
-# class IncomeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-#     model = Income
-#     template_name = 'users/delete.html'
-#     success_url = reverse_lazy('income')
-#
-#     def test_func(self):
-#         income = self.get_object()
-#         if self.request.user == income.user:
-#             return True
-#         return False
+
+class IncomeDeleteView(ObjectDeleteViewMixin):
+    model = Income
+    success_url = reverse_lazy('incomes')
+
+
+class SpendingDeleteView(ObjectDeleteViewMixin):
+    model = Spending
+    success_url = reverse_lazy('spendings')
 
 
 class ArchiveView(LoginRequiredMixin, View):

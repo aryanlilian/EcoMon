@@ -104,6 +104,9 @@ class Income(models.Model):
     def get_absolute_url(self):
         return reverse('incomes')
 
+    def delete_url(self):
+        return reverse('delete-income', kwargs={'pk': self.pk})
+
 class Spending(models.Model):
 
     class SpendingCategory(models.TextChoices):
@@ -130,3 +133,6 @@ class Spending(models.Model):
 
     def get_absolute_url(self):
         return reverse('spendings')
+
+    def delete_url(self):
+        return reverse('delete-spending', kwargs={'pk': self.pk})

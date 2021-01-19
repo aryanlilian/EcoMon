@@ -5,6 +5,7 @@ from .views import (
     IncomesCreateListView,
     SpendingsCreateListView,
     IncomeDeleteView,
+    SpendingDeleteView,
     ArchiveView,
 )
 from .helpers import (
@@ -23,7 +24,7 @@ urlpatterns = [
     path('dashboard/spendings-chart-pie/', spendings_chart_pie_data, name='spendings-chart-pie'),
     path('incomes/', IncomesCreateListView.as_view(), name='incomes'),
     path('spendings/', SpendingsCreateListView.as_view(), name='spendings'),
-    # !!!! Incomplete !!!!
-    path('income/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),
+    path('incomes/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),
+    path('spendings/delete/<int:pk>/', SpendingDeleteView.as_view(), name='delete-spending'),
     path('archive', ArchiveView.as_view(), name='archive'),
 ]

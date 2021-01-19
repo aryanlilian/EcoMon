@@ -4,25 +4,20 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from . import constants
-from .mixins import ObjectCreateListViewMixin, ObjectDeleteViewMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import (
+    ObjectCreateListViewMixin, ObjectUpdateView, ObjectDeleteViewMixin
+)
 from .models import (
-    Income,
-    Spending,
-    Profile,
+    Income, Spending, Profile,
 )
 from .forms import (
-    UserUpdateForm,
-    ProfileUpdateForm,
-    IncomeCreateForm,
+    UserUpdateForm, ProfileUpdateForm, IncomeCreateForm,
     SpendingCreateForm
 )
 from .utils import (
-    assembly,
-    percentages_of_incomes,
-    daily_avg,
-    max_amount,
-    recurrent_check,
+    assembly, percentages_of_incomes, daily_avg,
+    max_amount, recurrent_check,
 )
 
 
@@ -98,6 +93,14 @@ class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     model_name = 'Spendings'
     color = 'danger'
     constant = constants.SPENDING_OBJECT
+
+
+class IncomeUpdateView(ObjectUpdateView):
+    model = Income
+
+
+class SpendingUpdateView(ObjectUpdateView):
+    model = Spending
 
 
 class IncomeDeleteView(ObjectDeleteViewMixin):

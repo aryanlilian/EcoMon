@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import AccessMixin
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Profile
 from .utils import (
@@ -35,7 +35,7 @@ class ObjectCreateListViewMixin(CreateView):
         total_obj_last_month = assembly(obj_last_month)
         recurrent_check(self.request.user, recurrent_obj, self.constant)
         context['title'] = self.model_name
-        context['primary_color'] = self.color
+        context['color'] = self.color
         context['objects'] = obj
         context['total_sum'] = total_obj
         context['currency'] = currency
@@ -48,6 +48,22 @@ class ObjectCreateListViewMixin(CreateView):
         return super().form_valid(form)
 
 
+class ObjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = None
+    template_name = 'users/update_incomes_and_spendings.html'
+    fields = ['name', 'amount', 'category', 'recurrent']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        obj = self.get_object()
+        if self.request.user == obj.user:
+            return True
+        return False
+
+
 class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):
     model = None
     template_name = 'users/incomes_&_spendings.html'
@@ -55,6 +71,7 @@ class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+
 
 class IsAuthenticatedMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):

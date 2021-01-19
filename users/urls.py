@@ -1,17 +1,11 @@
 from django.urls import path
 from .views import (
-    DashboardView,
-    ProfileView,
-    IncomesCreateListView,
-    SpendingsCreateListView,
-    IncomeDeleteView,
-    SpendingDeleteView,
-    ArchiveView,
+    DashboardView, ProfileView, IncomesCreateListView,
+    SpendingsCreateListView, IncomeUpdateView, SpendingUpdateView,
+    IncomeDeleteView, SpendingDeleteView, ArchiveView,
 )
 from .helpers import (
-    incomes_chart_area_data,
-    incomes_chart_pie_data,
-    spendings_chart_area_data,
+    incomes_chart_area_data, incomes_chart_pie_data, spendings_chart_area_data,
     spendings_chart_pie_data,
 )
 
@@ -24,6 +18,8 @@ urlpatterns = [
     path('dashboard/spendings-chart-pie/', spendings_chart_pie_data, name='spendings-chart-pie'),
     path('incomes/', IncomesCreateListView.as_view(), name='incomes'),
     path('spendings/', SpendingsCreateListView.as_view(), name='spendings'),
+    path('incomes/update/<int:pk>/', IncomeUpdateView.as_view(), name='update-income'),
+    path('spendings/update/<int:pk>/', SpendingUpdateView.as_view(), name='update-spending'),
     path('incomes/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),
     path('spendings/delete/<int:pk>/', SpendingDeleteView.as_view(), name='delete-spending'),
     path('archive', ArchiveView.as_view(), name='archive'),

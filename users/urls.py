@@ -4,7 +4,7 @@ from .views import (
     ProfileView,
     IncomesCreateListView,
     SpendingsCreateListView,
-    # IncomeDeleteView,
+    IncomeDeleteView,
     ArchiveView,
 )
 from .helpers import (
@@ -24,6 +24,6 @@ urlpatterns = [
     path('incomes/', IncomesCreateListView.as_view(), name='incomes'),
     path('spendings/', SpendingsCreateListView.as_view(), name='spendings'),
     # !!!! Incomplete !!!!
-    # path('income/<int:pk>/delete/', IncomeDeleteView.as_view(), name='delete-income'),
+    path('income/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),
     path('archive', ArchiveView.as_view(), name='archive'),
 ]

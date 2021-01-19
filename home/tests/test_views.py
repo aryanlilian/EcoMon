@@ -123,26 +123,26 @@ class TestUserRegistrationViews(BaseTest):
     def test_user_registration_create_view_POST_adds_new_user_success(self):
         response = self.client.post(self.register_url, self.user, format='text/html')
         user = User.objects.first()
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(user.email, 'testemail@gmail.com')
-        self.assertEqual(user.username, 'testusername')
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(user.email, 'testemail@gmail.com')
+        self.assertEquals(user.username, 'testusername')
 
     def test_user_registration_create_view_POST_unmatching_password(self):
         response = self.client.post(self.register_url, self.unmatching_password_user, format='text/html')
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
     def test_user_registration_create_view_POST_common_password(self):
         response = self.client.post(self.register_url, self.common_password_user, format='text/html')
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
     def test_user_registration_create_view_POST_common_password(self):
         response = self.client.post(self.register_url, self.invalid_email_user, format='text/html')
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
     def test_user_registration_create_view_POST_taken_email_or_username_user(self):
         self.client.post(self.register_url, self.user, format='text/html')
         response = self.client.post(self.register_url, self.user, format='text/html')
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
 
 
@@ -156,14 +156,14 @@ class TestUserLoginViews(BaseTest):
     def test_login_view_POST_success(self):
         self.client.post(self.register_url, self.user, format='text/html')
         response = self.client.post(self.login_url, self.login_user, format='text/html')
-        self.assertEqual(response.status_code, 302)
+        self.assertEquals(response.status_code, 302)
 
     def test_login_view_POST_empty_username(self):
         self.client.post(self.register_url, self.user, format='text/html')
         response = self.client.post(self.login_url, self.login_empty_username_user, format='text/html')
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
     def test_login_view_POST_empty_username(self):
         self.client.post(self.register_url, self.user, format='text/html')
         response = self.client.post(self.login_url, self.login_empty_password_user, format='text/html')
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)

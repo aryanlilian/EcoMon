@@ -6,7 +6,7 @@ from django.contrib import messages
 from . import constants
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import (
-    ObjectCreateListViewMixin, ObjectUpdateView, ObjectDeleteViewMixin
+    ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin
 )
 from .models import (
     Income, Spending, Profile,
@@ -95,13 +95,11 @@ class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     constant = constants.SPENDING_OBJECT
 
 
-class IncomeUpdateView(ObjectUpdateView):
+class IncomeUpdateView(ObjectUpdateViewMixin):
     model = Income
 
-
-class SpendingUpdateView(ObjectUpdateView):
+class SpendingUpdateView(ObjectUpdateViewMixin):
     model = Spending
-
 
 class IncomeDeleteView(ObjectDeleteViewMixin):
     model = Income

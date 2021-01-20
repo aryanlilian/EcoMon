@@ -48,20 +48,18 @@ class ObjectCreateListViewMixin(CreateView):
         return super().form_valid(form)
 
 
-class ObjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
     model = None
-    template_name = 'users/update_incomes_and_spendings.html'
+    template_name = 'users/update_incomes_and_spendings'
     fields = ['name', 'amount', 'category', 'recurrent']
 
+
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.self.user = self.request.user
         return super().form_valid(form)
 
-    def test_func(self):
-        obj = self.get_object()
-        if self.request.user == obj.user:
-            return True
-        return False
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
 
 
 class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):

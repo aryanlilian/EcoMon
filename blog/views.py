@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import View
 from .models import Post, Comment
 from users.models import Profile
@@ -8,7 +9,7 @@ from users.mixins import IsSuperuserOrStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     ListView, DetailView, CreateView,
-    UpdateView
+    UpdateView, DeleteView
 )
 
 
@@ -101,6 +102,15 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(author=self.request.user)
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'users/post.html'
+    success_url = reverse_lazy('blog')
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(author=self.request.user)

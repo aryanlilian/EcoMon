@@ -5,6 +5,7 @@ from .models import Post, Comment
 from users.models import Profile
 from taggit.models import Tag
 from .forms import PostCreateForm
+from .filters import PostFilterForm
 from users.mixins import IsSuperuserOrStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
@@ -12,16 +13,23 @@ from django.views.generic import (
     UpdateView, DeleteView
 )
 
-
 class BlogListView(ListView):
     model = Post
     template_name = 'blog/blog.html'
     context_object_name = 'posts'
     ordering = ['-published_date']
     paginate_by = 2
+    filterset_class = PostFilterForm
+    post_search_title = None
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.post_search_title = self.filterset_class(self.request.GET, queryset=queryset)
+        return self.post_search_title.qs.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['post_search_title'] = self.post_search_title
         tags = Post.tags.most_common()[:8]
         context['banner_page_title'] = 'Blog'
         context['page_location'] = 'home / blog'
@@ -29,23 +37,15 @@ class BlogListView(ListView):
         return context
 
 
-class TaggedPostListView(ListView):
-    model = Post
-    template_name = 'blog/blog.html'
-    context_object_name = 'posts'
-    paginate_by = 2
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        tags = Post.tags.most_common()[:8]
-        context['banner_page_title'] = 'Blog'
-        context['page_location'] = 'home / blog'
-        context['tags'] = tags
-        return context
+class TaggedPostListView(BlogListView):
 
     def get_queryset(self):
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
-        return Post.objects.filter(tags=tag)
+        tagged_post = Post.objects.filter(tags=tag)
+        self.post_search_title = self.filterset_class(self.request.GET, queryset=tagged_post)
+        return self.post_search_title.qs.distinct()
+
+
 
 
 class PostDetailView(DetailView):

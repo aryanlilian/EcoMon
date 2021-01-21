@@ -1,5 +1,6 @@
 {% extends 'home/base.html' %}
 {% load static %}
+{% load tags %}
 {% block content %}
     <!--================Blog Area =================-->
     <section class="blog_area section-margin">
@@ -38,12 +39,13 @@
                         </div>
                       </article>
                     {% endfor %}
+
                     {% if is_paginated %}
                       <nav class="blog-pagination justify-content-center d-flex">
                         <ul class="pagination">
                         {% if page_obj.has_previous %}
                         <li class="page-item">
-                            <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                            <a href="?{% param_replace page=page_obj.previous_page_number %}" class="page-link" aria-label="Previous">
                                 <span aria-hidden="true">
                                     <span class="ti-arrow-left"></span>
                                 </span>
@@ -54,18 +56,18 @@
                         {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
                             <li class="page-item active">
-                                <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                                <a href="?{% param_replace page=num %}" class="page-link">{{ num }}</a>
                             </li>
                             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                             <li class="page-item">
-                                <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                                <a href="?{% param_replace page=num %}" class="page-link">{{ num }}</a>
                             </li>
                             {% endif %}
                         {% endfor %}
 
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
+                                <a href="?{% param_replace page=page_obj.next_page_number %}" class="page-link" aria-label="Next">
                                     <span aria-hidden="true">
                                         <span class="ti-arrow-right"></span>
                                     </span>
@@ -80,10 +82,11 @@
               <div class="col-lg-4">
                   <div class="blog_right_sidebar">
                       <aside class="single_sidebar_widget search_widget">
-                          <form action="#">
+                          <form method="GET">
                             <div class="form-group">
                               <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Search Keyword">
+                                <!-- <input type="text" class="form-control"  name='post_search_title' placeholder="Search Keyword"> -->
+                                {{ post_search_title.form }}
                                 <div class="input-group-append">
                                   <button class="btn" type="button"><i class="ti-search"></i></button>
                                 </div>

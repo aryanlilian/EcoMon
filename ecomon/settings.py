@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'taggit',
     'widget_tweaks',
+    'django_filters',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

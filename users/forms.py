@@ -8,8 +8,8 @@ from django.core.exceptions import ValidationError
 
 
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(widget=forms.EmailInput())
-    first_name = forms.CharField(widget=forms.TextInput())
+    email = forms.EmailField(widget=forms.EmailInput(), help_text='Enter a help text ex: name@example.com')
+    first_name = forms.CharField(widget=forms.TextInput(), help_text='Enter just letters')
     last_name = forms.CharField(widget=forms.TextInput())
     marketing_email = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
     accept_terms_and_conditions = forms.BooleanField(widget=forms.CheckboxInput())
@@ -46,6 +46,28 @@ class UserUpdateForm(forms.ModelForm):
             'phone_number',
         ]
 
+    error_messages = {
+        'first_name' : _('First name can contain only letters'),
+        'last_name' : _('Last name can contain only letters')
+    }
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if not first_name.isalpha():
+            raise ValidationError(
+                self.error_messages['first_name'],
+                code='first_name_invalid'
+            )
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if not last_name.isalpha():
+            raise ValidationError(
+                self.error_messages['last_name'],
+                code='last_name_invalid'
+            )
+        return last_name
 
 class ProfileUpdateForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.FileInput())

@@ -9,7 +9,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from users.mixins import IsAuthenticatedMixin
+from common.mixins import IsAuthenticatedMixin
+from common.constants import messages, template_titles
 
 class IndexFormView(IsAuthenticatedMixin, View):
     template_name = 'home/index.html'
@@ -20,10 +21,10 @@ class IndexFormView(IsAuthenticatedMixin, View):
     def post(self, request, *args, **kwargs):
         email = request.POST['email']
         if Newsletter.objects.filter(email=email).exists():
-            messages.warning(request, 'This email is already subscribed in our system')
+            messages.warning(request, messages['email_exists'])
         else:
             Newsletter.objects.create(email=email)
-            messages.success(request, 'Your email was subscribed in our system, you\'ll hear from us as soon as possible !')
+            messages.success(request, messages['email_subscribed'])
             return redirect('index')
         return render(request, self.template_name)
 
@@ -33,8 +34,8 @@ class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['banner_page_title'] = 'About Us'
-        context['page_location'] = 'home / about'
+        context['banner_page_title'] = template_titles['about_title']
+        context['page_location'] = template_titles['about_path']
         return context
 
 
@@ -61,17 +62,17 @@ class ContactView(View):
                 to_email,
                 fail_silently=False
             )
-            success_message = 'We\'ve received your email, you\'ll hear from us very soon!'
+            success_message = messages['email_received']
         except:
-            error_message = 'Something didn\'t work, please try later!'
+            error_message = messages['fail_sent_email']
         context['success_message'] = success_message
         context['error_message'] = error_message
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         context = {
-            'banner_page_title': 'Contact',
-            'page_location': 'home / contact'
+            'banner_page_title': template_titles['contact_title'],
+            'page_location': template_titles['contact_path']
         }
         return context
 

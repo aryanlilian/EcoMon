@@ -3,9 +3,10 @@ from datetime import datetime
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from . import constants
+from .models import Income, Spending
+from common.constants import template_titles
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .mixins import (
+from common.mixins import (
     ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin
 )
 from .models import (
@@ -26,8 +27,12 @@ class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
         date = datetime.now()
-        incomes = Income.objects.filter(user=request.user, created_date__year=date.year, created_date__month=date.month)
-        spendings = Spending.objects.filter(user=request.user, created_date__year=date.year, created_date__month=date.month)
+        incomes = Income.objects.filter(
+            user=request.user, created_date__year=date.year, created_date__month=date.month
+        )
+        spendings = Spending.objects.filter(
+            user=request.user, created_date__year=date.year, created_date__month=date.month
+        )
         currency = Profile.objects.get(user=self.request.user).currency
         total_incomes, total_spendings = assembly(incomes), assembly(spendings)
         total_savings = total_incomes - total_spendings
@@ -35,7 +40,7 @@ class DashboardView(LoginRequiredMixin, View):
         savings_percent = percentages_of_incomes(total_incomes, total_savings)
         max_income, max_spending = max_amount(incomes), max_amount(spendings)
         context = {
-            'title': 'Dashboard',
+            'title': template_titles['dashboard_title'],
             'incomes': incomes,
             'spendings': spendings,
             'currency': currency,
@@ -60,21 +65,31 @@ class ProfileView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         user_update_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_update_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        profile_update_form = ProfileUpdateForm(
+            request.POST, request.FILES,
+            instance=request.user.profile
+        )
         if user_update_form.is_valid() and profile_update_form.is_valid():
             user_update_form.save()
             profile_update_form.save()
-            messages.success(request, 'Your profile was updated successful!')
+            messages.success(
+                request,
+                'Your profile was updated successful!'
+            )
             return redirect('profile')
         context['user_update_form'] = user_update_form
         context['profile_update_form'] = profile_update_form
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
-        user_update_form = UserUpdateForm(instance=self.request.user)
-        profile_update_form = ProfileUpdateForm(instance=self.request.user.profile)
+        user_update_form = UserUpdateForm(
+            instance=self.request.user
+        )
+        profile_update_form = ProfileUpdateForm(
+            instance=self.request.user.profile
+        )
         context = {
-            'title' : 'Profile',
+            'title' : template_titles['profile_title'],
             'user_update_form' : user_update_form,
             'profile_update_form' : profile_update_form,
         }
@@ -82,17 +97,17 @@ class ProfileView(LoginRequiredMixin, View):
 
 
 class IncomesCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
+    model = Income
     form_class = IncomeCreateForm
     model_name = 'Incomes'
     color = 'primary'
-    constant = constants.INCOME_OBJECT
 
 
 class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
+    model = Spending
     form_class = SpendingCreateForm
     model_name = 'Spendings'
     color = 'danger'
-    constant = constants.SPENDING_OBJECT
 
 
 class IncomeUpdateView(ObjectUpdateViewMixin):
@@ -130,8 +145,12 @@ class ArchiveView(LoginRequiredMixin, View):
         context = self.get_context_data(**kwargs)
         year = datetime.strptime(request.POST.get('year'), '%Y')
         month = datetime.strptime(request.POST.get('month'), '%m')
-        incomes = Income.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
-        spendings = Spending.objects.filter(user=request.user, created_date__year=year.year, created_date__month=month.month)
+        incomes = Income.objects.filter(
+            user=request.user, created_date__year=year.year, created_date__month=month.month
+        )
+        spendings = Spending.objects.filter(
+            user=request.user, created_date__year=year.year, created_date__month=month.month
+        )
         total_incomes, total_spendings = assembly(incomes), assembly(spendings)
         context['incomes'] = incomes
         context['spendings'] = spendings

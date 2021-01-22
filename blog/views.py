@@ -6,8 +6,9 @@ from users.models import Profile
 from taggit.models import Tag
 from .forms import PostCreateForm
 from .filters import PostFilterForm
-from users.mixins import IsSuperuserOrStaffMixin
+from common.mixins import IsSuperuserOrStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from common.constants import template_titles
 from django.views.generic import (
     ListView, DetailView, CreateView,
     UpdateView, DeleteView
@@ -31,8 +32,8 @@ class BlogListView(ListView):
         context = super().get_context_data(**kwargs)
         context['post_search_title'] = self.post_search_title
         tags = Post.tags.most_common()[:8]
-        context['banner_page_title'] = 'Blog'
-        context['page_location'] = 'home / blog'
+        context['banner_page_title'] = template_titles['blog_title']
+        context['page_location'] = template_titles['blog_path']
         context['tags'] = tags
         return context
 
@@ -63,7 +64,12 @@ class PostDetailView(DetailView):
             post = Post.objects.get(slug=kwargs['slug'])
             if comment_id:
                 replied_comment = Comment.objects.get(id=comment_id)
-            Comment.objects.create(author=request.user, post=post, reply=replied_comment, content=content)
+            Comment.objects.create(
+                author=request.user,
+                post=post,
+                reply=replied_comment,
+                content=content
+            )
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
@@ -72,13 +78,12 @@ class PostDetailView(DetailView):
         try:
             context['previous_post'] = Post.objects.get(id=post.id - 1)
         except:
-            context['previous_post_none'] = 'No previous post'
+            context['previous_post_none'] = template_titles['no_previous_post']
         try:
             context['next_post'] = Post.objects.get(id=post.id + 1)
         except:
-            context['next_post_none'] = 'No next post'
-        context['banner_page_title'] = post
-        context['page_location'] = 'home / post'
+            context['next_post_none'] = template_titles['no_next_post']
+        context['page_location'] = template_titles['post_path']
         context['post'] = post
         context['comments'] = Comment.objects.filter(post=post, reply=None)
         context['author_description'] = Profile.objects.get(user=post.author).description

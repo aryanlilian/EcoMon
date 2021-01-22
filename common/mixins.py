@@ -3,37 +3,49 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import AccessMixin
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Profile
-from .utils import (
-    assembly,
-    percentages_of_incomes,
-    days_of_month,
-    daily_avg,
-    max_amount,
-    recurrent_check,
+from users.models import Profile
+from users.utils import (
+    assembly, percentages_of_incomes, days_of_month,
+    daily_avg, max_amount, recurrent_check,
 )
 
 
 class ObjectCreateListViewMixin(CreateView):
-    template_name = 'users/incomes_&_spendings.html'
+    model = None
     form_class = None
     model_name = None
     color = None
-    constant = None
+    template_name = 'users/incomes_&_spendings.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         date = datetime.now()
-        obj = self.constant.objects.filter(user=self.request.user, created_date__year=date.year, created_date__month=date.month)
-        recurrent_obj = self.constant.objects.filter(user=self.request.user, recurrent=True, created_date__year=date.year, created_date__month=date.month)
+        obj = self.model.objects.filter(
+            user=self.request.user,
+            created_date__year=date.year,
+            created_date__month=date.month
+        )
+        recurrent_obj = self.model.objects.filter(
+            user=self.request.user, recurrent=True,
+            created_date__year=date.year,
+            created_date__month=date.month
+        )
         currency = Profile.objects.get(user=self.request.user).currency
         if date.month == 1:
-            obj_last_month = self.constant.objects.filter(user=self.request.user, created_date__year=date.year - 1, created_date__month=date.month + 11)
+            obj_last_month = self.model.objects.filter(
+                user=self.request.user,
+                created_date__year=date.year - 1,
+                created_date__month=date.month + 11
+            )
         else:
-            obj_last_month = self.constant.objects.filter(user=self.request.user, created_date__year=date.year, created_date__month=date.month - 1)
+            obj_last_month = self.model.objects.filter(
+                user=self.request.user,
+                created_date__year=date.year,
+                created_date__month=date.month - 1
+            )
         total_obj = assembly(obj)
         total_obj_last_month = assembly(obj_last_month)
-        recurrent_check(self.request.user, recurrent_obj, self.constant)
+        recurrent_check(self.request.user, recurrent_obj, self.model)
         context['title'] = self.model_name
         context['color'] = self.color
         context['objects'] = obj

@@ -4,6 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 error_messages = {
     'first_name' : _('First name can contain only letters.'),
     'last_name' : _('Last name can contain only letters.'),
+    'required' : _('This field is required!'),
+    'post_title_size' : _('The length of the title can\'t be longer then 200 characters')
 }
 
 help_texts = {

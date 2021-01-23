@@ -105,7 +105,7 @@ class PostCreateView(LoginRequiredMixin, IsSuperuserOrStaffMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = 'blog/add_post.html'
-    fields = ['title', 'content', 'category', 'tags']
+    form_class = PostCreateForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user

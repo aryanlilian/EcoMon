@@ -35,7 +35,7 @@ class Post(models.Model):
         return self.comments.count()
 
     def get_absolute_url(self):
-        return reverse('blog')
+        return reverse('post', kwargs={'slug' : self.slug})
 
 
 class Comment(models.Model):
@@ -50,4 +50,4 @@ class Comment(models.Model):
         return f'{self.author.username} - {self.post.title}'
 
     def get_absolute_url(self):
-        return reverse('post', self.post.slug)
+        return reverse('post', kwargs={'slug' : self.post.slug})

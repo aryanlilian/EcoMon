@@ -44,6 +44,9 @@
                                     {% for error in user_update_form.username.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not user_update_form.username.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ user_update_form.username.help_text }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-row">
@@ -53,6 +56,9 @@
                                     {% for error in user_update_form.email.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not user_update_form.email.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ user_update_form.email.help_text }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-row">
@@ -62,6 +68,9 @@
                                     {% for error in user_update_form.first_name.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not user_update_form.first_name.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ user_update_form.first_name.help_text }}</small>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="lastName">Last name</label>
@@ -69,6 +78,9 @@
                                     {% for error in user_update_form.last_name.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not user_update_form.last_name.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ user_update_form.last_name.help_text }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-row">
@@ -78,6 +90,9 @@
                                     {% for error in user_update_form.phone_number.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not user_update_form.phone_number.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ phone_number_help_text }}</small>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="birthday">Birthday</label>
@@ -85,6 +100,9 @@
                                     {% for error in user_update_form.birth_date.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not user_update_form.birth_date.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ user_update_form.birth_date.help_text }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-row">
@@ -110,6 +128,9 @@
                                     {% for error in profile_update_form.description.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
+                                    {% if not profile_update_form.description.errors %}
+                                        <small class="text-xs font-weight text-secondary">{{ profile_update_form.description.help_text }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-row">

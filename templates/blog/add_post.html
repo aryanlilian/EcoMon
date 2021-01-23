@@ -9,18 +9,27 @@
             <div class="col-12">
                 <div class="form-group">
                     {% render_field form.title  class="form-control" id="website" placeholder="Post Title" %}
+                    {% if not form.title.errors %}
+                        <small class="text-xs font-weight text-secondary">{{ form.title.help_text }}</small>
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     {% render_field form.content class="form-control w-100" id="commentContent" placeholder="Post Content" %}
+                    {% if not form.content.errors %}
+                        <small class="text-xs font-weight text-secondary">{{ form.content.help_text }}</small>
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     {% render_field form.category class="form-control" id="website" %}
                 </div>
                 <div class="form-group">
                     {% render_field form.tags class="form-control" id="website" placeholder="Post Tags" %}
+                    {% if not form.tags.errors %}
+                        <small class="text-xs font-weight text-secondary">{{ form.tags.help_text }}</small>
+                    {% endif %}
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="button button-contactForm">Post Comment</button>
+                    <button type="submit" class="button button-contactForm">{% if request.get_full_path == '/blog/new/post/' %}Publish Post{% else %}Update Comment{% endif %}</button>
                 </div>
             </div>
         </form>

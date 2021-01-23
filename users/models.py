@@ -69,7 +69,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(_('Avatar'), default='default.jpg', upload_to='profile_pics')
-    description = models.TextField(_('Description'), null=False, blank=True)
+    description = models.TextField(_('Description'), null=True, blank=True)
     created_date = models.DateTimeField(_('Created Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
     currency = models.CharField(
@@ -98,7 +98,7 @@ class Income(models.Model):
         OTHERS = _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(_('Name'), max_length=50)
+    name = models.CharField(_('Name'), max_length=100)
     amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
     recurrent = models.BooleanField(_('Recurrent Income'), default=False)
     created_date = models.DateTimeField(_('Created Date/Time'), default=timezone.now)

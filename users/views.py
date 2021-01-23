@@ -4,7 +4,7 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Income, Spending
-from common.constants import template_titles
+from common.constants import template_titles, help_texts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from common.mixins import (
     ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin
@@ -92,6 +92,7 @@ class ProfileView(LoginRequiredMixin, View):
             'title' : template_titles['profile_title'],
             'user_update_form' : user_update_form,
             'profile_update_form' : profile_update_form,
+            'phone_number_help_text' : help_texts['phone_number']
         }
         return context
 
@@ -112,9 +113,11 @@ class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
 
 class IncomeUpdateView(ObjectUpdateViewMixin):
     model = Income
+    model_name = 'Incomes'
 
 class SpendingUpdateView(ObjectUpdateViewMixin):
     model = Spending
+    model_name = 'Spendings'
 
 class IncomeDeleteView(ObjectDeleteViewMixin):
     model = Income

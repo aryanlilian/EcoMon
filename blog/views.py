@@ -4,11 +4,11 @@ from django.views import View
 from .models import Post, Comment
 from users.models import Profile
 from taggit.models import Tag
-from .forms import PostCreateForm
+from .forms import PostCreateForm, CommentUpdateForm
 from .filters import PostFilterForm
 from common.mixins import IsSuperuserOrStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from common.constants import template_titles
+from common.constants import template_titles, help_texts
 from django.views.generic import (
     ListView, DetailView, CreateView,
     UpdateView, DeleteView
@@ -49,7 +49,7 @@ class TaggedPostListView(BlogListView):
 
 
 
-class PostDetailView(DetailView):
+class PostDetailView(View):
     template_name = 'blog/post.html'
 
     def get(self, request, *args, **kwargs):
@@ -83,11 +83,14 @@ class PostDetailView(DetailView):
             context['next_post'] = Post.objects.get(id=post.id + 1)
         except:
             context['next_post_none'] = template_titles['no_next_post']
+        context['banner_page_title'] = post.title
         context['page_location'] = template_titles['post_path']
         context['post'] = post
         context['comments'] = Comment.objects.filter(post=post, reply=None)
         context['author_description'] = Profile.objects.get(user=post.author).description
+        context['comment_content_help_text'] = help_texts['any_character']
         return context
+
 
 
 class PostCreateView(LoginRequiredMixin, IsSuperuserOrStaffMixin, CreateView):
@@ -116,6 +119,31 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'users/post.html'
     success_url = reverse_lazy('blog')
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(author=self.request.user)
+
+
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentUpdateForm
+    template_name = 'blog/update_comment.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(author=self.request.user)
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = 'users/post.html'
+    success_url = reverse_lazy('blog')
+
+    def get_success_url(self):
+        return reverse_lazy('post', kwargs={'slug': self.get_object().post.slug})
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(author=self.request.user)

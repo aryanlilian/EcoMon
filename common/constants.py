@@ -2,23 +2,25 @@ from django.utils.translation import ugettext_lazy as _
 
 
 error_messages = {
-    'first_name' : _('First name can contain only letters'),
-    'last_name' : _('Last name can contain only letters'),
+    'first_name' : _('First name can contain only letters.'),
+    'last_name' : _('Last name can contain only letters.'),
 }
 
 help_texts = {
-    'email' : _('Enter a valid email, ex: name@example.com'),
-    'only_letters' : _('Enter just letters'),
-    'date' : _('Enter a valid date, ex: 2001-04-23'),
-    'phone_number' : _('Enter prefix + number, ex: +40123456789'),
-    'description' : _('Description can contain any characters'),
-    'name' : _('Enter letters, numbers or special characters'),
-    'amount' : _('Enter a number with maxim 10 digits and 3 decimals'),
+    'email' : _('Required. A valid email (e.g name@example.com).'),
+    'only_letters' : _('Required. 100 characters or fewer. Letters only.'),
+    'phone_number' : _('Required. prefix + number (e.g. +40123456789).'),
+    'date' : _('Required. A valid date (e.g. 2001-04-23), YYYY/MM/DD.'),
+    'profile_description' : _('Optional. Letters, digits and/or @/./+/-/_ only.'),
+    'obj_name' : _('Required. 100 characters or fewer. Letters, digits and/or @/./+/-/_ only.'),
+    'obj_amount' : _('Required. 10 digits or fewer and/or 3 decimals or fewer.'),
+    'post_title' : _('Required. 200 characters or fewer. Letters, digits and/or @/./+/-/_ only.'),
+    'any_character' : _('Required. Letters, digits and/or special characters'),
 }
 
 messages = {
-    'email_exists' : 'This email is already subscribed in our system',
-    'email_subscribed' : 'Your email was subscribed in our system, you\'ll hear from us as soon as possible !',
+    'email_exists' : 'This email is already subscribed in our system!',
+    'email_subscribed' : 'Your email was subscribed in our system, you\'ll hear from us as soon as possible!',
     'email_received' : 'We\'ve received your email, you\'ll hear from us very soon!',
     'fail_sent_email' : 'Something didn\'t work, please try later!',
 }
@@ -32,7 +34,7 @@ template_titles = {
     'about_title' : 'About Us',
     'about_path' : 'home / about',
     'contact_title' : 'Contact',
-    'contact_path' : 'home / Contact',
+    'contact_path' : 'home / contact',
     'dashboard_title' : 'Dashboard',
     'profile_title' : 'Profile',
 }

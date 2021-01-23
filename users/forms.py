@@ -34,7 +34,7 @@ class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(), help_text=help_texts['only_letters'])
     last_name = forms.CharField(widget=forms.TextInput(), help_text=help_texts['only_letters'])
     birth_date = forms.DateField(help_text=help_texts['date'])
-    phone_number = PhoneNumberField(help_text=help_texts['phone_number'])
+    phone_number = PhoneNumberField()
 
     class Meta:
         model = User
@@ -69,7 +69,8 @@ class ProfileUpdateForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.FileInput())
     description = forms.CharField(widget=forms.Textarea(
         attrs={'rows': 5, 'cols': 82}),
-        help_text=help_texts['description']
+        help_text=help_texts['profile_description'],
+        required=False
     )
 
     class Meta:
@@ -84,13 +85,13 @@ class ProfileUpdateForm(forms.ModelForm):
 class IncomeCreateForm(forms.ModelForm):
     name = forms.CharField(
         max_length=50, label='Name',
-        help_text=help_texts['name']
+        help_text=help_texts['obj_name']
     )
     amount = forms.DecimalField(
         max_digits=10,
         decimal_places=3,
         label='Amount',
-        help_text=help_texts['amount']
+        help_text=help_texts['obj_amount']
     )
     recurrent = forms.BooleanField(required=False, label='Recurrent?')
 
@@ -106,13 +107,13 @@ class SpendingCreateForm(forms.ModelForm):
     name = forms.CharField(
         max_length=50,
         label='Name',
-        help_text=help_texts['name']
+        help_text=help_texts['obj_name']
     )
     amount = forms.DecimalField(
         max_digits=10,
         decimal_places=3,
         label='Amount',
-        help_text=help_texts['amount']
+        help_text=help_texts['obj_amount']
     )
     recurrent = forms.BooleanField(required=False, label='Recurrent?')
 

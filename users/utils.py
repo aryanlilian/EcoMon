@@ -23,23 +23,40 @@ def max_amount(objs=None):
         return max(i.amount for i in objs)
 
 
-def recurrent_check(user, objs, obj):
+def check_recurrent_or_new(user, objs, model):
     for item in objs:
         if item.created_date.month == 12:
             date = datetime(
                     item.created_date.year + 1, 1, item.created_date.day,
-                    item.created_date.hour, item.created_date.minute, item.created_date.second
+                    item.created_date.hour, item.created_date.minute, item.created_date.second,
+                    item.created_date.microsecond
                 )
         else:
             date = datetime(
                     item.created_date.year, item.created_date.month + 1, item.created_date.day,
-                    item.created_date.hour, item.created_date.minute, item.created_date.second
+                    item.created_date.hour, item.created_date.minute, item.created_date.second,
+                    item.created_date.microsecond
                 )
-        try:
-            obj.objects.get(
-                user=user, created_date=date)
-        except:
-            obj.objects.create(
-                    user=user, name=item.name, amount=item.amount,
-                    created_date=date, category=item.category, recurrent=True
-                )
+        obj, created = model.objects.get_or_create(
+            user=user, name=item.name, amount=item.amount,
+            created_date=date, category=item.category, recurrent=True
+        )
+
+
+def delete_recurrent_object(user, obj, model):
+    if obj.created_date.month == 12:
+        date = datetime(
+                obj.created_date.year + 1, 1, obj.created_date.day,
+                obj.created_date.hour, obj.created_date.minute, obj.created_date.second,
+                obj.created_date.microsecond
+            )
+    else:
+        date = datetime(
+                obj.created_date.year, obj.created_date.month + 1, obj.created_date.day,
+                obj.created_date.hour, obj.created_date.minute, obj.created_date.second,
+                obj.created_date.microsecond)
+    object = model.objects.get(
+        user=user, name=obj.name, amount=obj.amount,
+        created_date=date, category=obj.category, recurrent=True
+    )
+    object.delete()

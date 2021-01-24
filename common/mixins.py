@@ -9,7 +9,8 @@ from threading import Thread
 from users.models import Profile
 from users.utils import (
     assembly, percentages_of_incomes, days_of_month,
-    daily_avg, max_amount, recurrent_check,
+    daily_avg, max_amount, check_recurrent_or_new,
+    delete_recurrent_object
 )
 
 
@@ -48,7 +49,7 @@ class ObjectCreateListViewMixin(CreateView):
             )
         total_obj = assembly(obj)
         total_obj_last_month = assembly(obj_last_month)
-        recurrent_check(self.request.user, recurrent_obj, self.model)
+        check_recurrent_or_new(self.request.user, recurrent_obj, self.model)
         context['title'] = self.model_name
         context['color'] = self.color
         context['objects'] = obj
@@ -97,7 +98,7 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
             )
         total_obj = assembly(obj)
         total_obj_last_month = assembly(obj_last_month)
-        recurrent_check(self.request.user, recurrent_obj, self.model)
+        check_recurrent_or_new(self.request.user, recurrent_obj, self.model)
         context['title'] = self.model_name
         context['color'] = 'success'
         context['objects'] = obj
@@ -119,6 +120,11 @@ class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):
     model = None
     template_name = 'users/incomes_&_spendings.html'
     success_url = None
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('deleteNextRecurrentObject', False):
+            delete_recurrent_object(request.user, self.get_object(), self.model)
+        return super().post(request, *args, **kwargs)
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(user=self.request.user)

@@ -52,7 +52,7 @@ class ContactView(View):
         message = request.POST['message']
         from_email = request.POST['email']
         email_host = settings.EMAIL_HOST_USER
-        to_email = ['ecomon.services@gmail.com']
+        to_email = [settings.EMAIL_HOST_USER]
         success_message, error_message = None, None
         try:
             email = EmailMessage(

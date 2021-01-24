@@ -4,7 +4,6 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Income, Spending, User
-from common.constants import template_titles, help_texts, email_activation
 from django.contrib.auth.mixins import LoginRequiredMixin
 from random import randint
 from django.core.mail import EmailMessage
@@ -12,10 +11,9 @@ from django.conf import settings
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from common.mixins import EmailTokenGenerator
 from common.mixins import (
     ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin,
-    IsEmailVerifiedMixin, SendEmailThreadMixin
+    EmailTokenGenerator, IsEmailVerifiedMixin, SendEmailThreadMixin
 )
 from .models import (
     Income, Spending, Profile,
@@ -26,8 +24,12 @@ from .forms import (
 )
 from .utils import (
     assembly, percentages_of_incomes, daily_avg,
-    max_amount, recurrent_check,
+    max_amount,
 )
+from common.constants import (
+    template_titles, help_texts, email_activation,
+)
+
 
 
 class DashboardView(LoginRequiredMixin, View):

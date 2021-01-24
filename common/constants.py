@@ -1,4 +1,9 @@
 from django.utils.translation import ugettext_lazy as _
+from users.models import Income, Spending
+
+
+income_obj = Income
+spending_obj = Spending
 
 
 error_messages = {

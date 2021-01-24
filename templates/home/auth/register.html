@@ -56,21 +56,25 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="col-sm-12 mb-6 mb-sm-0">
                         <div class="custom-control custom-checkbox">
                             {% render_field form.marketing_email class="custom-control-input" id="marketingEmail" checked="True" %}
-                            <label class="custom-control-label ml-2 mt-1" for="marketingEmail">Send me marketing emails</label>
+                            <label class="custom-control-label ml-2 mt-1" for="marketingEmail">I agree to receive marketing emails from <strong>EcoMon</strong></label>
                             {% for error in form.marketing_email.errors %}
                                 <small class="text-xs font-weight text-danger">{{ error }}</small>
                             {% endfor %}
                          </div>
-                         <div class="custom-control custom-checkbox">
-                            {% render_field form.accept_terms_and_conditions class="custom-control-input" id="acceptTermsAndConditions" %}
-                            <label class="custom-control-label ml-2 mt-1" for="acceptTermsAndConditions">Accept Terms & Conditions</label>
-                            {% for error in form.accept_terms_and_conditions.errors %}
-                                <small class="text-xs font-weight text-danger">{{ error }}</small>
-                            {% endfor %}
-                         </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12 mb-6 mb-sm-0">
+                        <div class="custom-control custom-checkbox">
+                           {% render_field form.accept_terms_and_conditions class="custom-control-input" id="acceptTermsAndConditions" %}
+                           <label class="custom-control-label ml-2 mt-1" for="acceptTermsAndConditions">I read and I agree with <a href="#">Data Security Policy</a> and <a href="#">Terms and Conditions</a></label>
+                           {% for error in form.accept_terms_and_conditions.errors %}
+                               <small class="text-xs font-weight text-danger">{{ error }}</small>
+                           {% endfor %}
+                        </div>
                      </div>
                 </div>
                 <input type="submit" name="Register" class="btn btn-primary btn-user btn-block" value="Register Account">

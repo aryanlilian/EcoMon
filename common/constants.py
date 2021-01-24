@@ -8,6 +8,11 @@ error_messages = {
     'post_title_size' : _('The length of the title can\'t be longer then 200 characters')
 }
 
+email_activation = {
+    'subject' : 'Email activation!',
+    'body' : 'Hello, We\'ve sent you this email because you need to activate your account from EcoMon, copy this number:\n',
+}
+
 help_texts = {
     'email' : _('Required. A valid email (e.g name@example.com).'),
     'only_letters' : _('Required. 100 characters or fewer. Letters only.'),

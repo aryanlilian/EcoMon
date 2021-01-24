@@ -159,7 +159,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 
 EMAIL_HOST_USER = 'ecomon.services@gmail.com'
 
-EMAIL_HOST_PASSWORD = 'ecomonservices123'
+EMAIL_HOST_PASSWORD = 'voifimilionar123ASD@'
 
 EMAIL_PORT = 587
 

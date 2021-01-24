@@ -78,7 +78,7 @@
             </div>
           </div>
         </div>
-        {% if post.author == request.user or request.user.is_superuser or request.user.is_staff %}
+        {% if post.author == user or user.is_superuser or user.is_staff %}
             <div class="row">
                 <div class="col-lg-6">
                     <a href="{% url 'update-post' post.slug %}" class="button button-contactForm mt-3">Update
@@ -231,12 +231,12 @@
                             <div class="form-group">
                                 <textarea class="form-control w-100" name="commentContent"
                                     id="commentContent" cols="5" rows="4"
-                                    placeholder="Write Comment"></textarea>
+                                    placeholder="Write Comment" {% if not user.email_verified %}readonly{% endif %}></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="button button-contactForm">Reply</button>
+                        <button type="submit" class="button button-contactForm" {% if not user.email_verified %}disabled{% endif %}>Reply</button>
                     </div>
                 </form>
             </div>
@@ -252,13 +252,13 @@
                     <div class="col-12">
                         <div class="form-group">
                             <textarea class="form-control w-100" name="commentContent" id="commentContent"
-                                cols="30" rows="9" placeholder="Write Comment"></textarea>
+                                cols="30" rows="9" placeholder="Write Comment" {% if not user.email_verified %}readonly{% endif %}></textarea>
                             <small class="text-xs font-weight text-secondary">{{ comment_content_help_text }}</small>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="button button-contactForm">Post Comment</button>
+                    <button type="submit" class="button button-contactForm" {% if not user.email_verified %}disabled{% endif %}>Post Comment</button>
                 </div>
             </form>
         </div>

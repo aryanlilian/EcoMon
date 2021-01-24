@@ -3,6 +3,7 @@ from .views import (
     DashboardView, ProfileView, IncomesCreateListView,
     SpendingsCreateListView, IncomeUpdateView, SpendingUpdateView,
     IncomeDeleteView, SpendingDeleteView, ArchiveView,
+    EmailVerificationView, SendOrVerifyEmailVerificationView
 )
 from .helpers import (
     incomes_chart_area_data, incomes_chart_pie_data, spendings_chart_area_data,
@@ -23,4 +24,6 @@ urlpatterns = [
     path('incomes/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),
     path('spendings/delete/<int:pk>/', SpendingDeleteView.as_view(), name='delete-spending'),
     path('archive', ArchiveView.as_view(), name='archive'),
+    path('verification/', EmailVerificationView.as_view(), name='email-verification'),
+    path('send/verification/<uidb64>/<token>/', SendOrVerifyEmailVerificationView.as_view(), name='send-or-verify-email-verification'),
 ]

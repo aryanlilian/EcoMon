@@ -14,9 +14,10 @@ class User(AbstractUser):
     birth_date = models.DateField(_('Birth Date'), auto_now_add=False, null=True, blank=True)
     phone_number = PhoneNumberField(_('Phone Number'), null=True, blank=True, unique=True)
     email_verified = models.BooleanField(_('Email Verified'), default=False)
-    marketing_email = models.BooleanField(_('Do not marketing email'), default=False)
-    accept_terms_and_conditions = models.BooleanField(
-        _('Accept terms and contidions'),
+    phone_number_verified = models.BooleanField(_('Phone Number Verified'), default=False)
+    send_marketing_emails = models.BooleanField(_('Send marketing emails'), default=False)
+    accept_terms_conditions_and_security_policy = models.BooleanField(
+        _('Accept Terms and Conditions, Data Security Policy'),
         default=False
     )
 

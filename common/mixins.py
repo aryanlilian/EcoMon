@@ -3,6 +3,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import AccessMixin
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from six import text_type
+from threading import Thread
 from users.models import Profile
 from users.utils import (
     assembly, percentages_of_incomes, days_of_month,
@@ -121,7 +124,24 @@ class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):
         return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
 
 
+class EmailTokenGenerator(PasswordResetTokenGenerator):
+
+    def _make_hash_value(self, user, timestamp):
+        return(text_type(user.email_verified) + text_type(user.id) + text_type(timestamp))
+
+
+class SendEmailThreadMixin(Thread):
+
+    def __init__(self, email):
+        self.email = email
+        Thread.__init__(self)
+
+    def run(self):
+        self.email.send(fail_silently=False)
+
+
 class IsAuthenticatedMixin(AccessMixin):
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('dashboard')
@@ -129,7 +149,15 @@ class IsAuthenticatedMixin(AccessMixin):
 
 
 class IsSuperuserOrStaffMixin(AccessMixin):
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser or not request.user.is_staff:
             return redirect('blog')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class IsEmailVerifiedMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.email_verified:
+            return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)

@@ -7,9 +7,9 @@ from .models import Newsletter, Testimonial
 from users.forms import UserRegistrationForm
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.conf import settings
-from common.mixins import IsAuthenticatedMixin
+from common.mixins import IsAuthenticatedMixin, SendEmailThreadMixin
 from common.constants import messages, template_titles, help_texts
 
 class IndexFormView(IsAuthenticatedMixin, View):
@@ -55,13 +55,13 @@ class ContactView(View):
         to_email = ['ecomon.services@gmail.com']
         success_message, error_message = None, None
         try:
-            send_mail(
+            email = EmailMessage(
                 subject,
                 message + '\nsender: ' + from_email,
                 email_host,
                 to_email,
-                fail_silently=False
             )
+            SendEmailThreadMixin(email).start()
             success_message = messages['email_received']
         except:
             error_message = messages['fail_sent_email']

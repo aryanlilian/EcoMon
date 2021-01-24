@@ -7,7 +7,7 @@
       <div class="container">
           {% if user.is_authenticated and user.is_superuser or user.is_staff %}
               <div class="form-group">
-                  <a href="{% url 'add-post' %}" class="button button-contactForm">Add Post</a>
+                  <a class="button button-contactForm" {% if not user.email_verified %}href="#"{% else %}href="{% url 'add-post' %}"{% endif %}>Add Post</a>
               </div>
           {% endif %}
           <div class="row">

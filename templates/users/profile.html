@@ -40,7 +40,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="username">Username (how your name will appear to other users on the site)</label>
-                                    {% render_field user_update_form.username class="form-control" placeholder="username" id="username" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field user_update_form.username class="form-control" placeholder="username" id="username" readonly=True %}
+                                    {% else %}
+                                        {% render_field user_update_form.username class="form-control" placeholder="username" id="username" %}
+                                    {% endif %}
                                     {% for error in user_update_form.username.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -52,7 +56,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="email">Email adress</label>
-                                    {% render_field user_update_form.email class="form-control" placeholder="name@example.com" id="email" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field user_update_form.email class="form-control" placeholder="name@example.com" id="email" readonly=True %}
+                                    {% else %}
+                                        {% render_field user_update_form.email class="form-control" placeholder="name@example.com" id="email" %}
+                                    {% endif %}
                                     {% for error in user_update_form.email.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -64,7 +72,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="firstName">First name</label>
-                                    {% render_field user_update_form.first_name class="form-control" placeholder="John" id="firstName" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field user_update_form.first_name class="form-control" placeholder="John" id="firstName" readonly=True %}
+                                    {% else %}
+                                        {% render_field user_update_form.first_name class="form-control" placeholder="John" id="firstName" %}
+                                    {% endif %}
                                     {% for error in user_update_form.first_name.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -74,7 +86,11 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="lastName">Last name</label>
-                                    {% render_field user_update_form.last_name class="form-control" placeholder="Hanks" id="lastName" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field user_update_form.last_name class="form-control" placeholder="Hanks" id="lastName" readonly=True %}
+                                    {% else %}
+                                        {% render_field user_update_form.last_name class="form-control" placeholder="Hanks" id="lastName" %}
+                                    {% endif %}
                                     {% for error in user_update_form.last_name.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -86,7 +102,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="phoneNumber">Phone number</label>
-                                    {% render_field user_update_form.phone_number class="form-control" placeholder="123-345-678" id="phoneNumber" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field user_update_form.phone_number class="form-control" placeholder="123-345-678" id="phoneNumber" readonly=True %}
+                                    {% else %}
+                                        {% render_field user_update_form.phone_number class="form-control" placeholder="123-345-678" id="phoneNumber" %}
+                                    {% endif %}
                                     {% for error in user_update_form.phone_number.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -96,7 +116,11 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="birthday">Birthday</label>
-                                    {% render_field user_update_form.birth_date class="form-control" placeholder="06/01/2002" id="birthday" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field user_update_form.birth_date class="form-control" placeholder="06/01/2002" id="birthday" readonly=True %}
+                                    {% else %}
+                                        {% render_field user_update_form.birth_date class="form-control" placeholder="06/01/2002" id="birthday" %}
+                                    {% endif %}
                                     {% for error in user_update_form.birth_date.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -109,7 +133,11 @@
                                 <div class="form-group col-md-8">
                                     <label for="validatedCustomFile">Profile picture</label>
                                     <div class="custom-file">
-                                        {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" %}
+                                        {% if not user.email_verified %}
+                                            {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" disabled=True %}
+                                        {% else %}
+                                            {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" %}
+                                        {% endif %}
                                         <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
                                         {% for error in profile_update_form.image.errors %}
                                             <small class="text-xs font-weight text-danger">{{ error }}</small>
@@ -118,13 +146,21 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="currency">Currency</label>
-                                    {% render_field profile_update_form.currency id="currency" class="form-control" %}
+                                    {% if not user.email_verified %}
+                                        {% render_field profile_update_form.currency id="currency" class="form-control" disabled=True %}
+                                    {% else %}
+                                        {% render_field profile_update_form.currency id="currency" class="form-control" %}
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="description">Description</label>
-                                    {% render_field profile_update_form.description class="form-control" id="description" placeholder="Profile description..." %}
+                                    {% if not user.email_verified %}
+                                        {% render_field profile_update_form.description class="form-control" id="description" placeholder="Profile description..."  readonly=True %}
+                                    {% else %}
+                                        {% render_field profile_update_form.description class="form-control" id="description" placeholder="Profile description..." %}
+                                    {% endif %}
                                     {% for error in profile_update_form.description.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>
                                     {% endfor %}
@@ -135,7 +171,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <button type="submit" name="button" class="btn btn-md btn-primary">Save changes</button>
+                                    <button type="submit" name="button" class="btn btn-md btn-primary" {% if not user.email_verified %}disabled{% endif %}>Save changes</button>
                                 </div>
                             </div>
                         </form>

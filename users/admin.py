@@ -18,6 +18,7 @@ class CustomUserAdmin(UserAdmin):
             {
                 'fields': (
                     'phone_number',
+                    'phone_number_verified'
                 )
             }
         ),
@@ -25,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
             'Email Status',
             {
                 'fields': (
-                    'marketing_email',
+                    'send_marketing_emails',
                     'email_verified'
                 )
             }
@@ -39,10 +40,10 @@ class CustomUserAdmin(UserAdmin):
             }
         ),
         (
-            'Terms & Conditions',
+            'Terms & Conditions, Data Security Policy',
             {
                 'fields': (
-                    'accept_terms_and_conditions',
+                    'accept_terms_conditions_and_security_policy',
                 )
             }
         ),

@@ -78,7 +78,7 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
             created_date__year=date.year,
             created_date__month=date.month
         )
-        recurrent_obj = self.model.objects.filter(
+        recurrent_objs = self.model.objects.filter(
             user=self.request.user, recurrent=True,
             created_date__year=date.year,
             created_date__month=date.month
@@ -98,7 +98,7 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
             )
         total_obj = assembly(obj)
         total_obj_last_month = assembly(obj_last_month)
-        check_recurrent_or_new(self.request.user, recurrent_obj, self.model)
+        check_recurrent_or_new(self.request.user, recurrent_objs, self.model)
         context['title'] = self.model_name
         context['color'] = 'success'
         context['objects'] = obj
@@ -108,7 +108,13 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
         context['date'] = date
         return context
 
+
     def form_valid(self, form):
+        current_object_instance = form.save(commit=False)
+        old_object = self.model.objects.get(id=current_object_instance.id)
+        if old_object.recurrent:
+            if not current_object_instance.recurrent:
+                delete_recurrent_object(self.request.user, old_object, self.model)
         form.instance.user = self.request.user
         return super().form_valid(form)
 

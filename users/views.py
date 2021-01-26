@@ -19,8 +19,8 @@ from .models import (
     Income, Spending, Profile,
 )
 from .forms import (
-    UserUpdateForm, ProfileUpdateForm, IncomeCreateForm,
-    SpendingCreateForm
+    UserUpdateForm, ProfileUpdateForm, PhotoUpdateForm,
+    IncomeCreateForm, SpendingCreateForm
 )
 from .utils import (
     assembly, percentages_of_incomes, daily_avg,
@@ -74,8 +74,15 @@ class ProfileView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        user_update_form = UserUpdateForm(
+            request.POST,
+            instance=request.user
+        )
         profile_update_form = ProfileUpdateForm(
+            request.POST,
+            instance=request.user.profile
+        )
+        photo_update_form = PhotoUpdateForm(
             request.POST, request.FILES,
             instance=request.user.profile
         )
@@ -87,21 +94,32 @@ class ProfileView(LoginRequiredMixin, View):
                 'Your profile was updated successful!'
             )
             return redirect('profile')
+        if photo_update_form.is_valid():
+            photo_update_form.save()
+            messages.success(
+                request,
+                'Your profile picture was updated successful!'
+            )
+            return redirect('profile')
         context['user_update_form'] = user_update_form
         context['profile_update_form'] = profile_update_form
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         user_update_form = UserUpdateForm(
-            instance=self.request.user
+            instance = self.request.user
         )
         profile_update_form = ProfileUpdateForm(
-            instance=self.request.user.profile
+            instance = self.request.user.profile
+        )
+        photo_update_form = PhotoUpdateForm(
+            instance = self.request.user.profile
         )
         context = {
             'title' : template_titles['profile_title'],
             'user_update_form' : user_update_form,
             'profile_update_form' : profile_update_form,
+            'photo_update_form' : photo_update_form,
             'phone_number_help_text' : help_texts['phone_number']
         }
         return context

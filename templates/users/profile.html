@@ -14,19 +14,37 @@
         {% endif %}
     </div>
     <div class="row">
-        <div class="col-xl-5 col-lg-3">
+        <div class="col-xl-4 col-lg-3">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">
-                    <img class="img-profile rounded-circle" src="{{ user.profile.image.url }}">
+                <div class="text-center">
+                    <div class="card-body">
+                        <img height="150" width="150" class="img-profile rounded-circle mt-4" src="{{ user.profile.image.url }}">
+                        <form method="POST" enctype="multipart/form-data" id="uploadPhoto">
+                            <div class="form-row mt-4">
+                                <div class="form-group col-md-12">
+                                    {% csrf_token %}
+                                    {% if not user.email_verified %}
+                                        {% render_field photo_update_form.image class="custom-file-input" id="uploadProfileImage" disabled=True %}
+                                    {% else %}
+                                        {% render_field photo_update_form.image class="btn btn-sm btn-primary" id="uploadProfileImage" %}
+                                    {% endif %}
+                                    <!-- <label class="custom-file-label" for="uploadProfileImage">Choose file...</label> -->
+                                    {% for error in photo_update_form.image.errors %}
+                                        <small class="text-xs font-weight text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-7 col-lg-7">
+        <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -133,7 +151,7 @@
                                 <div class="form-group col-md-8">
                                     <label for="validatedCustomFile">Profile picture</label>
                                     <div class="custom-file">
-                                        {% if not user.email_verified %}
+                                        <!-- {% if not user.email_verified %}
                                             {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" disabled=True %}
                                         {% else %}
                                             {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" %}
@@ -141,7 +159,7 @@
                                         <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
                                         {% for error in profile_update_form.image.errors %}
                                             <small class="text-xs font-weight text-danger">{{ error }}</small>
-                                        {% endfor %}
+                                        {% endfor %} -->
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">

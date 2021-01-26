@@ -6,6 +6,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from common.constants import error_messages, help_texts
+from PIL import Image
+from django.core.files import File
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -76,7 +78,6 @@ class UserUpdateForm(forms.ModelForm):
         return last_name
 
 class ProfileUpdateForm(forms.ModelForm):
-    image = forms.ImageField(widget=forms.FileInput())
     description = forms.CharField(widget=forms.Textarea(
         attrs={'rows': 5, 'cols': 82}),
         help_text=help_texts['profile_description'],
@@ -91,6 +92,32 @@ class ProfileUpdateForm(forms.ModelForm):
             'currency',
         ]
 
+
+class PhotoUpdateForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.FileInput())
+    x = forms.FloatField(widget=forms.HiddenInput())
+    y = forms.FloatField(widget=forms.HiddenInput())
+    width = forms.FloatField(widget=forms.HiddenInput())
+    height = forms.FloatField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = Profile
+        fields = ['image', 'x', 'y', 'width', 'height']
+
+    def save(self):
+        photo = super().save()
+
+        x = self.cleaned_data.get('x')
+        y = self.cleaned_data.get('y')
+        width = self.cleaned_data.get('width')
+        height = self.cleaned_data.get('height')
+        cropped_size = (x, y, width+x, height+x)
+
+        image = Image.open(photo.file)
+        cropped_image = image.crop(cropped_size)
+        resized_image = image.resize((200, 200), Image.ANTIALIAS)
+        resized_image.save(photo.file.path)
+        return photo
 
 class IncomeCreateForm(forms.ModelForm):
     name = forms.CharField(

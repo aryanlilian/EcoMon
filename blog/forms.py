@@ -40,7 +40,7 @@ class PostCreateForm(forms.ModelForm):
 
 class CommentUpdateForm(forms.ModelForm):
     content = forms.CharField(
-        widget=forms.TextInput(attrs={'class' : 'form-control w-100', 'id' : 'commentContent', 'rows': 25, 'cols': 50}),
+        widget=forms.Textarea(attrs={'class' : 'form-control w-100', 'id' : 'commentContent', 'cols': 50, 'rows': 25}),
         help_text=help_texts['any_character'],
         label=''
     )

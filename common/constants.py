@@ -1,9 +1,4 @@
 from django.utils.translation import ugettext_lazy as _
-from users.models import Income, Spending
-
-
-income_obj = Income
-spending_obj = Spending
 
 
 error_messages = {
@@ -30,7 +25,7 @@ help_texts = {
     'any_character' : _('Required. Letters, digits and/or special characters'),
 }
 
-messages = {
+messages_text = {
     'email_exists' : 'This email is already subscribed in our system!',
     'email_subscribed' : 'Your email was subscribed in our system, you\'ll hear from us as soon as possible!',
     'email_received' : 'We\'ve received your email, you\'ll hear from us very soon!',

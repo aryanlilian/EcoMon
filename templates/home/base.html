@@ -78,8 +78,8 @@
 	</header>
 	<!--================ Header Menu Area End =================-->
 
-	{% if request.get_full_path == '/' %}
 		<!--================ Index Banner Section Area Start =================-->
+	{% if request.get_full_path == '/' %}
 		<section class="hero-banner text-center">
 			<div class="container">
 				{% if messages %}
@@ -87,7 +87,7 @@
 						<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
 						  {{ message }}
 						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						    <span aria-hidden="true">&times;</span>
+							<span aria-hidden="true">&times;</span>
 						  </button>
 						</div>
 					{% endfor %}
@@ -104,6 +104,18 @@
 	{% else %}
 		<!--================ Banner SM Section start =================-->
 		<section class="hero-banner hero-banner-sm text-center">
+			<div class="container">
+				{% if messages %}
+					{% for message in messages %}
+						<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+						  {{ message }}
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
 			<div class="container">
 				<h1>{{ banner_page_title }}</h1>
 				<nav aria-label="breadcrumb" class="banner-breadcrumb">
@@ -143,7 +155,7 @@
 				        <form method="POST">
 				        	{% csrf_token %}
 				            <div class="input-group">
-				            	<input type="email" class="form-control" name="email" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '">
+				            	<input type="email" class="form-control" name="newsletter_email" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address '">
 					            <div class="input-group-append">
 						            <button class="btn click-btn" type="submit">
 						            	<i class="ti-arrow-right"></i>

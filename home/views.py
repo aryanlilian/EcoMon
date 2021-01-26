@@ -7,10 +7,10 @@ from .models import Newsletter, Testimonial
 from users.forms import UserRegistrationForm
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from common.mixins import IsAuthenticatedMixin, SendEmailThreadMixin
-from common.constants import messages, template_titles, help_texts
+from common.constants import messages_text, template_titles, help_texts
 
 class IndexFormView(IsAuthenticatedMixin, View):
     template_name = 'home/index.html'
@@ -19,18 +19,29 @@ class IndexFormView(IsAuthenticatedMixin, View):
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        email = request.POST['email']
+        email = request.POST.get('newsletter_email')
         if Newsletter.objects.filter(email=email).exists():
-            messages.warning(request, messages['email_exists'])
+            messages.warning(request, messages_text['email_exists'])
         else:
             Newsletter.objects.create(email=email)
-            messages.success(request, messages['email_subscribed'])
+            messages.success(request, messages_text['email_subscribed'])
             return redirect('index')
         return render(request, self.template_name)
 
 
 class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
     template_name = 'home/about.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        email = request.POST.get('newsletter_email')
+        if Newsletter.objects.filter(email=email).exists():
+            messages.warning(request, messages_text['email_exists'])
+        else:
+            Newsletter.objects.create(email=email)
+            messages.success(request, messages_text['email_subscribed'])
+            return redirect('about')
+        return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,23 +59,29 @@ class ContactView(View):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        subject = request.POST['subject']
-        message = request.POST['message']
-        from_email = request.POST['email']
-        email_host = settings.EMAIL_HOST_USER
-        to_email = [settings.EMAIL_HOST_USER]
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        from_email = request.POST.get('email')
         success_message, error_message = None, None
-        try:
-            email = EmailMessage(
-                subject,
-                message + '\nsender: ' + from_email,
-                email_host,
-                to_email,
-            )
-            SendEmailThreadMixin(email).start()
-            success_message = messages['email_received']
-        except:
-            error_message = messages['fail_sent_email']
+        email = request.POST.get('newsletter_email')
+        if Newsletter.objects.filter(email=email).exists():
+            messages.warning(request, messages_text['email_exists'])
+        else:
+            Newsletter.objects.create(email=email)
+            messages.success(request, messages_text['email_subscribed'])
+            return redirect('contact')
+        if subject and message and email:
+            try:
+                send_mail(
+                    subject,
+                    message + '\nsender: ' + from_email,
+                    settings.EMAIL_HOST_USER,
+                    [settings.EMAIL_HOST_USER],
+                    fail_silently=False
+                )
+                success_message = messages_text['email_received']
+            except:
+                error_message = messages_text['fail_sent_email']
         context['success_message'] = success_message
         context['error_message'] = error_message
         return render(request, self.template_name, context)

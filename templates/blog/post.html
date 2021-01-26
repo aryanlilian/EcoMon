@@ -231,7 +231,7 @@
                             <div class="form-group">
                                 <textarea class="form-control w-100" name="commentContent"
                                     id="commentContent" cols="5" rows="4"
-                                    placeholder="Write Comment" {% if not user.email_verified %}readonly{% endif %}></textarea>
+                                    placeholder="Write Reply" {% if not user.email_verified %}readonly{% endif %} required></textarea>
                             </div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <textarea class="form-control w-100" name="commentContent" id="commentContent"
-                                cols="30" rows="9" placeholder="Write Comment" {% if not user.email_verified %}readonly{% endif %}></textarea>
+                                cols="30" rows="9" placeholder="Write Comment" {% if not user.email_verified %}readonly{% endif %} required></textarea>
                             <small class="text-xs font-weight text-secondary">{{ comment_content_help_text }}</small>
                         </div>
                     </div>

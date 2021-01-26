@@ -8,7 +8,9 @@ from .forms import PostCreateForm, CommentUpdateForm
 from .filters import PostFilterForm
 from common.mixins import IsSuperuserOrStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from common.constants import template_titles, help_texts
+from common.constants import template_titles, help_texts, messages_text
+from home.models import Newsletter
+from django.contrib import messages
 from django.views.generic import (
     ListView, DetailView, CreateView,
     UpdateView, DeleteView
@@ -23,6 +25,18 @@ class BlogListView(ListView):
     filterset_class = PostFilterForm
     post_search_title = None
 
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        context = self.get_context_data(**kwargs)
+        email = request.POST.get('newsletter_email')
+        if Newsletter.objects.filter(email=email).exists():
+            messages.warning(request, messages_text['email_exists'])
+        else:
+            Newsletter.objects.create(email=email)
+            messages.success(request, messages_text['email_subscribed'])
+            return redirect('blog')
+        return render(request, self.template_name, context)
+
     def get_queryset(self):
         queryset = super().get_queryset()
         self.post_search_title = self.filterset_class(self.request.GET, queryset=queryset)
@@ -31,22 +45,32 @@ class BlogListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['post_search_title'] = self.post_search_title
-        tags = Post.tags.most_common()[:8]
+        context['recent_posts'] = Post.objects.all()[:3]
         context['banner_page_title'] = template_titles['blog_title']
         context['page_location'] = template_titles['blog_path']
-        context['tags'] = tags
+        context['tags'] = Post.tags.most_common()[:8]
         return context
 
 
 class TaggedPostListView(BlogListView):
+
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        context = self.get_context_data(**kwargs)
+        email = request.POST.get('newsletter_email')
+        if Newsletter.objects.filter(email=email).exists():
+            messages.warning(request, messages_text['email_exists'])
+        else:
+            Newsletter.objects.create(email=email)
+            messages.success(request, messages_text['email_subscribed'])
+            return redirect('tag', kwargs['slug'])
+        return render(request, self.template_name, context)
 
     def get_queryset(self):
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
         tagged_post = Post.objects.filter(tags=tag)
         self.post_search_title = self.filterset_class(self.request.GET, queryset=tagged_post)
         return self.post_search_title.qs.distinct()
-
-
 
 
 class PostDetailView(View):
@@ -58,7 +82,14 @@ class PostDetailView(View):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        content, replied_comment = request.POST['commentContent'], None
+        content, replied_comment = request.POST.get('commentContent'), None
+        email = request.POST.get('newsletter_email')
+        if Newsletter.objects.filter(email=email).exists():
+            messages.warning(request, messages_text['email_exists'])
+        else:
+            Newsletter.objects.create(email=email)
+            messages.success(request, messages_text['email_subscribed'])
+            return redirect('post', kwargs['slug'])
         if content:
             comment_id = request.POST.get('commentId')
             post = Post.objects.get(slug=kwargs['slug'])

@@ -14,7 +14,7 @@ class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(), help_text=help_texts['email'])
     first_name = forms.CharField(widget=forms.TextInput(), help_text=help_texts['only_letters'])
     last_name = forms.CharField(widget=forms.TextInput(), help_text=help_texts['only_letters'])
-    marketing_email = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    send_marketing_emails = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
     accept_terms_and_conditions = forms.BooleanField(widget=forms.CheckboxInput())
 
     class Meta:
@@ -26,7 +26,7 @@ class UserRegistrationForm(UserCreationForm):
             'last_name',
             'password1',
             'password2',
-            'marketing_email',
+            'send_marketing_emails',
             'accept_terms_and_conditions'
         ]
 
@@ -78,6 +78,7 @@ class UserUpdateForm(forms.ModelForm):
         return last_name
 
 class ProfileUpdateForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.FileInput())
     description = forms.CharField(widget=forms.Textarea(
         attrs={'rows': 5, 'cols': 82}),
         help_text=help_texts['profile_description'],
@@ -93,12 +94,6 @@ class ProfileUpdateForm(forms.ModelForm):
         ]
 
 
-class PhotoUpdateForm(forms.ModelForm):
-    image = forms.ImageField(widget=forms.FileInput(), label='')
-    
-    class Meta:
-        model = Profile
-        fields = ['image']
 
 
 class IncomeCreateForm(forms.ModelForm):

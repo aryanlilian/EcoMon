@@ -1,5 +1,7 @@
 {% extends 'home/auth/base.html' %}
 {% load widget_tweaks %}
+{% load socialaccount %}
+{% providers_media_js %}
 {% block content %}
     <div class="card o-hidden border-0 shadow-lg my-5">
       <div class="card-body p-0">
@@ -58,7 +60,7 @@
                 <div class="form-group row">
                     <div class="col-sm-12 mb-6 mb-sm-0">
                         <div class="custom-control custom-checkbox">
-                            {% render_field form.marketing_email class="custom-control-input" id="marketingEmail" checked="True" %}
+                            {% render_field form.send_marketing_emails class="custom-control-input" id="marketingEmail" %}
                             <label class="custom-control-label ml-2 mt-1" for="marketingEmail">I agree to receive marketing emails from <strong>EcoMon</strong></label>
                             {% for error in form.marketing_email.errors %}
                                 <small class="text-xs font-weight text-danger">{{ error }}</small>
@@ -79,10 +81,10 @@
                 </div>
                 <input type="submit" name="Register" class="btn btn-primary btn-user btn-block" value="Register Account">
                 <hr>
-                <a href="index.html" class="btn btn-google btn-user btn-block">
+                <a href="{% provider_login_url "google" %}" class="btn btn-google btn-user btn-block">
                   <i class="fab fa-google fa-fw"></i> Register with Google
                 </a>
-                <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                <a href="{% provider_login_url "facebook" %}" class="btn btn-facebook btn-user btn-block">
                   <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                 </a>
               </form>

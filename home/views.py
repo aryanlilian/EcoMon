@@ -7,6 +7,7 @@ from .models import Newsletter, Testimonial
 from users.forms import UserRegistrationForm
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from common.mixins import IsAuthenticatedMixin, SendEmailThreadMixin
@@ -96,10 +97,21 @@ class ContactView(View):
         return context
 
 
-class UserResgistrationCreateView(IsAuthenticatedMixin, CreateView):
+class UserResgistrationCreateView(IsAuthenticatedMixin, SuccessMessageMixin, CreateView):
     template_name = 'home/auth/register.html'
     form_class = UserRegistrationForm
+    success_message = 'Account created successfully for "%(username)s"'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Register'
+        return context
 
 
 class UserLoginView(IsAuthenticatedMixin, LoginView):
     template_name = 'home/auth/login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Login'
+        return context

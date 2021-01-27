@@ -7,6 +7,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from six import text_type
 from threading import Thread
 from users.models import Profile
+from django.http import Http404
 from users.utils import (
     assembly, percentages_of_incomes, days_of_month,
     daily_avg, max_amount, check_recurrent_or_new,
@@ -164,12 +165,20 @@ class IsSuperuserOrStaffMixin(AccessMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser or not request.user.is_staff:
-            return redirect('blog')
+            raise Http404('This page doesn\'t exist')
         return super().dispatch(request, *args, **kwargs)
 
 
 class IsEmailVerifiedMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.email_verified:
-            return redirect('dashboard')
+            raise Http404('This page doesn\'t exist')
         return super().dispatch(request, *args, **kwargs)
+
+def isNotAdmin(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if not request.user.is_superuser or not request.user.is_staff:
+            raise Http404()
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper_func

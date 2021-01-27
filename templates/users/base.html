@@ -266,9 +266,8 @@
     <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
     <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
-
     <script type="text/javascript">
-        // Call the dataTables jQuery plugin
+    // Call the dataTables jQuery plugin
         $(document).ready(function() {
           $('#incomesAndSpendingsDataTable').DataTable();
         });
@@ -280,7 +279,6 @@
         $(document).ready(function() {
           $('#spendingsArchiveDataTable').DataTable();
         });
-
 
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -316,11 +314,11 @@
             'months': [],
             'values': [],
         }
-        var incomesCharAreaURL = '/users/dashboard/incomes-chart-area'
+        var incomesChartAreaURL = '/users/dashboard/incomes-chart-area'
 
         $.ajax({
             method: 'GET',
-            url: incomesCharAreaURL,
+            url: incomesChartAreaURL,
             success: function (response) {
                 for (var i in response) {
                     var key = Object.keys(response[i])[0]
@@ -423,65 +421,6 @@
             });
         }
 
-
-        // Set new default font family and font color to mimic Bootstrap's default styling
-        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-        Chart.defaults.global.defaultFontColor = '#858796';
-
-        // Pie Chart Example
-        var incomes_pie = {
-            'names': [],
-            'values': [],
-        }
-        var incomesChartPieURL = '/users/dashboard/incomes-chart-pie'
-
-        $.ajax({
-            method: 'GET',
-            url: incomesChartPieURL,
-            success: function (response) {
-                for (var i in response) {
-                    var key = Object.keys(response[i])[0]
-                    var value = Object.values(response[i])[0]
-                    incomes_pie.names.push(key)
-                    incomes_pie.values.push(value)
-                }
-                buildIncomesChartPie()
-            }
-        })
-        function buildIncomesChartPie() {
-            var ctx = document.getElementById("incomesPieChart");
-            var myPieChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: incomes_pie.names,
-                    datasets: [{
-                        data: incomes_pie.values,
-                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                        hoverBorderColor: "rgba(234, 236, 244, 1)",
-                    }],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    tooltips: {
-                        backgroundColor: "rgb(255,255,255)",
-                        bodyFontColor: "#858796",
-                        borderColor: '#dddfeb',
-                        borderWidth: 1,
-                        xPadding: 15,
-                        yPadding: 15,
-                        displayColors: false,
-                        caretPadding: 10,
-                    },
-                    legend: {
-                        display: false
-                    },
-                    cutoutPercentage: 80,
-                },
-            });
-        }
-
-
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#858796';
@@ -516,11 +455,11 @@
             'months': [],
             'values': [],
         }
-        var spendingsCharAreaURL = '/users/dashboard/spendings-chart-area'
+        var spendingsChartAreaURL = '/users/dashboard/spendings-chart-area'
 
         $.ajax({
             method: 'GET',
-            url: spendingsCharAreaURL,
+            url: spendingsChartAreaURL,
             success: function (response) {
                 for (var i in response) {
                     var key = Object.keys(response[i])[0]
@@ -620,6 +559,63 @@
                         }
                     }
                 }
+            });
+        }
+
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        // Pie Chart Example
+        var incomes_pie = {
+            'names': [],
+            'values': [],
+        }
+        var incomesChartPieURL = '/users/dashboard/incomes-chart-pie'
+
+        $.ajax({
+            method: 'GET',
+            url: incomesChartPieURL,
+            success: function (response) {
+                for (var i in response) {
+                    var key = Object.keys(response[i])[0]
+                    var value = Object.values(response[i])[0]
+                    incomes_pie.names.push(key)
+                    incomes_pie.values.push(value)
+                }
+                buildIncomesChartPie()
+            }
+        })
+        function buildIncomesChartPie() {
+            var ctx = document.getElementById("incomesPieChart");
+            var myPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: incomes_pie.names,
+                    datasets: [{
+                        data: incomes_pie.values,
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: false
+                    },
+                    cutoutPercentage: 80,
+                },
             });
         }
 

@@ -103,6 +103,7 @@ class ProfileView(LoginRequiredMixin, View):
             return redirect('profile')
         context['user_update_form'] = user_update_form
         context['profile_update_form'] = profile_update_form
+        context['photo_update_form'] = photo_update_form
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):

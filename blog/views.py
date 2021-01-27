@@ -83,13 +83,6 @@ class PostDetailView(View):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         content, replied_comment = request.POST.get('commentContent'), None
-        email = request.POST.get('newsletter_email')
-        if Newsletter.objects.filter(email=email).exists():
-            messages.warning(request, messages_text['email_exists'])
-        else:
-            Newsletter.objects.create(email=email)
-            messages.success(request, messages_text['email_subscribed'])
-            return redirect('post', kwargs['slug'])
         if content:
             comment_id = request.POST.get('commentId')
             post = Post.objects.get(slug=kwargs['slug'])

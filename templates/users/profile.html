@@ -21,26 +21,25 @@
                     <h6 class="m-0 font-weight-bold text-primary">Profile Picture</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="text-center">
-                    <div class="card-body">
-                        <img height="150" width="150" class="img-profile rounded-circle mt-4" src="{{ user.profile.image.url }}">
-                        <form method="POST" enctype="multipart/form-data" id="uploadPhoto">
-                            <div class="form-row mt-4">
-                                <div class="form-group col-md-12">
-                                    {% csrf_token %}
-                                    {% if not user.email_verified %}
-                                        {% render_field photo_update_form.image class="custom-file-input" id="uploadProfileImage" disabled=True %}
-                                    {% else %}
-                                        {% render_field photo_update_form.image class="btn btn-sm btn-primary" id="uploadProfileImage" %}
-                                    {% endif %}
-                                    <!-- <label class="custom-file-label" for="uploadProfileImage">Choose file...</label> -->
-                                    {% for error in photo_update_form.image.errors %}
-                                        <small class="text-xs font-weight text-danger">{{ error }}</small>
-                                    {% endfor %}
-                                </div>
+                <div class="card-body text-center">
+                    <img height="150" width="150" class="img-profile rounded-circle mt-4" src="{{ user.profile.image.url }}">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-row mt-4">
+                            <div class="form-group col-md-12">
+                                {% csrf_token %}
+                                {% if not user.email_verified %}
+                                    {% render_field photo_update_form.image class="custom-file-input" id="uploadProfileImage" disabled=True %}
+                                {% else %}
+                                    {% render_field photo_update_form.image class="custom-file-input" id="uploadProfileImage" %}
+                                {% endif %}
+                                <label class="custom-file-label" for="uploadProfileImage">Choose file...</label>
+                                {% for error in photo_update_form.image.errors %}
+                                    <small class="text-xs font-weight text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" name="button" class="btn btn-md btn-primary" {% if not user.email_verified %}disabled{% endif %}>Save photo</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -148,21 +147,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
-                                    <label for="validatedCustomFile">Profile picture</label>
-                                    <div class="custom-file">
-                                        <!-- {% if not user.email_verified %}
-                                            {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" disabled=True %}
-                                        {% else %}
-                                            {% render_field profile_update_form.image class="custom-file-input" id="validatedCustomFile" %}
-                                        {% endif %}
-                                        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                                        {% for error in profile_update_form.image.errors %}
-                                            <small class="text-xs font-weight text-danger">{{ error }}</small>
-                                        {% endfor %} -->
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-12">
                                     <label for="currency">Currency</label>
                                     {% if not user.email_verified %}
                                         {% render_field profile_update_form.currency id="currency" class="form-control" disabled=True %}

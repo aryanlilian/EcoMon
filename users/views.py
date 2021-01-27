@@ -205,6 +205,7 @@ class EmailVerificationView(LoginRequiredMixin, IsEmailVerifiedMixin, View):
             [to_email],
         )
         SendEmailThreadMixin(email).start()
+        messages.info(request, 'We\'ve sent you an email for verification, check your inbox!')
         return redirect('dashboard')
 
 

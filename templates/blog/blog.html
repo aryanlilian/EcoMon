@@ -27,7 +27,7 @@
                             <a class="d-inline-block" href="{% url 'post' post.slug %}">
                                 <h2>{{ post.title }}</h2>
                             </a>
-                            <p>{{ post.content|truncatechars:200 }}</p>
+                            <p>{{ post.content|truncatechars:190 }}</p>
                             <ul class="blog-info-link">
                               <li><i class="ti-user"> {{ post.author.username }}</i></li>
                               {% if post.comments_count %}
@@ -99,9 +99,9 @@
                           <h3 class="widget_title">Recent Post</h3>
                           {% for post in recent_posts %}
                             <div class="media post_item">
-                              <img src="" alt="post">
+                              <img src="{% static 'img/blog/prev.jpg' %}" alt="post">
                               <div class="media-body">
-                                  <a href="single-blog.html">
+                                  <a href="{% url 'post' post.slug %}">
                                       <h3>{{ post.title }}</h3>
                                   </a>
                                   <p>{{ post.date_posted|date:"F m, Y" }}</p>

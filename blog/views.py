@@ -45,7 +45,7 @@ class BlogListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['post_search_title'] = self.post_search_title
-        context['recent_posts'] = Post.objects.all()[:3]
+        context['recent_posts'] = Post.objects.order_by('-published_date')[:3]
         context['banner_page_title'] = template_titles['blog_title']
         context['page_location'] = template_titles['blog_path']
         context['tags'] = Post.tags.most_common()[:8]

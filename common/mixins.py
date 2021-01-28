@@ -170,15 +170,8 @@ class IsSuperuserOrStaffMixin(AccessMixin):
 
 
 class IsEmailVerifiedMixin(AccessMixin):
+    
     def dispatch(self, request, *args, **kwargs):
         if request.user.email_verified:
             raise Http404('This page doesn\'t exist')
         return super().dispatch(request, *args, **kwargs)
-
-def isNotAdmin(view_func):
-    def wrapper_func(request, *args, **kwargs):
-        if not request.user.is_superuser or not request.user.is_staff:
-            raise Http404()
-        else:
-            return view_func(request, *args, **kwargs)
-    return wrapper_func

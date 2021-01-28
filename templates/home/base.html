@@ -33,9 +33,9 @@
 	  <nav class="navbar navbar-expand-lg navbar-light">
 	    <div class="container box_1620">
 	    	{% if user.is_authenticated %}
-	    		<a class="navbar-brand logo_h" href="{% url 'dashboard' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+	    		<a class="navbar-brand logo_h" href="{% url 'dashboard' %}"><img src="{% static 'img/logo.png' %}" width="130" alt=""></a>
 	    	{% else %}
-	    		<a class="navbar-brand logo_h" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+	    		<a class="navbar-brand logo_h" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" width="130" alt=""></a>
 	    	{% endif %}
 
 			<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
@@ -138,14 +138,18 @@
 				<div class="col-xl-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
 					<h4>About Us</h4>
 	      				<p>Heaven fruitful doesn't over lesser days appear creeping seasons so behold bearing days open</p>
-	      				<a class="navbar-brand logo_h d-none d-xl-block" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+						{% if user.is_authenticated %}
+							<a class="navbar-brand logo_h d-none d-xl-block" href="{% url 'dashboard' %}"><img src="{% static 'img/logo.png' %}" width="130" alt=""></a>
+						{% else %}
+							<a class="navbar-brand logo_h d-none d-xl-block" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" width="130" alt=""></a>
+						{% endif %}
 				</div>
 				<div class="col-xl-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
 					<h4>Contact Info</h4>
 					<ul>
-						<li>Address: Your address goes here, your demo address.</li>
-						<li><a href="tel:+88044338899">Phone: +880 44338899</a></li>
-						<li><a href="mailto:info@colorlib.com">Email: info@colorlib.com</a></li>
+						<li>Address: Our address</li>
+						<li><a href="tel:+88044338899">Phone: +123456789</a></li>
+						<li><a href="">Email: name@example.com</a></li>
 					</ul>
 				</div>
 				<div class="offset-xl-1 col-xl-4 col-sm-6 mb-4 mb-xl-0 single-footer-widget">

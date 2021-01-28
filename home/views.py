@@ -47,6 +47,7 @@ class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['banner_page_title'] = template_titles['about_title']
+        context['title'] = template_titles['about_title']
         context['page_location'] = template_titles['about_path']
         return context
 
@@ -90,6 +91,7 @@ class ContactView(View):
     def get_context_data(self, **kwargs):
         context = {
             'banner_page_title': template_titles['contact_title'],
+            'title' : template_titles['contact_title'],
             'page_location': template_titles['contact_path'],
             'comment_email' : help_texts['email'],
             'comment_any_character' : help_texts['any_character']

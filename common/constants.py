@@ -10,7 +10,7 @@ error_messages = {
 
 email_activation = {
     'subject' : 'Email activation!',
-    'body' : 'Hello, We\'ve sent you this email because you need to activate your account from EcoMon, copy this number:\n',
+    'body' : 'Hello, EcoMon here! \n\nWe\'ve sent you this email because you requested an email ctivation link \n\nClick the link down below for activation:\n\n',
 }
 
 help_texts = {
@@ -30,11 +30,15 @@ messages_text = {
     'email_subscribed' : 'Your email was subscribed in our system, you\'ll hear from us as soon as possible!',
     'email_received' : 'We\'ve received your email, you\'ll hear from us very soon!',
     'fail_sent_email' : 'Something didn\'t work, please try later!',
+    'profile_updated' : 'Your profile was updated successfully',
 }
 
 template_titles = {
     'blog_title' : 'Blog',
     'blog_path' : 'home / blog',
+    'post_title' : 'Post',
+    'post_create' : 'Add Post',
+    'post_update' : 'Update Post',
     'post_path' : 'home / post',
     'no_previous_post' : 'No previous post',
     'no_next_post' : 'No next post',
@@ -43,5 +47,8 @@ template_titles = {
     'contact_title' : 'Contact',
     'contact_path' : 'home / contact',
     'dashboard_title' : 'Dashboard',
+    'incomes_title' : 'Incomes',
+    'spendings_title' : 'Spendings',
     'profile_title' : 'Profile',
+    'archive_title' : 'Archive',
 }

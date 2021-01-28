@@ -28,6 +28,7 @@ from .utils import (
 )
 from common.constants import (
     template_titles, help_texts, email_activation,
+    messages_text
 )
 
 
@@ -87,7 +88,7 @@ class ProfileView(LoginRequiredMixin, View):
             profile_update_form.save()
             messages.success(
                 request,
-                'Your profile was updated successfuly!'
+                messages_text['profile_updated']
             )
             return redirect('profile')
         context['user_update_form'] = user_update_form
@@ -113,24 +114,24 @@ class ProfileView(LoginRequiredMixin, View):
 class IncomesCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     model = Income
     form_class = IncomeCreateForm
-    model_name = 'Incomes'
+    model_name = template_titles['incomes_title']
     color = 'primary'
 
 
 class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     model = Spending
     form_class = SpendingCreateForm
-    model_name = 'Spendings'
+    model_name = template_titles['spendings_title']
     color = 'danger'
 
 
 class IncomeUpdateView(ObjectUpdateViewMixin):
     model = Income
-    model_name = 'Incomes'
+    model_name = template_titles['incomes_title']
 
 class SpendingUpdateView(ObjectUpdateViewMixin):
     model = Spending
-    model_name = 'Spendings'
+    model_name = template_titles['spendings_title']
 
 class IncomeDeleteView(ObjectDeleteViewMixin):
     model = Income
@@ -179,7 +180,8 @@ class ArchiveView(LoginRequiredMixin, View):
 
     def get_context_data(self, **kwargs):
         context = {
-            'currency': Profile.objects.get(user=self.request.user).currency
+            'currency': Profile.objects.get(user=self.request.user).currency,
+            'title' : template_titles['archive_title']
         }
         return context
 

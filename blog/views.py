@@ -48,6 +48,7 @@ class BlogListView(ListView):
         context['recent_posts'] = Post.objects.order_by('-published_date')[:3]
         context['banner_page_title'] = template_titles['blog_title']
         context['page_location'] = template_titles['blog_path']
+        context['title'] = template_titles['blog_title']
         context['tags'] = Post.tags.most_common()[:8]
         return context
 
@@ -108,6 +109,7 @@ class PostDetailView(View):
         except:
             context['next_post_none'] = template_titles['no_next_post']
         context['banner_page_title'] = post.title
+        context['title'] = template_titles['post_title']
         context['page_location'] = template_titles['post_path']
         context['post'] = post
         context['comments'] = Comment.objects.filter(post=post, reply=None)
@@ -121,6 +123,12 @@ class PostCreateView(LoginRequiredMixin, IsSuperuserOrStaffMixin, CreateView):
     template_name = 'blog/add_post.html'
     form_class = PostCreateForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['banner_page_title'] = template_titles['post_create']
+        context['title'] = template_titles['post_title']
+        return context
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -130,6 +138,12 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = 'blog/add_post.html'
     form_class = PostCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['banner_page_title'] = template_titles['post_update']
+        context['title'] = template_titles['post_title']
+        return context
 
     def form_valid(self, form):
         form.instance.author = self.request.user

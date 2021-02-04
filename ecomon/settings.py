@@ -184,15 +184,23 @@ LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 
-EMAIL_HOST = 'smtp.gmail.com'
+from credentials import (
+    email_host,
+    email_host_user,
+    email_host_password,
+    email_port,
+    email_use_tls
+)
 
-EMAIL_HOST_USER = 'ecomon.services@gmail.com'
+EMAIL_HOST = email_host
 
-EMAIL_HOST_PASSWORD = 'svzxpyhmkfhimcot'
+EMAIL_HOST_USER = email_host_user
 
-EMAIL_PORT = 587
+EMAIL_HOST_PASSWORD = email_host_password
 
-EMAIL_USE_TLS = True
+EMAIL_PORT = email_port
+
+EMAIL_USE_TLS = email_use_tls
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

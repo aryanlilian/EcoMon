@@ -8,9 +8,11 @@ from .forms import PostCreateForm, CommentUpdateForm
 from .filters import PostFilterForm
 from common.mixins import IsSuperuserOrStaffMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from common.constants import template_titles, help_texts, messages_text
+from common.constants import template_titles, help_texts, messages_text, newsletter_texts
 from home.models import Newsletter
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from django.views.generic import (
     ListView, DetailView, CreateView,
     UpdateView, DeleteView
@@ -32,8 +34,22 @@ class BlogListView(ListView):
         if Newsletter.objects.filter(email=email).exists():
             messages.warning(request, messages_text['email_exists'])
         else:
-            Newsletter.objects.create(email=email)
-            messages.success(request, messages_text['email_subscribed'])
+            fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            for line in fin:
+                newsletter_email_content += line.replace('user_email', email)
+            try:
+                subject = newsletter_texts['subject']
+                send_mail(
+                    subject,
+                    newsletter_email_content,
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False
+                )
+                Newsletter.objects.create(email=email)
+                messages.success(request, messages_text['email_subscribed'])
+            except:
+                messages.warning(request, messages_text['fail_sent_email'])
             return redirect('blog')
         return render(request, self.template_name, context)
 
@@ -62,8 +78,22 @@ class TaggedPostListView(BlogListView):
         if Newsletter.objects.filter(email=email).exists():
             messages.warning(request, messages_text['email_exists'])
         else:
-            Newsletter.objects.create(email=email)
-            messages.success(request, messages_text['email_subscribed'])
+            fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            for line in fin:
+                newsletter_email_content += line.replace('user_email', email)
+            try:
+                subject = newsletter_texts['subject']
+                send_mail(
+                    subject,
+                    newsletter_email_content,
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False
+                )
+                Newsletter.objects.create(email=email)
+                messages.success(request, messages_text['email_subscribed'])
+            except:
+                messages.warning(request, messages_text['fail_sent_email'])
             return redirect('tag', kwargs['slug'])
         return render(request, self.template_name, context)
 

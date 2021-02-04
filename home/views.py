@@ -8,10 +8,10 @@ from users.forms import UserRegistrationForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import send_mail
 from django.conf import settings
 from common.mixins import IsAuthenticatedMixin, SendEmailThreadMixin
-from common.constants import messages_text, template_titles, help_texts
+from common.constants import messages_text, template_titles, help_texts, newsletter_texts
 
 class IndexFormView(IsAuthenticatedMixin, View):
     template_name = 'home/index.html'
@@ -24,8 +24,22 @@ class IndexFormView(IsAuthenticatedMixin, View):
         if Newsletter.objects.filter(email=email).exists():
             messages.warning(request, messages_text['email_exists'])
         else:
-            Newsletter.objects.create(email=email)
-            messages.success(request, messages_text['email_subscribed'])
+            fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            for line in fin:
+                newsletter_email_content += line.replace('user_email', email)
+            try:
+                subject = newsletter_texts['subject']
+                send_mail(
+                    subject,
+                    newsletter_email_content,
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False
+                )
+                Newsletter.objects.create(email=email)
+                messages.success(request, messages_text['email_subscribed'])
+            except:
+                messages.warning(request, messages_text['fail_sent_email'])
             return redirect('index')
         return render(request, self.template_name)
 
@@ -39,8 +53,22 @@ class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
         if Newsletter.objects.filter(email=email).exists():
             messages.warning(request, messages_text['email_exists'])
         else:
-            Newsletter.objects.create(email=email)
-            messages.success(request, messages_text['email_subscribed'])
+            fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            for line in fin:
+                newsletter_email_content += line.replace('user_email', email)
+            try:
+                subject = newsletter_texts['subject']
+                send_mail(
+                    subject,
+                    newsletter_email_content,
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False
+                )
+                Newsletter.objects.create(email=email)
+                messages.success(request, messages_text['email_subscribed'])
+            except:
+                messages.warning(request, messages_text['fail_sent_email'])
             return redirect('about')
         return render(request, self.template_name, context)
 
@@ -69,10 +97,24 @@ class ContactView(View):
         if Newsletter.objects.filter(email=email).exists():
             messages.warning(request, messages_text['email_exists'])
         else:
-            Newsletter.objects.create(email=email)
-            messages.success(request, messages_text['email_subscribed'])
+            fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            for line in fin:
+                newsletter_email_content += line.replace('user_email', email)
+            try:
+                subject = newsletter_texts['subject']
+                send_mail(
+                    subject,
+                    newsletter_email_content,
+                    settings.EMAIL_HOST_USER,
+                    [email],
+                    fail_silently=False
+                )
+                Newsletter.objects.create(email=email)
+                messages.success(request, messages_text['email_subscribed'])
+            except:
+                messages.warning(request, messages_text['fail_sent_email'])
             return redirect('contact')
-        if subject and message and email:
+        if subject and message and from_email:
             try:
                 send_mail(
                     subject,
@@ -97,6 +139,19 @@ class ContactView(View):
             'comment_any_character' : help_texts['any_character']
         }
         return context
+
+
+class NewsletterUnsubscribeView(View):
+
+    def get(self, request, *args, **kwargs):
+        email = kwargs['email']
+        try:
+            newsletter = Newsletter.objects.get(email=email)
+            newsletter.delete()
+            messages.warning(request, newsletter_texts['unsubscribe'])
+        except:
+            messages.warning(request, newsletter_texts['email_don\'t_exists'])
+        return redirect('index')
 
 
 class UserResgistrationCreateView(IsAuthenticatedMixin, SuccessMessageMixin, CreateView):

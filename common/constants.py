@@ -13,6 +13,12 @@ email_activation = {
     'body' : 'Hello, EcoMon here! \n\nWe\'ve sent you this email because you requested an email ctivation link \n\nClick the link down below for activation:\n\n',
 }
 
+newsletter_texts = {
+    'subject' : 'Welcome to our Newsletter',
+    'unsubscribe' : 'Sorry to see you go!',
+    'email_don\'t_exists' : 'This email address is not subscribed to our system!'
+}
+
 help_texts = {
     'email' : _('Required. A valid email (e.g name@example.com).'),
     'only_letters' : _('Required. 100 characters or fewer. Letters only.'),

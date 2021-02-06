@@ -7,5 +7,3 @@ Thank you for choosing us!
 
 If you don't want to get news from our newsletter or you by mistake have subsribred to our newsletter,
 click the link below to unsubsribe:
-
-http://localhost:8000/unsubsribe/user_email

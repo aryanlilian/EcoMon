@@ -1,5 +1,9 @@
 from calendar import monthrange
 from datetime import datetime
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+import common.mixins as token_mixin
+from django.urls import reverse
 
 
 def assembly(obj):
@@ -51,3 +55,20 @@ def delete_recurrent_object(user, obj, model):
         created_date=date, category=obj.category, recurrent=True
     )
     object.delete()
+
+
+def uidb_token_generator(link, token=None, request=None):
+    if request is not None:
+        uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
+        token_generator = token_mixin.EmailTokenGenerator()
+        relatively_url = reverse(
+            link, kwargs={'uidb64' : uidb64, 'token' : token_generator.make_token(token)}
+        )
+    else:
+        if token is not None:
+            uidb64 = urlsafe_base64_encode(force_bytes(token))
+            relatively_url = reverse(
+                link, kwargs={'uidb64' : uidb64}
+            )
+    activate_url = 'http://localhost:8000' + relatively_url
+    return activate_url

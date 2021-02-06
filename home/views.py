@@ -10,8 +10,11 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.conf import settings
-from common.mixins import IsAuthenticatedMixin, SendEmailThreadMixin
+from common.mixins import IsAuthenticatedMixin, SendEmailThreadMixin, EmailTokenGenerator
 from common.constants import messages_text, template_titles, help_texts, newsletter_texts
+from common.utils import uidb_token_generator
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 
 class IndexFormView(IsAuthenticatedMixin, View):
     template_name = 'home/index.html'
@@ -25,8 +28,10 @@ class IndexFormView(IsAuthenticatedMixin, View):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            unsubsribe_url = uidb_token_generator('unsubsribe', email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
+            newsletter_email_content += '\n' + unsubsribe_url
             try:
                 subject = newsletter_texts['subject']
                 send_mail(
@@ -54,8 +59,10 @@ class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            unsubsribe_url = uidb_token_generator('unsubsribe', email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
+            newsletter_email_content += '\n' + unsubsribe_url
             try:
                 subject = newsletter_texts['subject']
                 send_mail(
@@ -98,8 +105,10 @@ class ContactView(View):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            unsubsribe_url = uidb_token_generator('unsubsribe', email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
+            newsletter_email_content += '\n' + unsubsribe_url
             try:
                 subject = newsletter_texts['subject']
                 send_mail(
@@ -141,18 +150,20 @@ class ContactView(View):
         return context
 
 
-class NewsletterUnsubscribeView(View):
+class NewsletterUnsubscribeView(IsAuthenticatedMixin, View):
 
-    def get(self, request, *args, **kwargs):
-        email = kwargs['email']
+    def get(self, request, uidb64):
         try:
-            newsletter = Newsletter.objects.get(email=email)
-            newsletter.delete()
-            messages.warning(request, newsletter_texts['unsubscribe'])
-        except:
-            messages.warning(request, newsletter_texts['email_don\'t_exists'])
+            email = force_text(urlsafe_base64_decode(uidb64))
+            try:
+                newsletter = Newsletter.objects.get(email=email)
+                newsletter.delete()
+                messages.warning(request, newsletter_texts['unsubscribe'])
+            except:
+                messages.warning(request, newsletter_texts['email_don\'t_exists'])
+        except Exception as e:
+            messages.info(request, 'Something went wrong!')
         return redirect('index')
-
 
 class UserResgistrationCreateView(IsAuthenticatedMixin, SuccessMessageMixin, CreateView):
     template_name = 'home/auth/register.html'

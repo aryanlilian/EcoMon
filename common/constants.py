@@ -10,7 +10,9 @@ error_messages = {
 
 email_activation = {
     'subject' : 'Email activation!',
-    'body' : 'Hello, EcoMon here! \n\nWe\'ve sent you this email because you requested an email ctivation link \n\nClick the link down below for activation:\n\n',
+    'email_sent' : 'We\'ve sent you an email for verification, check your inbox!',
+    'link_used' : 'You\'ve already used the activation link, your email is verified!',
+    'email_verified' : 'Your email was verified successfuly!',
 }
 
 newsletter_texts = {

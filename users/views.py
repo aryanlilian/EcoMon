@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from datetime import datetime
 from django.views import View
 from django.shortcuts import render, redirect
@@ -8,9 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from random import randint
 from django.core.mail import EmailMessage
 from django.conf import settings
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 from common.mixins import (
     ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin,
     EmailTokenGenerator, IsEmailVerifiedMixin, SendEmailThreadMixin
@@ -22,9 +21,9 @@ from .forms import (
     UserUpdateForm, ProfileUpdateForm, IncomeCreateForm,
     SpendingCreateForm
 )
-from .utils import (
+from common.utils import (
     assembly, percentages_of_incomes, daily_avg,
-    max_amount,
+    max_amount, uidb_token_generator,
 )
 from common.constants import (
     template_titles, help_texts, email_activation,
@@ -189,16 +188,12 @@ class ArchiveView(LoginRequiredMixin, View):
 class EmailVerificationView(LoginRequiredMixin, IsEmailVerifiedMixin, View):
 
     def get(self, request, *args, **kwargs):
-        domain = get_current_site(request).domain
-        token_generator = EmailTokenGenerator()
-        uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
-        relatively_url = reverse(
-            'send-or-verify-email-verification',
-            kwargs={'uidb64' : uidb64, 'token' : token_generator.make_token(request.user)}
-        )
-        activate_url = 'http://' + domain + relatively_url
+        fin, body = open('common/emails/email_opt_verification.txt', 'rt'), ''
+        activate_url = uidb_token_generator('send-or-verify-email-verification', request.user, request)
         subject = email_activation['subject']
-        body = email_activation['body'] + activate_url
+        for line in fin:
+            body += line.replace('username', request.user.username)
+        body += '\n' + activate_url
         to_email = request.user.email
         email = EmailMessage(
             subject,
@@ -207,7 +202,7 @@ class EmailVerificationView(LoginRequiredMixin, IsEmailVerifiedMixin, View):
             [to_email],
         )
         SendEmailThreadMixin(email).start()
-        messages.info(request, 'We\'ve sent you an email for verification, check your inbox!')
+        messages.info(request, email_activation['email_sent'])
         return redirect('dashboard')
 
 
@@ -219,11 +214,11 @@ class SendOrVerifyEmailVerificationView(LoginRequiredMixin, View):
             user = User.objects.get(id=id)
             token_generator = EmailTokenGenerator()
             if not token_generator.check_token(user, token):
-                messages.error(request, 'You\'ve already used the activation link, your email is verified!')
+                messages.error(request, email_activation['link_used'])
                 return redirect('dashboard')
             user.email_verified = True
             user.save()
-            messages.success(request, 'Your email was verified successfuly!')
+            messages.success(request, email_activation['email_verified'])
         except Exception as e:
             messages.info(request, 'Something went wrong!')
         return redirect('dashboard')

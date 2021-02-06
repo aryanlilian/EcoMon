@@ -12,6 +12,7 @@ from common.constants import template_titles, help_texts, messages_text, newslet
 from home.models import Newsletter
 from django.contrib import messages
 from django.core.mail import send_mail
+from common.utils import uidb_token_generator
 from django.conf import settings
 from django.views.generic import (
     ListView, DetailView, CreateView,
@@ -35,8 +36,10 @@ class BlogListView(ListView):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            unsubsribe_url = uidb_token_generator('unsubsribe', email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
+            newsletter_email_content += '\n' + unsubsribe_url
             try:
                 subject = newsletter_texts['subject']
                 send_mail(
@@ -79,8 +82,10 @@ class TaggedPostListView(BlogListView):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
+            unsubsribe_url = uidb_token_generator('unsubsribe', email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
+            newsletter_email_content += '\n' + unsubsribe_url
             try:
                 subject = newsletter_texts['subject']
                 send_mail(

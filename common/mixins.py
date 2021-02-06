@@ -8,7 +8,7 @@ from six import text_type
 from threading import Thread
 from users.models import Profile
 from django.http import Http404
-from users.utils import (
+from .utils import (
     assembly, percentages_of_incomes, days_of_month,
     daily_avg, max_amount, check_recurrent_or_new,
     delete_recurrent_object
@@ -170,7 +170,7 @@ class IsSuperuserOrStaffMixin(AccessMixin):
 
 
 class IsEmailVerifiedMixin(AccessMixin):
-    
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.email_verified:
             raise Http404('This page doesn\'t exist')

@@ -5,7 +5,14 @@ error_messages = {
     'first_name' : _('First name can contain only letters.'),
     'last_name' : _('Last name can contain only letters.'),
     'required' : _('This field is required!'),
-    'post_title_size' : _('The length of the title can\'t be longer then 200 characters')
+    'post_title_size' : _('The length of the title can\'t be longer then 200 characters'),
+    'no_image' : _('Required. Upload an image!'),
+    'full_image_width' : _('The image is %i pixel wide. Needs to be 1920px!'),
+    'full_image_height' : _('The image is %i pixel high. Needs to be 1080px!'),
+    'medium_image_width' : _('The image is %i pixel wide. Needs to be 750px!'),
+    'medium_image_height' : _('The image is %i pixel high. Needs to be 375px!'),
+    'small_image_width' : _('The image is %i pixel wide. Needs to be 60px!'),
+    'small_image_height' : _('The image is %i pixel high. Needs to be 60px!'),
 }
 
 email_activation = {
@@ -30,7 +37,10 @@ help_texts = {
     'obj_name' : _('Required. 100 characters or fewer. Letters, digits and/or @/./+/-/_ only.'),
     'obj_amount' : _('Required. 10 digits or fewer and/or 3 decimals or fewer.'),
     'post_title' : _('Required. 200 characters or fewer. Letters, digits and/or @/./+/-/_ only.'),
-    'any_character' : _('Required. Letters, digits and/or special characters'),
+    'any_character' : _('Required. Letters, digits and/or special characters.'),
+    'full_image' : _('Required. Upload an image with 1920x1080 resolution.'),
+    'medium_image' : _('Required. Upload an image with 750x375 resolution.'),
+    'small_image' : _('Required. Upload an image with 60x60 resolution.'),
 }
 
 messages_text = {

@@ -6,7 +6,7 @@
   <div class="container">
         <div class="single-post">
           <div class="feature-img">
-            <img class="img-fluid" src="{% static 'img/blog/waterfall.jpg' %}" alt="">
+            <img class="img-fluid" src="{{ post.full_image.url }}" alt="">
           </div>
           <div class="blog_details">
             <h2>{{ post.title }}</h2>

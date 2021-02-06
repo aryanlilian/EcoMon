@@ -183,3 +183,25 @@ class UserLoginView(IsAuthenticatedMixin, LoginView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Login'
         return context
+
+
+class TermsAndConditionsTemplateView(TemplateView):
+    template_name = 'home/terms_and_conditions.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['banner_page_title'] = template_titles['terms_and_conditions_title']
+        context['title'] = template_titles['terms_and_conditions_title']
+        context['page_location'] = template_titles['terms_and_conditions_path']
+        return context
+
+
+class PrivacyPolicyTemplateView(TemplateView):
+    template_name = 'home/privacy_policy.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['banner_page_title'] = template_titles['privacy_policy_title']
+        context['title'] = template_titles['privacy_policy_title']
+        context['page_location'] = template_titles['privacy_policy_path']
+        return context

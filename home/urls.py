@@ -7,7 +7,9 @@ from .views import (
     ContactView,
     NewsletterUnsubscribeView,
     UserResgistrationCreateView,
-    UserLoginView
+    UserLoginView,
+    TermsAndConditionsTemplateView,
+    PrivacyPolicyTemplateView,
 )
 
 urlpatterns = [
@@ -22,4 +24,6 @@ urlpatterns = [
     path('auth/password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='home/auth/password_reset_done.html'), name='password_reset_done'),
     path('auth/password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='home/auth/password_reset_confirm.html', form_class=UserSetPasswordForm), name='password_reset_confirm'),
     path('auth/password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='home/auth/password_reset_complete.html'), name='password_reset_complete'),
+    path('terms-and-conditions/', TermsAndConditionsTemplateView.as_view(), name='terms-and-conditions'),
+    path('privacy-policy/', PrivacyPolicyTemplateView.as_view(), name='privacy-policy'),
 ]

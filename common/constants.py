@@ -69,4 +69,8 @@ template_titles = {
     'spendings_title' : 'Spendings',
     'profile_title' : 'Profile',
     'archive_title' : 'Archive',
+    'terms_and_conditions_title' : 'Terms & Conditions',
+    'terms_and_conditions_path' : 'home / terms-and-conditions',
+    'privacy_policy_title' : 'Privacy Policy',
+    'privacy_policy_path' : 'home / privacy-policy',
 }

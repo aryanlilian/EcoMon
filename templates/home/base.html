@@ -69,7 +69,13 @@
 				</ul>
 
 				<div class="nav-right text-center text-lg-right py-4 py-lg-0">
-					<a class="button button-outline button-small" href="{% url 'login' %}">Login</a>
+					<a class="button button-outline button-small" href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}">
+						{% if user.is_authenticated %}
+							Profile
+						{% else %}
+							Login
+						{% endif %}
+					</a>
 				</div>
 			</div>
 	    </div>

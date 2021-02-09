@@ -36,7 +36,7 @@ class BlogListView(ListView):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
-            unsubsribe_url = uidb_token_generator('unsubsribe', email)
+            unsubsribe_url = uidb_token_generator('unsubsribe', request, email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
             newsletter_email_content += '\n' + unsubsribe_url
@@ -82,7 +82,7 @@ class TaggedPostListView(BlogListView):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
-            unsubsribe_url = uidb_token_generator('unsubsribe', email)
+            unsubsribe_url = uidb_token_generator('unsubsribe', request, email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
             newsletter_email_content += '\n' + unsubsribe_url

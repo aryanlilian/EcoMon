@@ -189,7 +189,7 @@ class EmailVerificationView(LoginRequiredMixin, IsEmailVerifiedMixin, View):
 
     def get(self, request, *args, **kwargs):
         fin, body = open('common/emails/email_opt_verification.txt', 'rt'), ''
-        activate_url = uidb_token_generator('send-or-verify-email-verification', request.user, request)
+        activate_url = uidb_token_generator('send-or-verify-email-verification', request)
         subject = email_activation['subject']
         for line in fin:
             body += line.replace('username', request.user.username)

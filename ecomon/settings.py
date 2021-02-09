@@ -184,23 +184,17 @@ LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 
-from credentials import (
-    email_host,
-    email_host_user,
-    email_host_password,
-    email_port,
-    email_use_tls
-)
+EMAIL_HOST = ''
 
-EMAIL_HOST = email_host
+EMAIL_HOST_USER = ''
 
-EMAIL_HOST_USER = email_host_user
+EMAIL_CONTACT_HOST_USER = ''
 
-EMAIL_HOST_PASSWORD = email_host_password
+EMAIL_HOST_PASSWORD = ''
 
-EMAIL_PORT = email_port
+EMAIL_PORT = 587
 
-EMAIL_USE_TLS = email_use_tls
+EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

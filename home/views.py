@@ -28,7 +28,7 @@ class IndexFormView(IsAuthenticatedMixin, View):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
-            unsubsribe_url = uidb_token_generator('unsubsribe', email)
+            unsubsribe_url = uidb_token_generator('unsubsribe', request, email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
             newsletter_email_content += '\n' + unsubsribe_url
@@ -59,7 +59,7 @@ class AboutTemplateView(IsAuthenticatedMixin, TemplateView):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
-            unsubsribe_url = uidb_token_generator('unsubsribe', email)
+            unsubsribe_url = uidb_token_generator('unsubsribe', request, email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
             newsletter_email_content += '\n' + unsubsribe_url
@@ -105,7 +105,7 @@ class ContactView(View):
             messages.warning(request, messages_text['email_exists'])
         else:
             fin, newsletter_email_content = open('common/emails/newsletter_welcome.txt', 'rt'), ''
-            unsubsribe_url = uidb_token_generator('unsubsribe', email)
+            unsubsribe_url = uidb_token_generator('unsubsribe', request, email)
             for line in fin:
                 newsletter_email_content += line.replace('user_email', email)
             newsletter_email_content += '\n' + unsubsribe_url
@@ -123,13 +123,13 @@ class ContactView(View):
             except:
                 messages.warning(request, messages_text['fail_sent_email'])
             return redirect('contact')
-        if subject and message and from_email:
+        if subject and message and from_email and not email:
             try:
                 send_mail(
                     subject,
                     message + '\nsender: ' + from_email,
                     settings.EMAIL_HOST_USER,
-                    [settings.EMAIL_HOST_USER],
+                    [settings.EMAIL_CONTACT_HOST_USER],
                     fail_silently=False
                 )
                 success_message = messages_text['email_received']

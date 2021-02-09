@@ -13,6 +13,8 @@ error_messages = {
     'medium_image_height' : _('The image is %i pixel high. Needs to be 375px!'),
     'small_image_width' : _('The image is %i pixel wide. Needs to be 60px!'),
     'small_image_height' : _('The image is %i pixel high. Needs to be 60px!'),
+    'profile_image_width' : _('The image is %i pixel wide. Needs to be 150px!'),
+    'profile_image_height' : _('The image is %i pixel high. Needs to be 150px!'),
 }
 
 email_activation = {
@@ -32,7 +34,7 @@ help_texts = {
     'email' : _('Required. A valid email (e.g name@example.com).'),
     'only_letters' : _('Required. 100 characters or fewer. Letters only.'),
     'phone_number' : _('Required. prefix + number (e.g. +40123456789).'),
-    'date' : _('Required. A valid date (e.g. 2001-04-23), YYYY/MM/DD.'),
+    'date' : _('Required. A valid date (e.g. 2001-04-23), YYYY-MM-DD.'),
     'profile_description' : _('Optional. Letters, digits and/or @/./+/-/_ only.'),
     'obj_name' : _('Required. 100 characters or fewer. Letters, digits and/or @/./+/-/_ only.'),
     'obj_amount' : _('Required. 10 digits or fewer and/or 3 decimals or fewer.'),

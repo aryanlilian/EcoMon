@@ -117,9 +117,9 @@
                                 <div class="form-group col-md-6">
                                     <label for="birthday">Birthday</label>
                                     {% if not user.email_verified %}
-                                        {% render_field user_update_form.birth_date class="form-control" placeholder="06/01/2002" id="birthday" readonly=True %}
+                                        {% render_field user_update_form.birth_date class="form-control" placeholder="2001-01-18" id="birthday" readonly=True %}
                                     {% else %}
-                                        {% render_field user_update_form.birth_date class="form-control" placeholder="06/01/2002" id="birthday" %}
+                                        {% render_field user_update_form.birth_date class="form-control" placeholder="2001-01-18" id="birthday" %}
                                     {% endif %}
                                     {% for error in user_update_form.birth_date.errors %}
                                         <small class="text-xs font-weight text-danger">{{ error }}</small>

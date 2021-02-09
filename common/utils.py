@@ -2,8 +2,9 @@ from calendar import monthrange
 from datetime import datetime
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-import common.mixins as token_mixin
+from . import mixins
 from django.urls import reverse
+from django.contrib.sites.shortcuts import get_current_site
 
 
 def assembly(obj):
@@ -57,18 +58,18 @@ def delete_recurrent_object(user, obj, model):
     object.delete()
 
 
-def uidb_token_generator(link, token=None, request=None):
-    if request is not None:
+def uidb_token_generator(link, request, token=None):
+    domain = get_current_site(request).domain
+    if token is None:
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
-        token_generator = token_mixin.EmailTokenGenerator()
+        token_generator = mixins.EmailTokenGenerator()
         relatively_url = reverse(
-            link, kwargs={'uidb64' : uidb64, 'token' : token_generator.make_token(token)}
+            link, kwargs={'uidb64' : uidb64, 'token' : token_generator.make_token(request.user)}
         )
     else:
-        if token is not None:
-            uidb64 = urlsafe_base64_encode(force_bytes(token))
-            relatively_url = reverse(
-                link, kwargs={'uidb64' : uidb64}
-            )
-    activate_url = 'http://localhost:8000' + relatively_url
+        uidb64 = urlsafe_base64_encode(force_bytes(token))
+        relatively_url = reverse(
+            link, kwargs={'uidb64' : uidb64}
+        )
+    activate_url = 'http://' + domain + relatively_url
     return activate_url

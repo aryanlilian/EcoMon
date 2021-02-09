@@ -6,8 +6,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from common.constants import error_messages, help_texts
-from PIL import Image
-from django.core.files import File
+from django.core.files.images import get_image_dimensions
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -85,6 +84,27 @@ class ProfileUpdateForm(forms.ModelForm):
         required=False
     )
 
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if not image:
+            raise ValidationError(
+                error_messages['no_image'],
+                code='image_empty'
+            )
+        else:
+            width, height = get_image_dimensions(image)
+            if width != 150:
+                raise ValidationError(
+                    error_messages['profile_image_width'] % width,
+                    code='image_invalid_width'
+                )
+            if height != 150:
+                raise ValidationError(
+                    error_messages['profile_image_height'] % height,
+                    code='image_invalid_height'
+                )
+        return full_image
+
     class Meta:
         model = Profile
         fields = [
@@ -92,8 +112,6 @@ class ProfileUpdateForm(forms.ModelForm):
             'description',
             'currency',
         ]
-
-
 
 
 class IncomeCreateForm(forms.ModelForm):

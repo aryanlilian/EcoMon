@@ -1,5 +1,7 @@
 # EcoMon
 
+EcoMon Live link: http://eco-mon.herokuapp.com/
+
 First steps to do when setting the EcoMon project on your local machine with Django
 
 ## Getting Started

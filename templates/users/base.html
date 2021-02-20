@@ -72,6 +72,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">All Pages:</h6>
                         <a class="collapse-item" href="{% url 'profile' %}">Profile</a>
+                        <a class="collapse-item" href="{% url 'accounts' %}">Accounts</a>
                         <a class="collapse-item" href="{% url 'incomes' %}">Incomes</a>
                         <a class="collapse-item" href="{% url 'spendings' %}">Spendings</a>
                         <a class="collapse-item" href="{% url 'archive' %}">Archive</a>
@@ -250,7 +251,7 @@
         <script src="{% static 'vendor/chart.js/Chart.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/demo/chart-pie-demo.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/demo/chart-area-demo.js' %}" type="text/javascript"></script>
-    {% elif request.get_full_path == '/users/incomes/' or request.get_full_path == '/users/spendings/' or request.get_full_path == '/users/archive/' %}
+    {% elif request.get_full_path == '/users/incomes/new/' or request.get_full_path == '/users/spendings/new/' or request.get_full_path == '/users/accounts/new/' or request.get_full_path == '/users/archive/' %}
         <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/demo/datatables-demo.js' %}" type="text/javascript"></script>

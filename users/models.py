@@ -123,16 +123,29 @@ class Account(models.Model):
         USD = 'USD', _('USD')
         ZAR = 'ZAR', _('ZAR')
 
+    class Category(models.TextChoices):
+        PERSONAL = _('Personal')
+        WORK = _('Work')
+        INVESTMENTS = _('Investments')
+        CHILDREN = _('Children')
+        OTHER = _('Other')
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(_('Name'), max_length=200)
+    name = models.CharField(_('Name'), max_length=200, unique=True)
     created_date = models.DateTimeField(_('Created Date/Time'), auto_now_add=True)
     updated_date = models.DateTimeField(_('Updated Date/Time'), auto_now=True)
+    category = models.CharField(
+        _('Category'), max_length=11, choices=Category.choices, default=Category.PERSONAL
+    )
     currency = models.CharField(
         _('Currency'), max_length=3, choices=Currency.choices, default=Currency.USD
     )
 
     def __str__(self):
         return f'{self.name} - {self.currency}'
+
+    def get_absolute_url(self):
+        return reverse('accounts')
 
 
 class Income(models.Model):

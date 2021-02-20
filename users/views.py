@@ -1,9 +1,10 @@
 from django.urls import reverse_lazy
 from datetime import datetime
 from django.views import View
+from django.views.generic import CreateView, UpdateView
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Income, Spending, User
+from .models import Income, Spending, User, Account
 from django.contrib.auth.mixins import LoginRequiredMixin
 from random import randint
 from django.core.mail import EmailMessage
@@ -19,7 +20,7 @@ from .models import (
 )
 from .forms import (
     UserUpdateForm, ProfileUpdateForm, IncomeCreateForm,
-    SpendingCreateForm
+    SpendingCreateForm, AccountCreateForm
 )
 from common.utils import (
     assembly, percentages_of_incomes, daily_avg,
@@ -124,13 +125,30 @@ class SpendingsCreateListView(LoginRequiredMixin, ObjectCreateListViewMixin):
     color = 'danger'
 
 
+class AccountCreateView(LoginRequiredMixin, CreateView):
+    model = Account
+    form_class = AccountCreateForm
+    template_name = 'users/create-update-list-objects.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['objects'] = Account.objects.filter(user=self.request.user)
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
 class IncomeUpdateView(ObjectUpdateViewMixin):
     model = Income
     model_name = template_titles['incomes_title']
 
+
 class SpendingUpdateView(ObjectUpdateViewMixin):
     model = Spending
     model_name = template_titles['spendings_title']
+
 
 class IncomeDeleteView(ObjectDeleteViewMixin):
     model = Income

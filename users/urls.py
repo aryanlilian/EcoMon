@@ -1,9 +1,9 @@
 from django.urls import path
 from .views import (
     DashboardView, ProfileView, IncomesCreateListView,
-    SpendingsCreateListView, IncomeUpdateView, SpendingUpdateView,
-    IncomeDeleteView, SpendingDeleteView, ArchiveView,
-    EmailVerificationView, SendOrVerifyEmailVerificationView
+    SpendingsCreateListView, AccountCreateView, IncomeUpdateView,
+    SpendingUpdateView, IncomeDeleteView, SpendingDeleteView,
+    ArchiveView, EmailVerificationView, SendOrVerifyEmailVerificationView
 )
 from .helpers import (
     incomes_chart_area, incomes_chart_pie, spendings_chart_area,
@@ -17,8 +17,9 @@ urlpatterns = [
     path('dashboard/incomes-chart-pie/', incomes_chart_pie, name='incomes-chart-pie'),
     path('dashboard/spendings-chart-area/', spendings_chart_area, name='spendings-chart-area'),
     path('dashboard/spendings-chart-pie/', spendings_chart_pie, name='spendings-chart-pie'),
-    path('incomes/', IncomesCreateListView.as_view(), name='incomes'),
-    path('spendings/', SpendingsCreateListView.as_view(), name='spendings'),
+    path('incomes/new/', IncomesCreateListView.as_view(), name='incomes'),
+    path('spendings/new/', SpendingsCreateListView.as_view(), name='spendings'),
+    path('accounts/new/', AccountCreateView.as_view(), name='accounts'),
     path('incomes/update/<int:pk>/', IncomeUpdateView.as_view(), name='update-income'),
     path('spendings/update/<int:pk>/', SpendingUpdateView.as_view(), name='update-spending'),
     path('incomes/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),

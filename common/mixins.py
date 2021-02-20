@@ -20,7 +20,7 @@ class ObjectCreateListViewMixin(CreateView):
     form_class = None
     model_name = None
     color = None
-    template_name = 'users/incomes_and_spendings.html'
+    template_name = 'users/create-update-list-objects.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,7 +67,7 @@ class ObjectCreateListViewMixin(CreateView):
 
 class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
     model = None
-    template_name = 'users/incomes_and_spendings.html'
+    template_name = 'users/create-update-list-objects.html'
     fields = ['name', 'amount', 'category', 'recurrent']
     model_name = None
 

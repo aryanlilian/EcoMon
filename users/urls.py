@@ -2,8 +2,9 @@ from django.urls import path
 from .views import (
     DashboardView, ProfileView, IncomesCreateListView,
     SpendingsCreateListView, AccountCreateView, IncomeUpdateView,
-    SpendingUpdateView, IncomeDeleteView, SpendingDeleteView,
-    ArchiveView, EmailVerificationView, SendOrVerifyEmailVerificationView
+    SpendingUpdateView, AccountUpdateView, IncomeDeleteView,
+    SpendingDeleteView, ArchiveView, EmailVerificationView,
+    SendOrVerifyEmailVerificationView
 )
 from .helpers import (
     incomes_chart_area, incomes_chart_pie, spendings_chart_area,
@@ -22,6 +23,7 @@ urlpatterns = [
     path('accounts/new/', AccountCreateView.as_view(), name='accounts'),
     path('incomes/update/<int:pk>/', IncomeUpdateView.as_view(), name='update-income'),
     path('spendings/update/<int:pk>/', SpendingUpdateView.as_view(), name='update-spending'),
+    path('accounts/update/<int:pk>/', AccountUpdateView.as_view(), name='update-account'),
     path('incomes/delete/<int:pk>/', IncomeDeleteView.as_view(), name='delete-income'),
     path('spendings/delete/<int:pk>/', SpendingDeleteView.as_view(), name='delete-spending'),
     path('archive/', ArchiveView.as_view(), name='archive'),

@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form id="form-center" action="" method="POST">
+<form id="form-center" method="POST">
     {% csrf_token %}
     <div class="form-row">
         <div class="form-group col-md-4">
@@ -48,7 +48,7 @@
         </div>
         <div class="form-group col-md-12">
             <input type="submit" class="btn btn-{{ color }} btn-lg btn-block" {% if not user.email_verified %}disabled{% endif %}
-            value="{% if request.get_full_path == '/users/incomes/' or request.get_full_path == '/users/spendings/' %}Add {{ title|slice:':-1' }}{% else %}Update{% endif %}">
+            value="{% if request.get_full_path == '/users/incomes/new/' or request.get_full_path == '/users/spendings/new/' %}Add {{ title|slice:':-1' }}{% else %}Update{% endif %}">
         </div>
     </div>
 </form>

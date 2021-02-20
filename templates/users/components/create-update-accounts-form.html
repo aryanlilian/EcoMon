@@ -32,7 +32,7 @@
             <small class="text-xs font-weight text-secondary">{{ form.category.help_text }}</small>
         </div>
         <div class="form-group col-md-12">
-            <input type="submit" class="btn btn-info btn-lg btn-block" {% if not user.email_verified %}disabled{% endif %} value="Add Account">
+            <input type="submit" class="btn {% if request.get_full_path == '/users/accounts/new/' %}btn-info{% else %}btn-success{% endif %} btn-lg btn-block" {% if not user.email_verified %}disabled{% endif %} value="{% if request.get_full_path == '/users/accounts/new/' %}Add Account{% else %}Update Account{% endif %}">
         </div>
     </div>
 </form>

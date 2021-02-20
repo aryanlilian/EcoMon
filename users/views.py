@@ -1,7 +1,6 @@
 from django.urls import reverse_lazy
 from datetime import datetime
 from django.views import View
-from django.views.generic import CreateView, UpdateView
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Income, Spending, User, Account
@@ -11,6 +10,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
+from django.views.generic import CreateView, UpdateView, DeleteView
 from common.mixins import (
     ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin,
     EmailTokenGenerator, IsEmailVerifiedMixin, SendEmailThreadMixin
@@ -138,6 +138,20 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class AccountUpdateView(LoginRequiredMixin, UpdateView):
+    model = Account
+    template_name = 'users/create-update-list-objects.html'
+    fields = ['name', 'category', 'currency']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['objects'] = Account.objects.filter(user=self.request.user)
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
 
 
 class IncomeUpdateView(ObjectUpdateViewMixin):

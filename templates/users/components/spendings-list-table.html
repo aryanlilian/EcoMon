@@ -43,11 +43,7 @@
                     <td class="text-center">{{ object.amount }}</td>
                     <td class="text-center">{{ object.category }}</td>
                     <td class="text-center">
-                        {% if object.recurrent == True %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
+                        {% if object.recurrent == True %}Yes{% else %}No{% endif %}
                     </td>
                     <td class="text-center">{{ object.created_date|date:"F-d-Y" }}</td>
                     {% if request.get_full_path == '/users/spendings/new/' %}

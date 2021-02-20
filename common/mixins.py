@@ -105,6 +105,7 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
         context['objects'] = obj
         context['total_sum'] = total_obj
         context['currency'] = currency
+        context['object'] = self.get_object()
         context['total_sum_last_month'] = total_obj_last_month
         context['date'] = date
         return context

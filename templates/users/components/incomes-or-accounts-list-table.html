@@ -58,7 +58,7 @@
           {% for object in objects %}
             <div class="row">
                 <tr>
-                    <td class="text-center">{{ object.name }}</td>
+                    <td class="text-center">{% if '/users/accounts/new/' in request.get_full_path %}<a href="{% url 'dashboard' object.id %}">{{ object.name }}</a>{% else %}{{ object.name }}{% endif %}</td>
                     {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path %}
                         <td class="text-center">{{ object.amount }}</td>
                     {% endif %}

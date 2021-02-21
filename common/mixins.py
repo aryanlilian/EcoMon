@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import AccessMixin
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin

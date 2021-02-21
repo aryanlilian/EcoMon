@@ -1,7 +1,7 @@
 {% extends 'users/base.html' %}
 {% block content %}
 	<div class="container">
-		{% if request.get_full_path == '/users/incomes/new/' or request.get_full_path == '/users/spendings/new/' or '/users/incomes/update/' in request.get_full_path or '/users/spendings/update/' in request.get_full_path %}
+		{% if '/users/incomes/new/' in request.get_full_path or '/users/spendings/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path or '/users/spendings/update/' in request.get_full_path %}
 			{% include 'users/components/create-update-incomes-and-spendings-form.html' %}
 		{% else %}
 			{% include 'users/components/create-update-accounts-form.html' %}
@@ -9,7 +9,7 @@
 		<br>
 		<hr>
 
-		{% if request.get_full_path == '/users/incomes/new/' or request.get_full_path == '/users/spendings/new/' or '/users/incomes/update/' in request.get_full_path or '/users/spendings/update/' in request.get_full_path %}
+		{% if '/users/incomes/new/' in request.get_full_path or '/users/spendings/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path or '/users/spendings/update/' in request.get_full_path %}
 			<div class="row">
 
 				<div class="col-xl-6 col-md-6 mb-4">
@@ -47,7 +47,7 @@
 			</div>
 		{% endif %}
 
-		{% if request.get_full_path == '/users/spendings/new/' or '/users/spendings/update/' in request.get_full_path %}
+		{% if '/users/spendings/new/' in request.get_full_path or '/users/spendings/update/' in request.get_full_path %}
 			{% include 'users/components/spendings-list-table.html' %}
 		{% else %}
 			{% include 'users/components/incomes-or-accounts-list-table.html' %}

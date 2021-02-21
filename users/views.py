@@ -10,7 +10,9 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    CreateView, UpdateView, DeleteView, ListView
+)
 from common.mixins import (
     ObjectCreateListViewMixin, ObjectUpdateViewMixin, ObjectDeleteViewMixin,
     EmailTokenGenerator, IsEmailVerifiedMixin, SendEmailThreadMixin
@@ -32,19 +34,33 @@ from common.constants import (
 )
 
 
+class AccountsListView(LoginRequiredMixin, ListView):
+    model = Account
+    context_object_name = 'accounts'
+    template_name = 'users/accounts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = template_titles['accounts_title']
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+
 
 class DashboardView(LoginRequiredMixin, View):
     template_name ='users/dashboard.html'
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         date = datetime.now()
+        account = Account.objects.get(id=kwargs['pk'])
         incomes = Income.objects.filter(
-            user=request.user, created_date__year=date.year, created_date__month=date.month
+            user=request.user, account=account, created_date__year=date.year, created_date__month=date.month
         )
         spendings = Spending.objects.filter(
-            user=request.user, created_date__year=date.year, created_date__month=date.month
+            user=request.user, account=account, created_date__year=date.year, created_date__month=date.month
         )
-        currency = Profile.objects.get(user=self.request.user).currency
+        currency = account.currency
         total_incomes, total_spendings = assembly(incomes), assembly(spendings)
         total_savings = total_incomes - total_spendings
         spendings_percent = percentages_of_incomes(total_incomes, total_spendings)
@@ -52,6 +68,7 @@ class DashboardView(LoginRequiredMixin, View):
         max_income, max_spending = max_amount(incomes), max_amount(spendings)
         context = {
             'title': template_titles['dashboard_title'],
+            'account' : account,
             'incomes': incomes,
             'spendings': spendings,
             'currency': currency,

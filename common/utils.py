@@ -28,7 +28,7 @@ def max_amount(objs=None):
         return max(i.amount for i in objs)
 
 
-def check_recurrent_or_new(user, objs, model):
+def check_recurrent_or_new(user, objs, model, account):
     for item in objs:
         date_test = item.created_date.month == 12
         date = datetime(
@@ -38,7 +38,7 @@ def check_recurrent_or_new(user, objs, model):
             item.created_date.microsecond
         )
         obj,created = model.objects.get_or_create(
-            user=user, name=item.name, amount=item.amount,
+            user=user, account=account, name=item.name, amount=item.amount,
             created_date=date, category=item.category, recurrent=True
         )
 

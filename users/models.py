@@ -169,6 +169,7 @@ class Income(models.Model):
         OTHERS = _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='incomes')
     name = models.CharField(_('Name'), max_length=100)
     amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
     recurrent = models.BooleanField(_('Recurrent Income'), default=False)
@@ -184,7 +185,7 @@ class Income(models.Model):
         return f'{self.name} - {self.user.username}'
 
     def get_absolute_url(self):
-        return reverse('incomes')
+        return reverse('incomes', kwargs={'pk' : self.account.pk})
 
     def update_url(self):
         return reverse('update-income', kwargs={'pk': self.pk})
@@ -207,6 +208,7 @@ class Spending(models.Model):
         OTHERS = _('Others')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='spendings')
     name = models.CharField(_('Name'), max_length=50)
     amount = models.DecimalField(_('Amount'), max_digits=10, decimal_places=3)
     recurrent = models.BooleanField(_('Recurrent Spending'), default=False)
@@ -222,7 +224,7 @@ class Spending(models.Model):
         return f'{self.name} - {self.user.username}'
 
     def get_absolute_url(self):
-        return reverse('spendings')
+        return reverse('spendings', kwargs={'pk' : self.account.pk})
 
     def update_url(self):
         return reverse('update-spending', kwargs={'pk': self.pk})

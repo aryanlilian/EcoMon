@@ -137,6 +137,7 @@ class IncomeCreateForm(forms.ModelForm):
         model = Income
         exclude = [
             'user',
+            'account',
             'created_date'
         ]
 
@@ -165,6 +166,7 @@ class SpendingCreateForm(forms.ModelForm):
         model = Spending
         exclude = [
             'user',
+            'account',
             'created_date'
         ]
 

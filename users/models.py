@@ -188,7 +188,7 @@ class Income(models.Model):
         return reverse('incomes', kwargs={'pk' : self.account.pk})
 
     def update_url(self):
-        return reverse('update-income', kwargs={'pk': self.pk})
+        return reverse('update-income', kwargs={'pk': self.pk, 'id' : self.account.pk})
 
     def delete_url(self):
         return reverse('delete-income', kwargs={'pk': self.pk})
@@ -227,7 +227,7 @@ class Spending(models.Model):
         return reverse('spendings', kwargs={'pk' : self.account.pk})
 
     def update_url(self):
-        return reverse('update-spending', kwargs={'pk': self.pk})
+        return reverse('update-spending', kwargs={'pk': self.pk, 'id': self.account.pk})
 
     def delete_url(self):
         return reverse('delete-spending', kwargs={'pk': self.pk})

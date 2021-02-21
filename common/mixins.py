@@ -81,35 +81,42 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        account = Account.objects.get(id=self.kwargs['id'])
         date = datetime.now()
         obj = self.model.objects.filter(
             user=self.request.user,
+            account=account,
             created_date__year=date.year,
             created_date__month=date.month
         )
         recurrent_objs = self.model.objects.filter(
-            user=self.request.user, recurrent=True,
+            user=self.request.user,
+            account=account,
+            recurrent=True,
             created_date__year=date.year,
             created_date__month=date.month
         )
-        currency = Profile.objects.get(user=self.request.user).currency
+        currency = account.currency
         if date.month == 1:
             obj_last_month = self.model.objects.filter(
                 user=self.request.user,
+                account=account,
                 created_date__year=date.year - 1,
                 created_date__month=date.month + 11
             )
         else:
             obj_last_month = self.model.objects.filter(
                 user=self.request.user,
+                account=account,
                 created_date__year=date.year,
                 created_date__month=date.month - 1
             )
         total_obj = assembly(obj)
         total_obj_last_month = assembly(obj_last_month)
-        check_recurrent_or_new(self.request.user, recurrent_objs, self.model)
+        check_recurrent_or_new(self.request.user, recurrent_objs, self.model, account)
         context['title'] = self.model_name
         context['color'] = 'success'
+        context['account'] = account
         context['objects'] = obj
         context['total_sum'] = total_obj
         context['currency'] = currency
@@ -119,12 +126,14 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
 
 
     def form_valid(self, form):
+        account = Account.objects.get(id=self.kwargs['id'])
         current_object_instance = form.save(commit=False)
         old_object = self.model.objects.get(id=current_object_instance.id)
         if old_object.recurrent:
             if not current_object_instance.recurrent:
-                delete_recurrent_object(self.request.user, old_object, self.model)
+                delete_recurrent_object(self.request.user, old_object, self.model, account)
         form.instance.user = self.request.user
+        form.instance.account = account
         return super().form_valid(form)
 
     def get_queryset(self, *args, **kwargs):

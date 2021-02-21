@@ -7,7 +7,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            {% if request.get_full_path == '/users/dashboard/' %}
+                            {% if '/users/dashboard/' in request.get_full_path %}
                                 Incomes ({{ currency }}) Monthly
                             {% else %}
                                 Total Archive Incomes ({{ currency }})
@@ -30,7 +30,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                            {% if request.get_full_path == '/users/dashboard/' %}
+                            {% if '/users/dashboard/' in request.get_full_path %}
                                 Spendings ({{ currency }}) Monthly
                             {% else %}
                                 Total Archive Spendings ({{ currency }})
@@ -53,7 +53,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            {% if request.get_full_path == '/users/dashboard/' %}
+                            {% if '/users/dashboard/' in request.get_full_path %}
                                 Savings ({{ currency }}) Monthly
                             {% else %}
                                 Total Archive Savings  ({{ currency }})

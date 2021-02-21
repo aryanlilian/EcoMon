@@ -43,7 +43,7 @@ def check_recurrent_or_new(user, objs, model, account):
         )
 
 
-def delete_recurrent_object(user, obj, model):
+def delete_recurrent_object(user, obj, model, account):
     date_test = obj.created_date.month == 12
     date = datetime(
         obj.created_date.year + 1 if date_test else obj.created_date.year,
@@ -52,7 +52,7 @@ def delete_recurrent_object(user, obj, model):
         obj.created_date.microsecond
     )
     object = model.objects.get(
-        user=user, name=obj.name, amount=obj.amount,
+        user=user, account=account, name=obj.name, amount=obj.amount,
         created_date=date, category=obj.category, recurrent=True
     )
     object.delete()

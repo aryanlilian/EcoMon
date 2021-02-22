@@ -74,8 +74,8 @@
                         {% if request.get_full_path != '/users/profile/' %}
                             <a class="collapse-item" href="{% url 'profile' %}">Profile</a>
                         {% endif %}
-                        {% if request.get_full_path != '/users/accounts/new/' %}
-                            <a class="collapse-item" href="{% url 'accounts-new' %}">Add Accounts</a>
+                        {% if request.get_full_path != '/users/accounts/new/' and request.get_full_path != '/users/accounts/' %}
+                            <a class="collapse-item" href="{% url 'add-accounts' %}">Add Accounts</a>
                         {% endif %}
                         {% if '/users/dashboard/' in request.get_full_path %}
                             <a class="collapse-item" href="{% url 'incomes' account.id %}">Add Incomes</a>

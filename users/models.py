@@ -145,7 +145,7 @@ class Account(models.Model):
         return f'{self.name} - {self.currency}'
 
     def get_absolute_url(self):
-        return reverse('accounts')
+        return reverse('add-accounts')
 
     def update_url(self):
         return reverse('update-account', kwargs={'pk' : self.pk})

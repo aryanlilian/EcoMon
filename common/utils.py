@@ -5,6 +5,7 @@ from django.utils.http import urlsafe_base64_encode
 from . import mixins
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from currency_converter import CurrencyConverter
 
 
 def assembly(obj):
@@ -73,3 +74,13 @@ def uidb_token_generator(link, request, token=None):
         )
     activate_url = 'http://' + domain + relatively_url
     return activate_url
+
+
+def total_currency_converter(user, object, accounts, profile_currency):
+    total_sum, converter = 0, CurrencyConverter()
+    for account in accounts:
+        filtered_objects = object.objects.filter(user=user, account=account)
+        total_filtered_objects = assembly(filtered_objects)
+        total_converted = converter.convert(total_filtered_objects, profile_currency, account.currency)
+        total_sum += total_converted
+    return round(total_sum, 2)

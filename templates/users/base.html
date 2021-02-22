@@ -190,7 +190,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">{{ title }}</h1>
+                        <h1 class="h3 mb-0 text-gray-800">{{ title }}{% if account %} - {{ account.name }}{% endif %}</h1>
                     </div>
 
                     {% if not user.email_verified %}

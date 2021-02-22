@@ -36,26 +36,49 @@
           </tr>
         </tfoot>
         <tbody>
-          {% for object in objects %}
-            <div class="row">
-                <tr>
-                    <td class="text-center">{{ object.name }}</td>
-                    <td class="text-center">{{ object.amount }}</td>
-                    <td class="text-center">{{ object.category }}</td>
-                    <td class="text-center">
-                        {% if object.recurrent == True %}Yes{% else %}No{% endif %}
-                    </td>
-                    <td class="text-center">{{ object.created_date|date:"F-d-Y" }}</td>
-                    {% if request.get_full_path == '/users/spendings/new/' %}
+          {% if request.get_full_path == '/users/archive/' %}
+            {% for object in spendings %}
+                <div class="row">
+                    <tr>
+                        <td class="text-center">{{ object.name }}</td>
+                        <td class="text-center">{{ object.amount }}</td>
+                        <td class="text-center">{{ object.category }}</td>
                         <td class="text-center">
-                            <a class="btn-circle bnt-sm btn-danger" data-toggle="modal" href="#incomeAndSpendingsDeleteModal{{ title }}{{ object.id }}" data-target="#incomeAndSpendingsDeleteModal{{ title }}{{ object.id }}"><i class="fas fa-trash"></i></a>
-                            <a class="btn-circle bnt-sm btn-success ml-2" href="{{ object.update_url }}"><i class="fas fa-pen"></i></a>
+                            {% if object.recurrent == True %}Yes{% else %}No{% endif %}
                         </td>
-                        {% include 'users/components/delete-object-modal.html' %}
-                  {% endif %}
-                </tr>
-            </div>
-          {% endfor %}
+                        <td class="text-center">{{ object.created_date|date:"F-d-Y" }}</td>
+                        {% if request.get_full_path == '/users/spendings/new/' %}
+                            <td class="text-center">
+                                <a class="btn-circle bnt-sm btn-danger" data-toggle="modal" href="#incomeAndSpendingsDeleteModal{{ title }}{{ object.id }}" data-target="#incomeAndSpendingsDeleteModal{{ title }}{{ object.id }}"><i class="fas fa-trash"></i></a>
+                                <a class="btn-circle bnt-sm btn-success ml-2" href="{{ object.update_url }}"><i class="fas fa-pen"></i></a>
+                            </td>
+                            {% include 'users/components/delete-object-modal.html' %}
+                      {% endif %}
+                    </tr>
+                </div>
+              {% endfor %}
+          {% else %}
+            {% for object in objects %}
+                <div class="row">
+                    <tr>
+                        <td class="text-center">{{ object.name }}</td>
+                        <td class="text-center">{{ object.amount }}</td>
+                        <td class="text-center">{{ object.category }}</td>
+                        <td class="text-center">
+                            {% if object.recurrent == True %}Yes{% else %}No{% endif %}
+                        </td>
+                        <td class="text-center">{{ object.created_date|date:"F-d-Y" }}</td>
+                        {% if request.get_full_path == '/users/spendings/new/' %}
+                            <td class="text-center">
+                                <a class="btn-circle bnt-sm btn-danger" data-toggle="modal" href="#incomeAndSpendingsDeleteModal{{ title }}{{ object.id }}" data-target="#incomeAndSpendingsDeleteModal{{ title }}{{ object.id }}"><i class="fas fa-trash"></i></a>
+                                <a class="btn-circle bnt-sm btn-success ml-2" href="{{ object.update_url }}"><i class="fas fa-pen"></i></a>
+                            </td>
+                            {% include 'users/components/delete-object-modal.html' %}
+                      {% endif %}
+                    </tr>
+                </div>
+              {% endfor %}
+          {% endif %}
         </tbody>
       </table>
     </div>

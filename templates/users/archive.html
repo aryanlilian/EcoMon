@@ -3,18 +3,30 @@
 	<div class="container">
 		<form method="POST" action="{% url 'archive' %}">
 			{% csrf_token %}
+			{% if user.pro_membership %}
+				<div class="input-group mb-3">
+				  <select name="accountId" class="custom-select text-gray-800" id="inputGroupSelect01">
+					{% for account in accounts %}
+				    	<option value="{{ account.id }}">{{ account.name }}</option>
+				    {% endfor %}
+				  </select>
+				  <div class="input-group-append">
+				    <label class="input-group-text text-gray-800 bg-info" for="inputGroupSelect01">Account</label>
+				  </div>
+				</div>
+			{% endif %}
 			<div class="input-group mb-3">
 			  <div class="input-group-prepend">
-			    <label class="input-group-text text-gray-800 bg-warning" for="inputGroupSelect01">Year</label>
+			    <label class="input-group-text text-gray-800 bg-warning" for="inputGroupSelect02">Year</label>
 			  </div>
-			  <select name="year" class="custom-select text-gray-800" id="inputGroupSelect01">
+			  <select name="year" class="custom-select text-gray-800" id="inputGroupSelect02">
 			    <option value="2021">2021</option>
 			    <option value="2022">2022</option>
 			    <option value="2023">2023</option>
 			  </select>
 			</div>
 			<div class="input-group mb-3">
-			  <select name="month" class="custom-select text-gray-800 id="inputGroupSelect02">
+			  <select name="month" class="custom-select text-gray-800 id="inputGroupSelect03">
 			    <option value="01">January</option>
 			    <option value="02">February</option>
 			    <option value="03">March</option>
@@ -29,7 +41,7 @@
 			    <option value="12">December</option>
 			  </select>
 			  <div class="input-group-append">
-			    <label class="input-group-text text-gray-800 bg-success" for="inputGroupSelect02">Month</label>
+			    <label class="input-group-text text-gray-800 bg-success" for="inputGroupSelect03">Month</label>
 			  </div>
 			</div>
 			<input type="submit" name="result" value="See the Archive" class="btn btn-info btn-lg btn-block">

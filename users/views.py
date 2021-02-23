@@ -199,9 +199,8 @@ class ArchiveView(LoginRequiredMixin, View):
         context = self.get_context_data(**kwargs)
         total_incomes = total_spendings = None
         if request.user.pro_membership:
-            currency = Profile.objects.get(user=request.user).currency
-            total_incomes = total_currency_converter(request.user, Income, self.accounts, currency)
-            total_spendings = total_currency_converter(request.user, Spending, self.accounts, currency)
+            total_incomes = total_currency_converter(request.user, Income, self.accounts, context['currency'])
+            total_spendings = total_currency_converter(request.user, Spending, self.accounts, context['currency'])
         else:
             total_incomes, total_spendings = assembly(self.incomes), assembly(self.spendings)
         context['total_incomes'] = total_incomes
@@ -211,27 +210,17 @@ class ArchiveView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if request.user.pro_membership:
-            accountId = request.POST.get('accountId')
-            self.account = Account.objects.get(id=accountId)
+        self.account = Account.objects.get(id=request.POST.get('accountId')) if request.user.pro_membership else Account.objects.filter(user=request.user).first()
         year = datetime.strptime(request.POST.get('year'), '%Y')
         month = datetime.strptime(request.POST.get('month'), '%m')
-        if request.user.pro_membership:
-            self.incomes = Income.objects.filter(
-                user=request.user, account=self.account, created_date__year=year.year, created_date__month=month.month
-            )
-            self.spendings = Spending.objects.filter(
-                user=request.user, account=self.account, created_date__year=year.year, created_date__month=month.month
-            )
-        else:
-            self.incomes = Income.objects.filter(
-                user=request.user, created_date__year=year.year, created_date__month=month.month
-            )
-            self.spendings = Spending.objects.filter(
-                user=request.user, created_date__year=year.year, created_date__month=month.month
-            )
+        self.incomes = Income.objects.filter(
+            user=request.user, account=self.account, created_date__year=year.year, created_date__month=month.month
+        )
+        self.spendings = Spending.objects.filter(
+            user=request.user, account=self.account, created_date__year=year.year, created_date__month=month.month
+        )
         total_incomes, total_spendings = assembly(self.incomes), assembly(self.spendings)
-        context['currency'] = self.account.currency if self.account else Profile.objects.get(user=self.request.user).currency
+        context['currency'] = self.account.currency
         context['incomes'] = self.incomes
         context['spendings'] = self.spendings
         context['total_incomes'] = total_incomes
@@ -242,12 +231,12 @@ class ArchiveView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
-        if self.request.user.pro_membership:
-            self.accounts = Account.objects.filter(user=self.request.user)
-        self.incomes = Income.objects.filter(user=self.request.user)
-        self.spendings = Spending.objects.filter(user=self.request.user)
+        self.accounts = Account.objects.filter(user=self.request.user) if self.request.user.pro_membership else None
+        self.account = Account.objects.filter(user=self.request.user).first() if not self.request.user.pro_membership else Account.objects.filter(user=self.request.user)
+        self.incomes = Income.objects.filter(user=self.request.user) if self.request.user.pro_membership else Income.objects.filter(user=self.request.user, account=self.account)
+        self.spendings = Spending.objects.filter(user=self.request.user) if self.request.user.pro_membership else Spending.objects.filter(user=self.request.user, account=self.account)
         context = {
-            'currency': Profile.objects.get(user=self.request.user).currency,
+            'currency': Profile.objects.get(user=self.request.user).currency if self.accounts else self.account.currency,
             'title' : template_titles['archive_title'],
             'accounts' : self.accounts,
             'incomes' : self.incomes,

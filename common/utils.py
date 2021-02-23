@@ -77,10 +77,10 @@ def uidb_token_generator(link, request, token=None):
 
 
 def total_currency_converter(user, object, accounts, profile_currency):
-    total_sum, converter = 0, CurrencyConverter()
+    total_sum = 0
+    converter = CurrencyConverter()
     for account in accounts:
         filtered_objects = object.objects.filter(user=user, account=account)
         total_filtered_objects = assembly(filtered_objects)
-        total_converted = converter.convert(total_filtered_objects, profile_currency, account.currency)
-        total_sum += total_converted
+        total_sum += converter.convert(total_filtered_objects, account.currency, profile_currency)
     return round(total_sum, 2)

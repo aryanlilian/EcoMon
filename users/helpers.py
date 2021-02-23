@@ -4,11 +4,11 @@ from datetime import datetime
 from django.http import JsonResponse
 
 
-def incomes_chart_area(request, pk):
+def incomes_chart_area(request, pk=None):
     incomes_data, date_distance, checks = [], -1, 12
-    account = Account.objects.get(id=pk)
-    first_income = Income.objects.filter(user=request.user, account=account).first()
-    last_income = Income.objects.filter(user=request.user, account=account).last()
+    account = Account.objects.get(id=pk) #if pk else None
+    first_income = Income.objects.filter(user=request.user, account=account).first() if account else Income.objects.filter(user=request.user).first()
+    last_income = Income.objects.filter(user=request.user, account=account).last() if account else Income.objects.filter(user=request.user).last()
     if first_income and last_income:
         date_distance = (last_income.created_date - first_income.created_date).days
     if  1 <= date_distance <= 365:
@@ -56,11 +56,11 @@ def incomes_chart_area(request, pk):
     return JsonResponse(incomes_data, safe=False)
 
 
-def spendings_chart_area(request, pk):
+def spendings_chart_area(request, pk=None):
     account = Account.objects.get(id=pk)
     spendings_data, date_distance, checks = [], -1, 12
-    first_spending = Spending.objects.filter(user=request.user, account=account).first()
-    last_spending = Spending.objects.filter(user=request.user, account=account).last()
+    first_spending = Spending.objects.filter(user=request.user, account=account).first() if account else Spending.objects.filter(user=request.user).first()
+    last_spending = Spending.objects.filter(user=request.user, account=account).last() if account else Spending.objects.filter(user=request.user).last()
     if first_spending and last_spending:
         date_distance = (last_spending.created_date - first_spending.created_date).days
     if 1 <= date_distance <= 365:
@@ -108,7 +108,7 @@ def spendings_chart_area(request, pk):
     return JsonResponse(spendings_data, safe=False)
 
 
-def incomes_chart_pie(request, pk):
+def incomes_chart_pie(request, pk=None):
     account = Account.objects.get(id=pk)
     incomes = Income.objects.filter(user=request.user, account=account, created_date__year=datetime.now().year, created_date__month=datetime.now().month)
     total_incomes = assembly(incomes)

@@ -45,7 +45,9 @@ class AccountsListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+        if self.request.user.pro_membership:
+            return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
+        return super().get_queryset(*args, **kwargs).filter(user=self.request.user).first()
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -149,7 +151,7 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['objects'] = Account.objects.filter(user=self.request.user)
+        context['objects'] = Account.objects.filter(user=self.request.user) if self.request.user.pro_membership else Account.objects.filter(user=self.request.user).first()
         return context
 
     def form_valid(self, form):

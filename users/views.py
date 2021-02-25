@@ -26,7 +26,8 @@ from .forms import (
 )
 from common.utils import (
     assembly, percentages_of_incomes, daily_avg,
-    max_amount, uidb_token_generator, total_currency_converter
+    max_amount, uidb_token_generator, total_currency_converter,
+    max_currency_converter
 )
 from common.constants import (
     template_titles, help_texts, email_activation,
@@ -42,12 +43,41 @@ class AccountsListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = template_titles['accounts_title']
+        context['currency'] = Profile.objects.get(user=self.request.user).currency
         return context
 
     def get_queryset(self, *args, **kwargs):
         if self.request.user.pro_membership:
             return super().get_queryset(*args, **kwargs).filter(user=self.request.user)
         return super().get_queryset(*args, **kwargs).filter(user=self.request.user).first()
+
+
+class TotalAccountDashboardView(LoginRequiredMixin, View):
+    template_name ='users/dashboard.html'
+
+    def get(self, request, *args, **kwargs):
+        date = datetime.now()
+        accounts = Account.objects.filter(user=request.user)
+        currency = Profile.objects.get(user=request.user).currency
+        total_incomes = total_currency_converter(request.user, Income, accounts, currency, date.year, date.month)
+        total_spendings = total_currency_converter(request.user, Spending, accounts, currency, date.year, date.month)
+        total_savings = round(total_incomes - total_spendings, 2)
+        spendings_percent = percentages_of_incomes(total_incomes, total_spendings)
+        savings_percent = percentages_of_incomes(total_incomes, total_savings)
+        max_income = max_currency_converter(request.user, Income, accounts, currency, date.year, date.month)
+        max_spending = max_currency_converter(request.user, Spending, accounts, currency, date.year, date.month)
+        context = {
+            'title': template_titles['dashboard_title'],
+            'currency': currency,
+            'total_incomes': total_incomes,
+            'total_spendings': total_spendings,
+            'total_savings': total_savings,
+            'spendings_percent': spendings_percent ,
+            'savings_percent': savings_percent,
+            'max_income': max_income,
+            'max_spending': max_spending,
+        }
+        return render(request, self.template_name, context)
 
 
 class DashboardView(LoginRequiredMixin, View):

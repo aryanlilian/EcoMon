@@ -36,6 +36,27 @@
                     </div>
                 </div>
             {% endfor %}
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-left-secondary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <a href="{% url 'dashboard-total-account' %}">
+                                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                        Total Accounts
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ currency }}</div>
+                                </a>
+                            </div>
+                            <div class="col-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="fas fa-2x text-gray-300" viewBox="0 0 16 16">
+                                  <path d="M14 13.292A8 8 0 0 0 8.5.015v7.778l5.5 5.5zm-.708.708L8.5 9.206v6.778a7.967 7.967 0 0 0 4.792-1.986zM7.5 15.985V9.207L2.708 14A7.967 7.967 0 0 0 7.5 15.985zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% else %}
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card border-left-{% if accounts.category == 'Personal' %}primary{% elif accounts.category == 'Work' %}danger{% elif accounts.category == 'Investments' %}success{% elif accounts.category == 'Children' %}info{% else %}secondary{% endif %} shadow h-100 py-2">

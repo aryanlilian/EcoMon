@@ -76,11 +76,24 @@ def uidb_token_generator(link, request, token=None):
     return activate_url
 
 
-def total_currency_converter(user, object, accounts, profile_currency):
+def total_currency_converter(user, object, accounts, profile_currency, year=None, month=None):
     total_sum = 0
     converter = CurrencyConverter()
     for account in accounts:
-        filtered_objects = object.objects.filter(user=user, account=account)
+        if not year and not month:
+            filtered_objects = object.objects.filter(user=user, account=account)
+        else:
+            filtered_objects = object.objects.filter(user=user, account=account, created_date__year=year, created_date__month=month)
         total_filtered_objects = assembly(filtered_objects)
         total_sum += converter.convert(total_filtered_objects, account.currency, profile_currency)
     return round(total_sum, 2)
+
+def max_currency_converter(user, object, accounts, profile_currency, year, month):
+    max_object = 0
+    converter = CurrencyConverter()
+    for account in accounts:
+        filtered_objects = object.objects.filter(user=user, account=account, created_date__year=year, created_date__month=month)
+        max_filtered_objects = max_amount(filtered_objects)
+        if max_filtered_objects and max_filtered_objects > max_object:
+            max_object = converter.convert(max_filtered_objects, account.currency, profile_currency)
+    return round(max_object, 2)

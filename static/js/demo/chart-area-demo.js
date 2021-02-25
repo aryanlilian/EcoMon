@@ -33,6 +33,7 @@ $(document).ready( function() {
         'months': [],
         'values': [],
     };
+    console.log(accountId)
     var incomesChartAreaURL = `/users/dashboard/incomes-chart-area/${accountId}/`;
 
     $.ajax({

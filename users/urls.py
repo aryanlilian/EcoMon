@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
-    AccountsListView, DashboardView, ProfileView,
-    IncomesCreateListView, SpendingsCreateListView, AccountCreateView,
-    IncomeUpdateView, SpendingUpdateView, AccountUpdateView,
-    IncomeDeleteView, SpendingDeleteView, ArchiveView,
-    EmailVerificationView, SendOrVerifyEmailVerificationView
+    AccountsListView, TotalAccountDashboardView, DashboardView,
+    ProfileView, IncomesCreateListView, SpendingsCreateListView,
+    AccountCreateView, IncomeUpdateView, SpendingUpdateView,
+    AccountUpdateView, IncomeDeleteView, SpendingDeleteView,
+    ArchiveView, EmailVerificationView, SendOrVerifyEmailVerificationView
 )
 from .helpers import (
     chart_area, chart_pie
@@ -12,8 +12,13 @@ from .helpers import (
 
 urlpatterns = [
     path('accounts/', AccountsListView.as_view(), name='accounts'),
+    path('dashboard/', TotalAccountDashboardView.as_view(), name='dashboard-total-account'),
     path('dashboard/<int:pk>/', DashboardView.as_view(), name='dashboard'),
     path('profile/', ProfileView.as_view(), name='profile'),
+    # path('dashboard/incomes-chart-area/', chart_area, name='incomes-chart-area-total-account'),
+    # path('dashboard/incomes-chart-pie/', chart_pie, name='incomes-chart-pie-total-account'),
+    # path('dashboard/spendings-chart-area/', chart_area, name='spendings-chart-area-total-account'),
+    # path('dashboard/spendings-chart-pie/', chart_pie, name='spendings-chart-pie-total-account'),
     path('dashboard/incomes-chart-area/<int:pk>/', chart_area, name='incomes-chart-area'),
     path('dashboard/incomes-chart-pie/<int:pk>/', chart_pie, name='incomes-chart-pie'),
     path('dashboard/spendings-chart-area/<int:pk>/', chart_area, name='spendings-chart-area'),

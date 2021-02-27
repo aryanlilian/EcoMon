@@ -33,9 +33,12 @@ $(document).ready( function() {
         'months': [],
         'values': [],
     };
-    console.log(accountId)
-    var incomesChartAreaURL = `/users/dashboard/incomes-chart-area/${accountId}/`;
-
+    
+    if(accountId) {
+        var incomesChartAreaURL = `/users/dashboard/incomes-chart-area/${accountId}/`;
+    } else {
+        var incomesChartAreaURL = `/users/dashboard/incomes-chart-area/`;
+    }
     $.ajax({
         method: 'GET',
         url: incomesChartAreaURL,
@@ -175,7 +178,12 @@ $(document).ready( function() {
         'months': [],
         'values': [],
     };
-    var spendingsChartAreaURL = `/users/dashboard/spendings-chart-area/${accountId}/`;
+
+    if(accountId) {
+        var spendingsChartAreaURL = `/users/dashboard/spendings-chart-area/${accountId}/`;
+    } else {
+        var spendingsChartAreaURL = `/users/dashboard/spendings-chart-area/`;
+    }
 
     $.ajax({
         method: 'GET',

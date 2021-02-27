@@ -7,7 +7,12 @@ let incomesPie = {
     'names': [],
     'values': [],
 }
-let incomesChartPieURL = `/users/dashboard/incomes-chart-pie/${accountId}/`
+
+if(accountId) {
+    var incomesChartPieURL = `/users/dashboard/incomes-chart-pie/${accountId}/`
+} else {
+    var incomesChartPieURL = `/users/dashboard/incomes-chart-pie/`
+}
 
 $.ajax({
     method: 'GET',
@@ -66,7 +71,12 @@ let spendingsPie = {
     'names': [],
     'values': [],
 }
-let spendingsChartPieURL = `/users/dashboard/spendings-chart-pie/${accountId}/`
+
+if(accountId) {
+    var spendingsChartPieURL = `/users/dashboard/spendings-chart-pie/${accountId}/`
+} else {
+    var spendingsChartPieURL = `/users/dashboard/spendings-chart-pie/`
+}
 
 $.ajax({
     method: 'GET',

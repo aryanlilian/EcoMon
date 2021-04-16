@@ -21,7 +21,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path %}<th>Amount</th>{% endif %}
+            <th>Amount</th>
             <th>Category</th>
             <th>
                 {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path or request.get_full_path == '/users/archive/' %}
@@ -37,22 +37,22 @@
           </tr>
         </thead>
         <tfoot>
-          <tr>
+            <tr>
               <th>Name</th>
-            {% if '/users/incomes/new/' in request.get_full_path %}<th>Amount</th>{% endif %}
-            <th>Category</th>
-            <th>
-                {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path or request.get_full_path == '/users/archive/' %}
-                    Recurrent
-                {% else %}
-                    Currency
-                {% endif %}
-            </th>
-            <th>Date</th>
-            {% if '/users/incomes/new/' in request.get_full_path or request.get_full_path == '/users/accounts/new/' %}
-                <th>Delete/Update</th>
-            {% endif %}
-          </tr>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>
+                  {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path or request.get_full_path == '/users/archive/' %}
+                      Recurrent
+                  {% else %}
+                      Currency
+                  {% endif %}
+              </th>
+              <th>Date</th>
+              {% if '/users/incomes/new/' in request.get_full_path or request.get_full_path == '/users/accounts/new/' %}
+                  <th>Delete/Update</th>
+              {% endif %}
+            </tr>
         </tfoot>
         <tbody>
             {% if request.get_full_path == '/users/archive/' %}
@@ -60,9 +60,7 @@
                   <div class="row">
                       <tr>
                           <td class="text-center">{% if request.get_full_path == '/users/accounts/new/' %}<a href="{% url 'dashboard' object.id %}">{{ object.name }}</a>{% else %}{{ object.name }}{% endif %}</td>
-                          {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path %}
-                              <td class="text-center">{{ object.amount }}</td>
-                          {% endif %}
+                          <td class="text-center">{{ object.amount }}</td>
                           <td class="text-center">{{ object.category }}</td>
                           <td class="text-center">
                               {% if '/users/incomes/new/' in request.get_full_path or '/users/incomes/update/' in request.get_full_path or request.get_full_path == '/users/archive/' %}

@@ -142,7 +142,7 @@ class ObjectUpdateViewMixin(LoginRequiredMixin, UpdateView):
 
 class ObjectDeleteViewMixin(LoginRequiredMixin, DeleteView):
     model = None
-    template_name = 'users/incomes_&_spendings.html'
+    template_name = 'users/create-update-list-objects.html'
     success_url = None
 
     def post(self, request, *args, **kwargs):
